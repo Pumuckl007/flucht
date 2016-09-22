@@ -1,0 +1,13 @@
+{
+  "name": "flucht",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "mocha --compilers js:babel-register"
+  },
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "mocha": "^3.0.2",
+    "chai": "3.5.0"
+  }
+}
