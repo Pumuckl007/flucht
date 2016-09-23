@@ -3,7 +3,8 @@ class TestClass {
     this.wheee = true;
   }
   getItem(){
-    return this.wheee;
+
+    return this.someVariable;
   }
 }
 

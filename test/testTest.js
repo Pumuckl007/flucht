@@ -5,6 +5,7 @@ var expect = require("chai").expect;
 describe('TestClass', function(){
   it('should respond to querry ""',function(){
     let something = new TestClass();
-    expect(something.getItem("")).to.equal(true);
+    something.init(true);
+    expect(something.getItem("")).to.be.true;
     })
   })
