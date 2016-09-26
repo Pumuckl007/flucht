@@ -20,6 +20,10 @@ class Runner{
   }
 
   move(x, y){
+    if(this.running !== (Math.abs(x)>1 || Math.abs(y) > 1)){
+      this.changeCounter = -1;
+      this.spriteID = 0;
+    }
     this.running = Math.abs(x)>1 || Math.abs(y) > 1;
     if(x > 0){
       this.sprite.scale.x = -2;
@@ -38,9 +42,9 @@ class Runner{
 
   update(){
     if(keys[68]){
-      this.move(2,0);
+      this.move(5,0);
     } else if(keys[65]){
-      this.move(-2,0);
+      this.move(-5,0);
     } else {
       this.move(0,0);
     }
@@ -50,7 +54,7 @@ class Runner{
       if(this.spriteID > (this.running ? 7 : 3)){
         this.spriteID = 0;
       }
-      this.changeCounter = this.running ? 10 : 20;
+      this.changeCounter = this.running ? 0 : 0;
       this.sprite.texture = this.textures[(this.running ? "running_" : "idle_") + this.spriteID];
     }
   }

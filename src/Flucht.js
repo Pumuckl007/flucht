@@ -1,26 +1,22 @@
-import Runner from "./Runner.js";
+import Runner from "./Physics/Runner.js";
+import World from "./Physics/World.js";
+import Renderer from "./Renderer.js";
 
 class Flucht{
   constructor(){
-    this.stage = new PIXI.Container();
-    this.renderer = new PIXI.WebGLRenderer(800, 600);
-  }
-  start(){
-    console.log("the flucht has started. Da Da Daaa");
-    document.body.appendChild(this.renderer.view);
-  }
-
-  addRunner(){
-    this.runner = new Runner();
-    this.stage.addChild(this.runner.sprite);
+    this.world = new World();
+    this.renderer = new Renderer();
+    this.world.addEventListener(this.renderer);
+    this.runner = new Runner(64, 128, 0, 64);
+    this.world.addEntity(this.runner);
   }
 
   render(){
-    this.renderer.render(this.stage);
+    this.renderer.render();
   }
 
   update(){
-    this.runner.update();
+    this.world.tick(20/1000);
   }
 }
 

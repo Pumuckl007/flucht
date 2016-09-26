@@ -1,0 +1,22 @@
+{
+  "base": "/assets/Runner/running_",
+  "width": 32,
+  "height": 64,
+  "default": "idle",
+  "animations":[
+    {
+      "name": "idle",
+      "path": "idle_",
+      "extention": ".png",
+      "range": [0,3],
+      "frameDuration": 200
+    },
+    {
+      "name": "running",
+      "path": "running_",
+      "extention": ".png",
+      "range": [0,7],
+      "frameDuration": 100
+    }
+  ]
+}
