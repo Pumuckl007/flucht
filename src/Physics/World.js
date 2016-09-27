@@ -20,6 +20,7 @@ class World{
     }
     for(let listener of this.listeners){
       listener.onEvent("Entity Added", entity);
+      listener.onEvent("Terrain Updated", this.terrain);
     }
   }
 

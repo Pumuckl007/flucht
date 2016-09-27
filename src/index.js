@@ -1,5 +1,4 @@
 import Flucht from "./Flucht.js";
-import AnimatedEntityRenderer from "./AnimatedEntityRenderer.js";
 var flucht = new Flucht();
 
 function animate(){

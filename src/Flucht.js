@@ -5,9 +5,9 @@ import Renderer from "./Renderer.js";
 class Flucht{
   constructor(){
     this.world = new World();
-    this.renderer = new Renderer();
+    this.runner = new Runner(64, 128, 0, 76);
+    this.renderer = new Renderer(this.runner);
     this.world.addEventListener(this.renderer);
-    this.runner = new Runner(64, 128, 0, 64);
     this.world.addEntity(this.runner);
   }
 

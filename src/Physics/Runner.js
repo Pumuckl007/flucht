@@ -40,7 +40,7 @@ class Runner extends Entity{
   }
 
   collision(terrainElement, type){
-    if(type > 1){
+    if(type == 2){
       this.onGround = true;
     }
   }

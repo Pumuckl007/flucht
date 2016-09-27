@@ -12,12 +12,17 @@ class Box{
         value --;
       }
       if(this.width/2 > Math.abs(xOff)-box.width/2 && this.width/2 < Math.abs(xOff)+box.width/2){
-        console.log(this.width/2, Math.abs(xOff), box.width/2, Math.abs(xOff)+box.width/2 );
         value -=2;
       }
       return (value <= 0) ? 3 : value;
     }
     return value;
+  }
+
+  getOverlap(box, xOff, yOff){
+    let xOver = box.width/2 - (Math.abs(xOff)-this.width/2);
+    let yOver = box.height/2 - (Math.abs(yOff)-this.height/2);
+    return [Math.max(xOver, 0), Math.max(yOver, 0)];
   }
 }
 

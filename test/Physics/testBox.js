@@ -29,4 +29,7 @@ describe('Box Class', function(){
     let boxB = new Box(8000, 20);
     expect(boxB.intersects(boxA, 0, 50)).to.equal(2);
   })
+  it('should overlap the right amount in the Y diretion',function(){
+    expect(this.box1.getOverlap(this.box2, 0, 2)[1]).to.equal(1);
+  })
 });

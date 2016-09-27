@@ -4,13 +4,13 @@ function terrainAndEntity(terrain, entity){
     let yOff = terrainElement.pos.y- entity.pos.y;
     let side = 0;
     if((side = terrainElement.box.intersects(entity.box, xOff, yOff)) !== 0){
-      if(side === 3){
-        correctX(entity, terrainElement);
-        correctY(entity, terrainElement);
-      } else if(side === 2){
-        correctY(entity, terrainElement);
-      } else if(side === 1){
-        correctX(entity, terrainElement);
+      let overlap = terrainElement.box.getOverlap(entity.box, xOff, yOff);
+      if(overlap[0] > overlap[1]){
+        side = 2;
+        side += correctY(entity, terrainElement, yOff);
+      } else {
+        side = 1;
+        side += correctX(entity, terrainElement, xOff);
       }
       terrainElement.collision(entity, side);
       entity.collision(terrainElement, side);
@@ -18,20 +18,29 @@ function terrainAndEntity(terrain, entity){
   }
 }
 
-function correctX(toMove, notToMove){
-  if(toMove.vel.x === 0)
-    return;
-  let direction = -Math.abs(toMove.vel.x)/toMove.vel.x;
+function correctX(toMove, notToMove, xOff){
+  let direction = 0;
+  if(xOff !== 0)
+    direction = -Math.abs(xOff)/xOff;
+  else
+    return 0;
+    console.log("correctX", direction);
   toMove.vel.x = 0;
   toMove.pos.x = notToMove.pos.x + direction*(toMove.box.width/2 + notToMove.box.width/2);
+  return (direction < 0) ? 2 : 0;
 }
 
-function correctY(toMove, notToMove){
-  if(toMove.vel.y === 0)
-    return;
-  let direction = -Math.abs(toMove.vel.y)/toMove.vel.y;
+function correctY(toMove, notToMove, yOff){
+  let direction = 0;
+  if(yOff !== 0)
+    direction = -Math.abs(yOff)/yOff;
+  else {
+    return 0;
+  }
+  console.log("correctY", direction);
   toMove.vel.y = 0;
   toMove.pos.y = notToMove.pos.y + direction*(toMove.box.height/2 + notToMove.box.height/2);
+  return (direction < 0) ? 2 : 0;
 }
 
 export default {terrainAndEntity: terrainAndEntity, correctX: correctX, correctY: correctY};
