@@ -1,0 +1,42 @@
+{
+  "background": "/assets/background.png",
+  "width": 832,
+  "scaleX": 2,
+  "height": 448,
+  "scaleY": 2,
+  "offsetY": -10,
+  "elements": [
+    {
+      "url": "/assets/GrandfatherClock/GrandfatherClock.json",
+      "number": 4,
+      "xStep": 1,
+      "yStep": 1,
+      "xGenerator": [200, 100],
+      "yGenerator": [-140]
+    },
+    {
+      "url": "/assets/MonaLisa/MonaLisa.json",
+      "number": 3,
+      "xStep": 1,
+      "yStep": 1,
+      "xGenerator": [200, 200],
+      "yGenerator": [100, -200, -190]
+    },
+    {
+      "url": "/assets/Candle/Candle.json",
+      "number": 2,
+      "xStep": 1,
+      "yStep": 1,
+      "xGenerator": [400, 200],
+      "yGenerator": [-100]
+    },
+    {
+      "url": "/assets/Armchair/Armchair.json",
+      "number": 1,
+      "xStep": 1,
+      "yStep": 1,
+      "xGenerator": [400],
+      "yGenerator": [-125]
+    }
+  ]
+}

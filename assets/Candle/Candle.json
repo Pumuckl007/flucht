@@ -1,0 +1,17 @@
+{
+  "base": "/assets/Candle/Candle",
+  "width": 32,
+  "scaleX": 2,
+  "height": 64,
+  "scaleY": 2,
+  "default": "burning",
+  "animations":[
+    {
+      "name": "burning",
+      "path": "",
+      "extention": ".png",
+      "range": [0,3],
+      "frameDuration": 120
+    }
+  ]
+}

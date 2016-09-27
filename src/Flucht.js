@@ -4,7 +4,11 @@ import Renderer from "./Renderer.js";
 
 class Flucht{
   constructor(){
-    this.world = new World();
+    let self = this;
+    this.world = new World({spawnRunner:function(data){
+      self.runner.pos = data.spawn;
+      self.renderer.onEvent("Level Loaded", data.background);
+    }});
     this.runner = new Runner(64, 128, 0, 76);
     this.renderer = new Renderer(this.runner);
     this.world.addEventListener(this.renderer);

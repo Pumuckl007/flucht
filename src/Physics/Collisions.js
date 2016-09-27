@@ -24,7 +24,6 @@ function correctX(toMove, notToMove, xOff){
     direction = -Math.abs(xOff)/xOff;
   else
     return 0;
-    console.log("correctX", direction);
   toMove.vel.x = 0;
   toMove.pos.x = notToMove.pos.x + direction*(toMove.box.width/2 + notToMove.box.width/2);
   return (direction < 0) ? 2 : 0;
@@ -37,7 +36,6 @@ function correctY(toMove, notToMove, yOff){
   else {
     return 0;
   }
-  console.log("correctY", direction);
   toMove.vel.y = 0;
   toMove.pos.y = notToMove.pos.y + direction*(toMove.box.height/2 + notToMove.box.height/2);
   return (direction < 0) ? 2 : 0;

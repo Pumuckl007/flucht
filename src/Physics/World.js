@@ -2,10 +2,10 @@ import Collisions from "./Collisions.js";
 import Terrain from "./Terrain.js";
 
 class World{
-  constructor(){
+  constructor(spawnHandler){
     this.entities = [];
     this.tickingEntities = [];
-    this.terrain = new Terrain();
+    this.terrain = new Terrain("/levels/Level1.json", spawnHandler);
     this.listeners = [];
   }
 

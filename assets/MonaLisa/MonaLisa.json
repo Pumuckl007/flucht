@@ -1,0 +1,17 @@
+{
+  "base": "/assets/MonaLisa/MonaLisa",
+  "width": 32,
+  "scaleX": 2,
+  "height": 64,
+  "scaleY": 2,
+  "default": "moving",
+  "animations":[
+    {
+      "name": "moving",
+      "path": "",
+      "extention": ".png",
+      "range": [0,19],
+      "frameDuration": 80
+    }
+  ]
+}

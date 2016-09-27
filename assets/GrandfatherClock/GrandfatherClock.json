@@ -1,0 +1,17 @@
+{
+  "base": "/assets/GrandfatherClock/GrandfatherClock",
+  "width": 32,
+  "scaleX": 2,
+  "height": 64,
+  "scaleY": 2,
+  "default": "ticking",
+  "animations":[
+    {
+      "name": "ticking",
+      "path": "",
+      "extention": ".png",
+      "range": [0,7],
+      "frameDuration": 200
+    }
+  ]
+}

@@ -12,6 +12,7 @@ function update(){
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
+  flucht.renderer.resize();
   animate();
 });
 

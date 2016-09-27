@@ -1,0 +1,17 @@
+{
+  "base": "/assets/Armchair/armchair",
+  "width": 32,
+  "scaleX": 2,
+  "height": 64,
+  "scaleY": 2,
+  "default": "being",
+  "animations":[
+    {
+      "name": "being",
+      "path": "",
+      "extention": ".png",
+      "range": [0,0],
+      "frameDuration": 1000000
+    }
+  ]
+}
