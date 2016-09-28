@@ -11,9 +11,9 @@ class Renderer{
     this.renderer = new PIXI.WebGLRenderer(1600, 900);
     this.renderers = [];
     this.graphics = new PIXI.Graphics();
-    this.scale = 2;
-    this.stage.scale.x = 2;
-    this.stage.scale.y = 2;
+    this.scale = 1;
+    this.stage.scale.x = this.scale;
+    this.stage.scale.y = this.scale;
     this.stage.addChild(this.graphics);
     initMap(this.typeMap);
     let self = this;

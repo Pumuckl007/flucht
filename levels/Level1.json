@@ -1,22 +1,13 @@
 {
   "name":"Level 1",
-  "width": 832,
-  "height": 418,
-  "spawn": {
-    "x": 100,
-    "y": 200
-  },
-  "background": "/backgrounds/Level1.json",
-  "elements":[
+  "width": 10000,
+  "height": 1,
+  "rooms":[
     {
-      "x": 432,
-      "y": 35,
-      "width": 40,
-      "height": 70,
-      "type": "colored",
-      "data": {
-        "color": 16776960
-      }
+      "url": "/rooms/LivingRoom.json"
+    },
+    {
+      "url": "/rooms/ClockRoom.json"
     }
   ]
 }
