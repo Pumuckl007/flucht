@@ -1,0 +1,104 @@
+{
+  "name":"Level 1",
+  "width": 400,
+  "height": 1200,
+  "spawn": {
+    "x": 100,
+    "y": 200
+  },
+  "background": "/backgrounds/PlaneImage.json",
+  "elements":[
+    {
+      "x": 200,
+      "y": 50,
+      "width": 40,
+      "height": 100,
+      "type": "Platform"
+    },
+    {
+      "x": 380,
+      "y": 205,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    },
+    {
+      "x": 200,
+      "y": 305,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    },
+    {
+      "x": 20,
+      "y": 405,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    },
+    {
+      "x": 200,
+      "y": 505,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    },
+    {
+      "x": 380,
+      "y": 605,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    },
+    {
+      "x": 200,
+      "y": 705,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    },
+    {
+      "x": 20,
+      "y": 805,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    },
+    {
+      "x": 200,
+      "y": 905,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    },
+    {
+      "x": 380,
+      "y": 995,
+      "width": 40,
+      "height": 10,
+      "type": "Platform"
+    }
+  ],
+  "gateways":[
+    {
+      "location": "left",
+      "position": 0,
+      "width": 200
+    },
+    {
+      "location": "right",
+      "position": 0,
+      "width": 200
+    },
+    {
+      "location": "left",
+      "position": 1000,
+      "width": 200
+    },
+    {
+      "location": "right",
+      "position": 1000,
+      "width": 200
+    }
+  ]
+}

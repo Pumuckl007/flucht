@@ -8,13 +8,6 @@
   },
   "background": "/backgrounds/PlaneImage.json",
   "elements":[
-    {
-      "x": 432,
-      "y": 35,
-      "width": 40,
-      "height": 70,
-      "type": "Platform"
-    }
   ],
   "gateways":[
     {
