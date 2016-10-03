@@ -1,10 +1,17 @@
 function terrainAndEntity(terrain, entity){
   for(let terrainElement of terrain.elements){
+    if(terrainElement.ghost){
+      continue;
+    }
     let xOff = terrainElement.pos.x-entity.pos.x;
     let yOff = terrainElement.pos.y- entity.pos.y;
     let side = 0;
     if((side = terrainElement.box.intersects(entity.box, xOff, yOff)) !== 0){
       let overlap = terrainElement.box.getOverlap(entity.box, xOff, yOff);
+      let oldX = entity.pos.x;
+      let oldY = entity.pos.y;
+      let oldVelX = entity.vel.x;
+      let oldVelY = entity.vel.y;
       if(overlap[0] > overlap[1]){
         side = 2;
         side += correctY(entity, terrainElement, yOff);
@@ -12,8 +19,13 @@ function terrainAndEntity(terrain, entity){
         side = 1;
         side += correctX(entity, terrainElement, xOff);
       }
-      terrainElement.collision(entity, side);
-      entity.collision(terrainElement, side);
+      let bool = terrainElement.collision(entity, side, oldX, oldY);
+      if(bool || entity.collision(terrainElement, side)){
+        entity.pos.x = oldX;
+        entity.pos.y = oldY;
+        entity.vel.x = oldVelX;
+        entity.vel.y = oldVelY;
+      }
     }
   }
 }

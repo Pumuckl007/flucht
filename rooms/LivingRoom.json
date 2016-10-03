@@ -1,31 +1,29 @@
 {
-  "name":"Level 1",
+  "name":"Living Room",
   "width": 832,
   "height": 418,
   "spawn": {
     "x": 100,
     "y": 200
   },
-  "background": "/backgrounds/PlaneImage.json",
+  "background": "/assets/background.png",
   "elements":[
     {
       "x": 432,
-      "y": 35,
-      "width": 40,
-      "height": 70,
-      "type": "Platform"
+      "y": 34,
+      "width": 64,
+      "height": 68,
+      "type": "Textured Element",
+      "url": "/assets/Armchair/Armchair.json",
+      "offsetX": 0,
+      "offsetY": -48
     }
   ],
-  "gateways":[
-    {
-      "location": "left",
-      "position": 0,
-      "width": 200
-    },
-    {
-      "location": "right",
-      "position": 0,
-      "width": 200
-    }
-  ]
+  "roomRequirements": {
+  },
+  "mirrorable": true,
+  "leftEntrance": true,
+  "rightEntrance": true,
+  "topEntrance": false,
+  "bottomEntrance": false
 }

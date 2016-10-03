@@ -1,26 +1,23 @@
 {
-  "name":"Stairwell",
+  "name":"Stairwell Top",
   "width": 832,
   "height": 418,
   "background": "/assets/background.png",
   "elements":[
-  ],
-  "specialElements": [
     {
-      "type": "Stairs",
-      "args": [
-        558,
-        438,
-        10
-      ]
+      "x": 438,
+      "y": -5,
+      "width": 240,
+      "height": 10,
+      "type": "Drop Down"
     }
   ],
   "roomRequirements": {
-    "top": "Stairwell Top"
+    "bottom": "Stairwell"
   },
   "mirrorable": true,
   "leftEntrance": true,
   "rightEntrance": true,
-  "topEntrance": true,
-  "bottomEntrance": false
+  "topEntrance": false,
+  "bottomEntrance": true
 }

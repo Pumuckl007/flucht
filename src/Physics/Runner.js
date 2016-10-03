@@ -43,6 +43,11 @@ class Runner extends Entity{
     if(type == 2){
       this.onGround = true;
     }
+    if(terrainElement.type === "Side Jump"){
+      return (type === 4 || type === 1) || keys[83];
+    } else if(terrainElement.type === "Drop Down"){
+      return keys[83];
+    }
   }
 }
 

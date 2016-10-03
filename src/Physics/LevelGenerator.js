@@ -10,6 +10,7 @@ function generateLevel(urlToDescription, callback){
 function generate(levelDescription, callback){
   let i = levelDescription.rooms.length;
   let avaliableRooms = [];
+  let roomMinMax = {};
   for(let room of levelDescription.rooms){
     httpRequest(room.url, function(data){
       i--;
@@ -18,34 +19,20 @@ function generate(levelDescription, callback){
       }
       if(i <= 0){
         avaliableRooms.push(data);
-        build(avaliableRooms, levelDescription, callback);
+        roomMinMax[data.name] = room;
+        build(avaliableRooms, levelDescription, callback, roomMinMax);
       } else {
         avaliableRooms.push(data);
+        roomMinMax[data.name] = room;
       }
     });
   }
 }
 
-function build(avaliableRooms, levelDescription, callback){
-  let width = 0;
-  let height = 0;
-  let absValues = [0,0,0,0];
-  let avaliableStarts = [];
-  let x = 0;
-  let y = 0;
-  let roomDef = avaliableRooms[Math.floor(Math.random()*avaliableRooms.length)];
-  let room = new Room(x, y, roomDef);
-  let rooms= [room];
-  absValues[0] = Math.min(absValues[0], x-room.box.width/2);
-  absValues[1] = Math.max(absValues[1], x+room.box.width/2);
-  absValues[2] = Math.min(absValues[2], y-room.box.height/2);
-  absValues[3] = Math.max(absValues[3], y+room.box.height/2);
-  width = absValues[1]-absValues[0];
-  height = absValues[3]-absValues[2];
-  for(let start of roomDef.gateways){
-    let xAndY = findLocation(start, room);
-    avaliableStarts.push({"location": start.location,
-    x:xAndY[0], y:xAndY[1]})
+function build(avaliableRooms, levelDescription, callback, roomMinMaxMap){
+  let avaliableRoomMap = {};
+  for(let room of avaliableRooms){
+    avaliableRoomMap[room.name] = room;
   }
 
   let complementary = {
@@ -55,38 +42,47 @@ function build(avaliableRooms, levelDescription, callback){
     "right": "left"
   }
 
-  let i = 500;
-  while((width < levelDescription.width || height < levelDescription.height) && i > 0){
-    i--;
-    roomDef = avaliableRooms[Math.floor(Math.random()*avaliableRooms.length)];
-    let startPoint = avaliableStarts[Math.floor(Math.random()*avaliableStarts.length)];
-    room = new Room(0, 0, roomDef);
-    let otherStartPoints = room.types[complementary[startPoint.location]].slice(0);
-    while(otherStartPoints.length > 0){
-      let index = Math.floor(Math.random()*otherStartPoints.length);
-      let start = otherStartPoints[index];
-      otherStartPoints.splice(index, 1);
-      let xAndY = findLocation(start, room);
-      room.x = startPoint.x - xAndY[0];
-      room.y = startPoint.y - xAndY[1];
+  let roomGrid = [];
+  let rooms = [];
+  for(let i = 0; i<levelDescription.width; i++){
+    roomGrid[i] = [];
+  }
+
+  avaliableSpots = [];
+  for(let h = 0; h<levelDescription.height; h++){
+    avaliableSpots.push(h);
+  }
+  for(let w = 0; w<levelDescription.width; w++){
+    let localAvaliableSpots = avaliableSpots.slice(0);
+    for(let roomName in roomMinMaxMap){
+      let min = roomMinMaxMap[roomName].min;
+      if(!min){
+        continue;
+      }
+      for(let i = 0; i<min && localAvaliableSpots.length > 0; i++){
+        let index = Math.floor(Math.random()*localAvaliableSpots.length);
+        let posToPlaceAt = localAvaliableSpots[index];
+        localAvaliableSpots.splice(index, 1);
+        let roomToPlace = avaliableRoomMap[roomName];
+        tryToPlace(roomToPlace, roomGrid, w, index, levelDescription, avaliableRoomMap, rooms);
+      }
     }
+  }
 
-    if((room.x === 0 && room.y === 0) || roomIntersectsRooms(room, rooms)){
-      continue;
-    }
-
-    absValues[0] = Math.min(absValues[0], room.x-room.box.width/2);
-    absValues[1] = Math.max(absValues[1], room.x+room.box.width/2);
-    absValues[2] = Math.min(absValues[2], room.y-room.box.height/2);
-    absValues[3] = Math.max(absValues[3], room.y+room.box.height/2);
-    width = absValues[1]-absValues[0];
-    height = absValues[3]-absValues[2];
-    rooms.push(room);
-
-    for(let start of roomDef.gateways){
-      let xAndY = findLocation(start, room);
-      avaliableStarts.push({"location": start.location,
-      x:xAndY[0]+room.x, y:xAndY[1]+room.y})
+  for(let w = 0; w<levelDescription.width; w++){
+    for(let h = 0; h<levelDescription.height; h++){
+      if(!canPlace(w, h, levelDescription, roomGrid)){
+        continue;
+      }
+      let localAvaliableRooms = avaliableRooms.slice(0);
+      while(localAvaliableRooms.length > 0){
+        let index = Math.floor(Math.random()*localAvaliableRooms.length);
+        let roomToPlace = localAvaliableRooms[index];
+        localAvaliableRooms.splice(index, 1);
+        if(tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms)){
+          break;
+        }
+      }
     }
   }
 
@@ -97,7 +93,63 @@ function build(avaliableRooms, levelDescription, callback){
     elements = elements.concat(room.elements);
   }
 
-  callback(elements);
+  callback(elements, rooms);
+}
+
+function tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms){
+  let can = true;
+  for(let location in roomToPlace.roomRequirements){
+    if(location === "bottom"){
+      can = canPlace(w, h-1, levelDescription, roomGrid);
+    } else if(location === "top"){
+      can = canPlace(w, h+1, levelDescription, roomGrid);
+    } else if(location === "left"){
+      can = canPlace(w-1, h, levelDescription, roomGrid);
+    } else if(location === "right"){
+      can = canPlace(w+1, h, levelDescription, roomGrid);
+    }
+    if(!can){
+      break;
+    }
+  }
+  if(!can){
+    return false;
+  } else {
+    for(let location in roomToPlace.roomRequirements){
+      let roomDefinition = avaliableRoomMap[roomToPlace.roomRequirements[location]];
+      if(location === "bottom"){
+        let room = new Room((w+0.5)*(roomToPlace.width+20), (h-0.5)*(roomToPlace.height+20), roomDefinition, roomGrid);
+        roomGrid[w][h-1] = room;
+        rooms.push(room);
+      } else if(location === "top"){
+        let room = new Room((w+0.5)*(roomToPlace.width+20), (h+1.5)*(roomToPlace.height+20), roomDefinition, roomGrid);
+        roomGrid[w][h+1] = room;
+        rooms.push(room);
+      } else if(location === "left"){
+        let room = new Room((w-0.5)*(roomToPlace.width+20), (h+0.5)*(roomToPlace.height+20), roomDefinition, roomGrid);
+        roomGrid[w-1][h] = room;
+        rooms.push(room);
+      } else if(location === "right"){
+        let room = new Room((w+1.5)*(roomToPlace.width+20), (h+0.5)*(roomToPlace.height+20), roomDefinition, roomGrid);
+        roomGrid[w+1][h] = room;
+        rooms.push(room);
+      }
+    }
+  }
+  let room = new Room((w+0.5)*(roomToPlace.width+20), (h+0.5)*(roomToPlace.height+20), roomToPlace);
+  roomGrid[w][h] = room;
+  rooms.push(room);
+  return true;
+}
+
+function canPlace(x, y, levelDescription, rooms){
+  let can = true;
+  can = can && x>=0;
+  can = can && x<levelDescription.width;
+  can = can && y>=0;
+  can = can && y<levelDescription.height;
+  can = can && !(rooms[x][y]);
+  return can;
 }
 
 function roomIntersectsRooms(room, rooms){
@@ -126,25 +178,12 @@ class Room{
     this.x = x;
     this.y = y;
     this.box = new Box(description.width + 20, description.height + 20);
-    this.gateways = description.gateways;
     this.description = description;
     this.types = {
       left: [],
       right: [],
       top: [],
       bottom: []
-    }
-    for(let gateway of this.gateways){
-      let array = this.types[gateway.location];
-      if(array.length === 0){
-        array.push(gateway);
-        continue;
-      }
-      let i = 0;
-      while(i < array.length && array[i].position < gateway.position){
-        i++;
-      }
-      array.splice(i, 0, gateway);
     }
   }
 
@@ -154,10 +193,54 @@ class Room{
     this.mirror(right, false);
     let up = BuildWall(-10, this.box.width-10, true, this.types.top);
     this.mirror(up, true);
-    this.elements = this.elements.concat(right);
-    this.elements = this.elements.concat(up);
-    this.elements = this.elements.concat(BuildWall(0, this.box.height-20, false, this.types.left));
-    this.elements = this.elements.concat(BuildWall(-10, this.box.width-10, true, this.types.bottom));
+    if(this.description.leftEntrance){
+      let left = BuildWall(0, this.box.height-20, false, [{
+        "location": "left",
+        "position": 0,
+        "width": 200
+      }]);
+      this.elements = this.elements.concat(left);
+    } else {
+      let left = BuildWall(0, this.box.height-20, false, []);
+      this.elements = this.elements.concat(left);
+    }
+    if(this.description.rightEntrance){
+      let right = BuildWall(0, this.box.height-20, false, [{
+        "location": "right",
+        "position": 0,
+        "width": 200
+      }]);
+      this.mirror(right, false);
+      this.elements = this.elements.concat(right);
+    } else {
+      let right = BuildWall(0, this.box.height-20, false, []);
+      this.mirror(right, false);
+      this.elements = this.elements.concat(right);
+    }
+    if(this.description.topEntrance){
+      let top = BuildWall(-10, this.box.width-10, true, [{
+        "location": "top",
+        "position": this.box.height-120,
+        "width": 240
+      }]);
+      this.mirror(top, true);
+      this.elements = this.elements.concat(top);
+    } else {
+      let top = BuildWall(-10, this.box.width-10, true, []);
+      this.mirror(top, true);
+      this.elements = this.elements.concat(top);
+    }
+    if(this.description.bottomEntrance){
+      let bottom = BuildWall(-10, this.box.width-10, true, [{
+        "location": "bottom",
+        "position": this.box.height-120,
+        "width": 240
+      }]);
+      this.elements = this.elements.concat(bottom);
+    } else {
+      let bottom = BuildWall(-10, this.box.width-10, true, []);
+      this.elements = this.elements.concat(bottom);
+    }
     let dX = this.box.width/2-this.x;
     let dY = this.box.height/2-this.y;
     this.generateElements();
@@ -169,8 +252,15 @@ class Room{
 
   generateElements(){
     for(let element of this.description.elements){
-      let built = new ElementMap[element.type](element.x, element.y, element.width, element.height);
+      let built = new ElementMap[element.type](element.x, element.y, element.width, element.height, element);
       this.elements.push(built);
+    }
+    if(!this.description.specialElements){
+      return;
+    }
+    for(let element of this.description.specialElements){
+      let built = ElementMap[element.type](element.args);
+      this.elements = this.elements.concat(built);
     }
   }
 

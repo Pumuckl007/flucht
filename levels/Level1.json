@@ -1,16 +1,26 @@
 {
   "name":"Level 1",
-  "width": 10000,
-  "height": 1,
+  "width": 6,
+  "height": 4,
   "rooms":[
     {
+      "name": "Living Room",
       "url": "/rooms/LivingRoom.json"
     },
     {
-      "url": "/rooms/ClockRoom.json"
+      "name": "Stairwell Top",
+      "url": "/rooms/StairwellTop.json",
+      "max": 0
     },
     {
-      "url": "/rooms/Stairwell.json"
+      "name": "Stairwell",
+      "url": "/rooms/Stairwell.json",
+      "min": 1,
+      "max": 2
+    },
+    {
+      "name": "Clock Room",
+      "url": "/rooms/ClockRoom.json"
     }
   ]
 }

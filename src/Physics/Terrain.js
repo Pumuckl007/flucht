@@ -7,11 +7,12 @@ class Terrain{
     this.spawn = {x: 0, y:100};
     this.elements = [];
     let self = this;
-    LevelGenerator(url, function(elements){self.loadElements(elements)});
+    LevelGenerator(url, function(elements, rooms){self.loadElements(elements, rooms)});
   }
 
-  loadElements(elements){
+  loadElements(elements, rooms){
     this.elements = elements;
+    this.rooms = rooms;
     this.handler.spawnRunner(this)
   }
 }

@@ -1,24 +1,30 @@
 {
-  "name":"Level 1",
-  "width": 500,
-  "height": 300,
+  "name":"Living Room",
+  "width": 832,
+  "height": 418,
   "spawn": {
     "x": 100,
     "y": 200
   },
-  "background": "/backgrounds/PlaneImage.json",
+  "background": "/assets/background.png",
   "elements":[
-  ],
-  "gateways":[
     {
-      "location": "left",
-      "position": 0,
-      "width": 200
-    },
-    {
-      "location": "right",
-      "position": 0,
-      "width": 200
+      "x": 432,
+      "y": 53,
+      "width": 34,
+      "height": 106,
+      "type": "Textured Element",
+      "url": "/assets/GrandfatherClock/GrandfatherClock.json",
+      "offsetX": -16,
+      "offsetY": -8,
+      "ghost": true
     }
-  ]
+  ],
+  "roomRequirements": {
+  },
+  "mirrorable": true,
+  "leftEntrance": true,
+  "rightEntrance": true,
+  "topEntrance": false,
+  "bottomEntrance": false
 }

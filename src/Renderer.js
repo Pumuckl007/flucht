@@ -1,5 +1,5 @@
 import AnimatedEntityRenderer from "./AnimatedEntityRenderer.js";
-import Background from "./Background";
+import AnimatedTexture from "./AnimatedTexture.js";
 
 class Renderer{
   constructor(runner){
@@ -14,7 +14,6 @@ class Renderer{
     this.scale = 1;
     this.stage.scale.x = this.scale;
     this.stage.scale.y = this.scale;
-    this.stage.addChild(this.graphics);
     initMap(this.typeMap);
     let self = this;
     window.onresize = function(event){ self.resize(event)};
@@ -29,11 +28,25 @@ class Renderer{
       this.terrain = object;
     }
     if(type === "Level Loaded"){
-      if(this.background){
-        this.stage.removeChild(this.background.stage);
+      for(let room of this.terrain.rooms){
+        let sprite = new PIXI.Sprite(PIXI.Texture.fromImage(room.description.background, false, PIXI.SCALE_MODES.NEAREST));
+        sprite.position.x = room.x-room.box.width/2;
+        sprite.position.y = -room.y-room.box.height/2+10;
+        sprite.scale.x = 2;
+        sprite.scale.y = 2;
+        this.stage.addChild(sprite);
       }
-      this.background = new Background(object);
-      this.stage.addChild(this.background.stage);
+      this.stage.addChild(this.graphics);
+      for(let element of this.terrain.elements){
+        if(element.type === "Textured Element"){
+          let self = this;
+          let done = function(animatedTexture){
+            self.graphics.addChild(animatedTexture.sprite);
+            self.renderers.push(animatedTexture);
+          }
+          new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done);
+        }
+      }
     }
   }
 
@@ -57,10 +70,12 @@ class Renderer{
     this.graphics.clear();
     this.graphics.beginFill(0x0000FF);
     for(let element of this.terrain.elements){
-      this.graphics.drawRect(element.pos.x-element.box.width/2,
+      if(element.renderAsBox){
+        this.graphics.drawRect(element.pos.x-element.box.width/2,
           -element.pos.y-element.box.height/2,
           element.box.width,
           element.box.height);
+      }
     }
     this.renderer.render(this.stage);
   }

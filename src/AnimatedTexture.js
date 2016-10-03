@@ -36,7 +36,7 @@ class AnimatedTexture{
         this.sprite.scale.y = this.data.scaleY;
         this.sprite.position.x = this.x;
         this.sprite.position.y = this.y;
-        this.done();
+        this.done(this);
       }
     }
   }
