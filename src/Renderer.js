@@ -10,6 +10,7 @@ class Renderer{
     this.stage.x = -this.runner.pos.x+300;
     this.renderer = new PIXI.WebGLRenderer(1600, 900);
     this.renderers = [];
+    this.renderer.backgroundColor = 0x101010;
     this.graphics = new PIXI.Graphics();
     this.scale = 1;
     this.stage.scale.x = this.scale;
@@ -68,7 +69,7 @@ class Renderer{
       renderer.update(this.stage);
     }
     this.graphics.clear();
-    this.graphics.beginFill(0x0000FF);
+    this.graphics.beginFill(0x000000);
     for(let element of this.terrain.elements){
       if(element.renderAsBox){
         this.graphics.drawRect(element.pos.x-element.box.width/2,

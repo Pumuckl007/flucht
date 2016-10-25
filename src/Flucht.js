@@ -9,7 +9,7 @@ class Flucht{
       self.runner.pos = data.spawn;
       self.renderer.onEvent("Level Loaded", data.background);
     }});
-    this.runner = new Runner(64, 128, 0, 76);
+    this.runner = new Runner(64, 108, 0, 76);
     this.renderer = new Renderer(this.runner);
     this.world.addEventListener(this.renderer);
     this.world.addEntity(this.runner);

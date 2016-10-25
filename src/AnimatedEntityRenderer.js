@@ -45,9 +45,9 @@ class AnimatedEntityRenderer{
       return;
     }
     this.sprite.position.x = this.entity.pos.x-this.sprite.width/2;
-    this.sprite.position.y = -this.entity.pos.y-this.sprite.height/2;
+    this.sprite.position.y = -this.entity.pos.y-74;
     this.sprite.scale.x = this.entity.box.width/this.data.width;
-    this.sprite.scale.y = this.entity.box.height/this.data.height;
+    this.sprite.scale.y = this.entity.box.width/this.data.width;
     if(this.mirrorBasedOnVel){
       let mirror = (this.entity.vel.x > 0) ? -1 : 1;
       let inverseMirror = (this.entity.vel.x < 0) ? -1 : 1;
