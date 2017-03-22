@@ -1,18 +1,6 @@
 class Party{
-  constructor(domElement){
-    this.users = [];
-    this.domElement = domElement;
-  }
-
-  onWSMessage(type, message){
-    if(type === "peers"){
-      this.users = message.peers;
-      this.update();
-    } else if(type === "leave"){
-      this.removeUser(message.userId);
-    } else if(type === "join"){
-      this.addUser(message.user);
-    }
+  constructor(user){
+    this.users = [user];
   }
 
   removeUser(id){
@@ -25,23 +13,21 @@ class Party{
     if(index > -1){
       this.users.splice(index, 1);
     }
-    this.update();
   }
 
   addUser(user){
     console.log("Added", user)
     this.users.push(user);
-    this.update();
   }
 
-  update(){
+  update(domElement){
     let string = "";
     for(let user of this.users){
       string += "<li>" + user.name + " " + user.id +
        "<button onclick=\"connect('" + user.id + "')\" id=\"" + user.id +
        "\">Connect</button></li>";
     }
-    this.domElement.innerHTML = string;
+    domElement.innerHTML = string;
   }
 }
 

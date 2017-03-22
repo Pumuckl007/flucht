@@ -19,6 +19,7 @@ class NetworkConnection{
 
   onWSMessage(event){
     let message = JSON.parse(event.data);
+    console.log(event);
     this.emitEvent(message.type, message);
   }
 
@@ -58,8 +59,48 @@ class NetworkConnection{
           from:this.id,
           offer: event.offer
         }));
+      } else if(event.type === "ice"){
+        this.websocket.send(JSON.stringify({
+          type:"ice",
+          to:userId,
+          from:this.id,
+          ice: event.ice
+        }))
       }
     });
+  }
+
+  acceptConnection(user, offer){
+    if(this.pendingConnections[user.id]){
+      console.warn("Already making a connection to this user!");
+    }
+    this.pendingConnections[user.id] = new WebRTCConnection(offer, "", (event) => {
+      if(event.type === "answer"){
+        this.websocket.send(JSON.stringify({
+          type:"answer",
+          to:user.id,
+          from: this.id,
+          answer: event.answer
+        }))
+      }
+    });
+  }
+
+  finishConnection(user, answer){
+    if(!this.pendingConnections[user.id]){
+      console.warn("Trying to finish a nonexistent connection!");
+      return;
+    }
+    this.pendingConnections[user.id].setRemoteDescription(answer);
+  }
+
+  tryIce(user, ice){
+    if(!this.pendingConnections[user.id]){
+      console.warn("Requested to try ice even though connection is alredy made!");
+      return;
+    }
+    this.pendingConnections[user.id].connection.addIceCandidate(ice);
+    console.log("ice");
   }
 }
 
