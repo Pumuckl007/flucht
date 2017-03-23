@@ -27,14 +27,18 @@ class UserWorld{
     } else if(key === "disconnect"){
       this.userDied(this.users[msg.id]);
     } else if(key === "offer"){
-      console.log(msg);
       this.propogateRequestToUser(JSON.stringify({type: msg.type, to:msg.to,
          from:msg.from, offer:msg.offer}), msg.to, msg.from);
+    } else if(key === "answer"){
+      this.propogateRequestToUser(JSON.stringify({type: msg.type, to:msg.to,
+         from:msg.from, answer:msg.answer}), msg.to, msg.from);
+    } else if(key === "ice"){
+      this.propogateRequestToUser(JSON.stringify({type: msg.type, to:msg.to,
+         from:msg.from, ice:msg.ice}), msg.to, msg.from);
     }
   }
 
   propogateRequestToUser(json, to, from){
-    console.log(to);
     let user = this.users[to];
     if(!user){
       console.warn("trying to propogate to nonexistent user");

@@ -8,3 +8,5 @@ var userWorld = new UserWorld();
 wsServer.registerHandler("id", userWorld);
 wsServer.registerHandler("disconnect", userWorld);
 wsServer.registerHandler("offer", userWorld);
+wsServer.registerHandler("answer", userWorld);
+wsServer.registerHandler("ice", userWorld)
