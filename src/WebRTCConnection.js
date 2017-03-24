@@ -17,6 +17,10 @@ class WebRTCConnection{
       self.handler({type: "ice", ice:e.candidate});
     };
 
+    let onOpen = function(){
+
+    }
+
     if(offer){
       this.connection.setRemoteDescription(offer);
       this.connection.createAnswer().then((answer) => {
