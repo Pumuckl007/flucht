@@ -51,7 +51,7 @@ class NetworkConnection{
     if(this.pendingConnections[userId]){
       console.warn("There is already a connection going!");
     }
-    this.pendingConnections[userId] = new WebRTCConnection(false, this.id + userId, (event) => {
+    this.pendingConnections[userId] = new WebRTCConnection(false, "dataTo" + userId, (event) => {
       if(event.type === "offer"){
         this.websocket.send(JSON.stringify({
           type:"offer",
@@ -66,15 +66,19 @@ class NetworkConnection{
           from:this.id,
           ice: event.ice
         }))
+      } else if(event.type === "channelOpen"){
+        this.webRTCConnections[userId] = this.pendingConnections[userId];
+        this.pendingConnections[userId] = null;
       }
     });
   }
 
   acceptConnection(user, offer){
+    console.log(user);
     if(this.pendingConnections[user.id]){
       console.warn("Already making a connection to this user!");
     }
-    this.pendingConnections[user.id] = new WebRTCConnection(offer, "", (event) => {
+    this.pendingConnections[user.id] = new WebRTCConnection(offer, "dataTo" + user.id, (event) => {
       if(event.type === "answer"){
         this.websocket.send(JSON.stringify({
           type:"answer",
@@ -82,6 +86,9 @@ class NetworkConnection{
           from: this.id,
           answer: event.answer
         }))
+      } else if(event.type === "channelOpen"){
+        this.webRTCConnections[user.id] = this.pendingConnections[user.id];
+        this.pendingConnections[user.id] = null;
       }
     });
   }

@@ -1,7 +1,7 @@
 class WebRTCConnection{
   constructor(offer, channelId = "channel-"+Math.random(), handler){
     this.RTCPeerConnection = window.webkitRTCPeerConnection || window.RTCPeerConnection;
-    this.channels = {};
+    this.channel = null;
     this.connection = new this.RTCPeerConnection(
       { iceServers: [{ urls:['stun:23.21.150.121'] }] }//,
       // { optional: [
@@ -17,8 +17,8 @@ class WebRTCConnection{
       self.handler({type: "ice", ice:e.candidate});
     };
 
-    let onOpen = function(){
-
+    let onMessage = function(e){
+      console.log(e);
     }
 
     if(offer){
@@ -28,24 +28,18 @@ class WebRTCConnection{
         this.handler({type: "answer", answer:answer});
       });
       this.connection.ondatachannel = function(e){
-        console.log("WebRTCConnection.js:27", e);
-        self.channels[channelId] = e.channel;
+        self.channel = e.channel;
         e.channel.onopen = function(event){
-          console.log("RTC:30", event);
+          self.handler({type: "channelOpen"});
         }
-        e.channel.onmessage = function(event){
-          console.log("RTC:33", event);
-        }
+        e.channel.onmessage = onMessage;
       }
     } else {
       let unopendDataChannel = this.connection.createDataChannel(channelId);
       unopendDataChannel.onopen = function(event){
-        self.channels[channelId] = unopendDataChannel;
-        console.log("Opend, line 40", event);
-        window.testDataChannel = unopendDataChannel;
-        unopendDataChannel.onmessage = function(msg){
-          console.log(msg);
-        };
+        self.channel = unopendDataChannel;
+        self.handler({type: "channelOpen"});
+        unopendDataChannel.onmessage = onMessage;
       }
       unopendDataChannel.onclose = function(event){
         console.log(event);

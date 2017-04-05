@@ -88,6 +88,10 @@ class PartyWorld{
     }
   }
 
+  connectionEstablished(){
+
+  }
+
   tryIce(userId, ice){
     let user = this.getUserById(userId);
     if(user){
