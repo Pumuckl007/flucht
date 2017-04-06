@@ -1,5 +1,6 @@
 import WebRTCConnection from "./WebRTCConnection.js";
 
+/** Class representing a point. */
 class NetworkConnection{
   constructor(name = "Saya"){
     this.websocket = new WebSocket("ws://" + document.URL.replace("http://", ""), "webrtcmitigation");
@@ -17,6 +18,10 @@ class NetworkConnection{
     this.handlers = {};
   }
 
+  /**
+  * handles a websocket message with the even given by the socket
+  * @param event the event from the websocket
+  */
   onWSMessage(event){
     let message = JSON.parse(event.data);
     console.log(event);
@@ -67,6 +72,7 @@ class NetworkConnection{
           ice: event.ice
         }))
       } else if(event.type === "channelOpen"){
+        this.emitEvent("connectionEstablished", userId);
         this.webRTCConnections[userId] = this.pendingConnections[userId];
         this.pendingConnections[userId] = null;
       }
@@ -87,6 +93,7 @@ class NetworkConnection{
           answer: event.answer
         }))
       } else if(event.type === "channelOpen"){
+        this.emitEvent("connectionEstablished", user.id);
         this.webRTCConnections[user.id] = this.pendingConnections[user.id];
         this.pendingConnections[user.id] = null;
       }

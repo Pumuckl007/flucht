@@ -13,6 +13,7 @@ setTimeout(function(){
   networkConnection.registerHandler("offer", partyWorld);
   networkConnection.registerHandler("answer", partyWorld);
   networkConnection.registerHandler("ice", partyWorld);
+  networkConnection.registerHandler("connectionEstablished", partyWorld);
   window.connect = function(e){
     networkConnection.connect(e)
   };

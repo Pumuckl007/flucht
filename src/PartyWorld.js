@@ -21,6 +21,8 @@ class PartyWorld{
       this.finishWebrtcConnection(message.from, message.answer);
     } else if(type === "ice"){
       this.tryIce(message.from, message.ice);
+    } else if(type === "connectionEstablished"){
+      this.connectionEstablished(message);
     }
   }
 
@@ -59,9 +61,17 @@ class PartyWorld{
   update(){
     let string = "";
     for(let user of this.users){
-      string += "<li>" + user.name + " " + user.id +
-       "<button onclick=\"connect('" + user.id + "')\" id=\"" + user.id +
-       "\">Connect</button></li>";
+      if(user.id === this.networkConnection.id){
+        continue;
+      }
+      string += "<li>" + user.name + " " + user.id;
+      if(!user.isConnected){
+        string += "<button onclick=\"connect('" + user.id + "')\" id=\"" + user.id +
+         "\">Connect</button>";
+      } else {
+        string += "connected!";
+      }
+      string += "</li>";
     }
     this.domElement.innerHTML = string;
   }
@@ -69,7 +79,7 @@ class PartyWorld{
   createWebrtcConnection(userId, offer){
     let user = this.getUserById(userId);
     if(user){
-      if(true || confirm("Would you like to join " + user.name + "'s Party?")){
+      if(confirm("Would you like to join " + user.name + "'s Party?")){
         this.networkConnection.acceptConnection(user, offer);
       } else {
         console.log("TODO: SEND ABORT SIGNAL");
@@ -88,8 +98,9 @@ class PartyWorld{
     }
   }
 
-  connectionEstablished(){
-
+  connectionEstablished(userId){
+    this.getUserById(userId).isConnected = true;
+    this.update();
   }
 
   tryIce(userId, ice){

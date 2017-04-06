@@ -18,7 +18,11 @@ class WebRTCConnection{
     };
 
     let onMessage = function(e){
-      console.log(e);
+      try{
+        let json = JSON.parse(e.data);
+      } catch(exception){
+        console.log(exception);
+      }
     }
 
     if(offer){
@@ -31,6 +35,7 @@ class WebRTCConnection{
         self.channel = e.channel;
         e.channel.onopen = function(event){
           self.handler({type: "channelOpen"});
+          windowe.channel.send(JSON.stringify({type:"ping", time:Date.now()}))
         }
         e.channel.onmessage = onMessage;
       }
