@@ -1,6 +1,14 @@
 import Element from "./Element.js";
-
+/** creates element type "SideJump"*/
 class SideJump extends Element{
+  /**
+  * creates a Side Jump element using Element constructor and assigns type "SideJump"
+  * @constructor
+  * @param {number} x the x-coordinate of Side jump element
+  * @param {number} y the y-coordinate of Side Jump element
+  * @param {number} width width of the element
+  * @param {number} height height of the element
+  */
   constructor(x, y, width, height){
     super(x, y, width, height, "Side Jump");
   }
