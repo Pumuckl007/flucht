@@ -4,6 +4,11 @@ import WebRTCConnection from "./WebRTCConnection.js";
 This has the following, A websocket to comunicate with the server,
 and an array of webrtc connections that are being made or have been made */
 class NetworkConnection{
+
+  /**
+  *  Creates a new network connection witht the given name
+  *  @param {String} [name] the name of the client
+  */
   constructor(name = "Saya"){
     this.websocket = new WebSocket("ws://" + document.URL.replace("http://", ""), "webrtcmitigation");
     let self = this;
@@ -46,8 +51,8 @@ class NetworkConnection{
   * Adds a listener for the following even that comes from the network connection, this may be a websocket message or a
   connection that was established.
   * This will call the onWSMessage function
-  * @param key the string key which to use
-  * @param handler a method to call
+  * @param {String} key the string key which to use
+  * @param {function} handler a method to call
   */
   registerHandler(key, handler){
     if(this.handlers[key]){
@@ -59,8 +64,8 @@ class NetworkConnection{
 
   /**
   * private method used to dispatsh an event to the listenres
-  * @param key the string key which to use
-  * @param msg the object to emit
+  * @param {String} key the string key which to use
+  * @param {Object} msg the object to emit
   */
   emitEvent(key, msg){
     if(this.handlers[key]){
@@ -73,7 +78,7 @@ class NetworkConnection{
   /**
   * starts the connection to a user of the following id, it creates an offer and registers the handlers
   * to the webrtc connection to mitigate the offer, ice, and channelOpen events.
-  * @param userId the id of the user to connect to
+  * @param {String} userId the id of the user to connect to
   */
   connect(userId){
     if(this.pendingConnections[userId]){
@@ -104,8 +109,9 @@ class NetworkConnection{
 
   /**
   * same as {@link connect} however takes a user object and accepts the provided offer.
-  * @param user the user object to accept the connection of
-  * @param offer the offer to use to accept the connection
+  * @param {Object} user the user object to accept the connection of
+  * @param {String} user.id - The Id of the user
+  * @param {RTCSessionDescription} offer the offer to use to accept the connection
   */
   acceptConnection(user, offer){
     console.log(user);
@@ -130,8 +136,9 @@ class NetworkConnection{
 
   /**
   * does the last step in the webrtc mitigation, that is accepting the peers response.
-  * @param user the user object coorisponding to the connection
-  * @param answer the answer object to use
+  * @param {Object} user the user object coorisponding to the connection
+  * @param {String} user.id - The Id of the user
+  * @param {RTCSessionDescription} answer the answer object to use
   */
   finishConnection(user, answer){
     if(!this.pendingConnections[user.id]){
@@ -143,8 +150,9 @@ class NetworkConnection{
 
   /**
   * trys an ice candidate for the webrtc connection.
-  * @param user the user to try the ice for
-  * @param ice the ice to use.
+  * @param {Object} user the user to try ice for
+  * @param {String} user.id - The Id of the user
+  * @param {RTCIceCandidate} ice the ice to use.
   */
   tryIce(user, ice){
     if(!this.pendingConnections[user.id]){
