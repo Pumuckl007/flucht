@@ -12,7 +12,11 @@ class SideJump extends Element{
   constructor(x, y, width, height){
     super(x, y, width, height, "Side Jump");
   }
-
+/**
+* checks if there is a collision on side 3
+* @param {Entity} entity the entity that is collided with
+* @param {number} side the side where collision occurs
+*/
   collision(entity, side){
     if(side === 3){
       let relFeetHeight = entity.pos.y - entity.box.height/2 - this.pos.y;
