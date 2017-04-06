@@ -9,8 +9,8 @@ class Element{
   }
   /**
   * empty method called when collision occurs and returns which side collided
-  * @param entity object that collides with this
-  * @param side side where the collision occurs
+  * @param {Entity} entity object that collides with this
+  * @param {number} side side where the collision occurs
   */
   collision(entity, side){
 
