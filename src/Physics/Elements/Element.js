@@ -1,6 +1,16 @@
 import Box from "./../Box.js";
 /**class representing physical element in space*/
 class Element{
+  /**
+  * creates an element
+  * @constructor
+  * @param {number} x the x-coordinates of the element
+  * @param {number} y the y-coordinate of the element
+  * @param {number} width the width of the element
+  * @param {number} height the height of the element
+  * @param {String} type element type that is set to "Element"
+  * @param {boolean} renderAsBox specifies if the element is a box or not
+  */
   constructor(x, y, width, height, type = "Element", renderAsBox = true){
     this.pos = {x:x, y:y};
     this.box = new Box(width, height);
