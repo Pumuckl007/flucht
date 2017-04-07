@@ -1,6 +1,6 @@
 import SideJump from "./SideJump.js";
 /**
- * A module used for collision detection
+ * A module used for building stairs
  * @module Physics/Entities/Stairs
  */
 
