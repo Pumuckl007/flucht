@@ -1,9 +1,11 @@
+/** Animates the frames of the player character*/
 class AnimatedEntityRenderer{
   /**
-  * Creates a AnimatedEntityRederer object that animates the player character
+  * Retrieves the frames of the character animations
+  * @constructor
   * @param {Entity} entity the character that is to be animated
   * @param {String} url the location of the images of the character
-  * @param {boolean} mirrorBasedOnVel the direction character faces based on their velocity 
+  * @param {boolean} mirrorBasedOnVel the direction character faces based on their velocity
   */
   constructor(entity, url, mirrorBasedOnVel = false){
     this.entity = entity;
