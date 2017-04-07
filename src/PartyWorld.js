@@ -62,6 +62,7 @@ class PartyWorld{
   /**
   Returns the user given by the ID
   @param {String} id the id of the user to getUserById
+  @returns {User} returns the user of the given ID
   */
   getUserById(id){
     let index = -1;
