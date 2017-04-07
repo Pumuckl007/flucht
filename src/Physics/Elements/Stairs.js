@@ -1,5 +1,10 @@
 import SideJump from "./SideJump.js";
 /**
+ * A module used for collision detection
+ * @module Physics/Entities/Stairs
+ */
+
+/**
 * creates stair blocks to create a stairwell
 * @param {Object[]} args array that holds values that represent top, height and size of stairs
 * @returns {Element[]} retruns array full of Side Jump elements
