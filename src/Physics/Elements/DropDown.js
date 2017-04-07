@@ -1,5 +1,5 @@
 import Element from "./Element.js";
-/**class that creates "Drop Down" type element*/
+/**class that creates "Drop Down" type element that is solid on the top (unless you crouch)*/
 class DropDown extends Element{
   /**
   * creates DropDown object by calling Element Constructor with type "Drop Down"
