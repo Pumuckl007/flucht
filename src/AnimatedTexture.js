@@ -1,4 +1,13 @@
+/** Creates background texture*/
 class AnimatedTexture{
+  /**
+  * Finds the background image from the given url
+  * @constructor
+  * @param {String} url location of the background images
+  * @param {number} x x-coordinate of texture
+  * @param {number} y y-coordinate of texture
+  * @param {function} done adds child to the stage
+  */
   constructor(url, x, y, done){
     this.httpRequest = new XMLHttpRequest();
     this.x = x;
@@ -13,6 +22,9 @@ class AnimatedTexture{
     this.done = done;
   }
 
+  /**
+  * adds background images to array to be animated
+  */
   finish(){
     if (this.httpRequest.readyState === XMLHttpRequest.DONE) {
       if (this.httpRequest.status === 200) {
@@ -40,7 +52,9 @@ class AnimatedTexture{
       }
     }
   }
-
+/**
+* updates the background of the stage
+*/
   update(){
     if(!this.sprite){
       return;
