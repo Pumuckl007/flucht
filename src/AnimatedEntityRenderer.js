@@ -1,4 +1,10 @@
 class AnimatedEntityRenderer{
+  /**
+  * Creates a AnimatedEntityRederer object that animates the player character
+  * @param {Entity} entity the character that is to be animated
+  * @param {String} url the location of the images of the character
+  * @param {boolean} mirrorBasedOnVel the direction character faces based on their velocity 
+  */
   constructor(entity, url, mirrorBasedOnVel = false){
     this.entity = entity;
     this.lastDirection = 1;
@@ -12,7 +18,9 @@ class AnimatedEntityRenderer{
     this.httpRequest.send();
     this.animations = {};
   }
-
+  /**
+  * puts images of the sprite in an array of images to be animated
+  */
   finish(){
     if (this.httpRequest.readyState === XMLHttpRequest.DONE) {
       if (this.httpRequest.status === 200) {
@@ -36,7 +44,10 @@ class AnimatedEntityRenderer{
       }
     }
   }
-
+/**
+* updates the stage and the location of the character
+* @param {Container} stage the level where the game is being played
+*/
   update(stage){
     if(this.needToAdd){
       stage.addChild(this.sprite);
