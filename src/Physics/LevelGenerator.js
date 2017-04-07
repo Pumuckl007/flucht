@@ -2,11 +2,26 @@ import Element from "./Elements/Element.js";
 import Box from "./Box.js";
 import BuildWall from "./BuildWall.js";
 import ElementMap from "./Elements/ElementMap.js";
+/**
+ * A module used for level generation
+ * @module Physics/LevelGenerator
+ */
 
+ /**
+ * generates the level with the given url to the discription and callback
+ * @param {String} urlToDescription the url for the level json
+ * @param {function} callback the callback
+ */
 function generateLevel(urlToDescription, callback){
   httpRequest(urlToDescription, generate, callback);
 }
 
+/**
+* generates the level with the given discription and callback
+* @param {LevelDiscription} levelDescription the level discription object
+* @param {Room[]} levelDescription.rooms the rooms of the level
+* @param {function} callback the callback
+*/
 function generate(levelDescription, callback){
   let i = levelDescription.rooms.length;
   let avaliableRooms = [];
@@ -29,6 +44,16 @@ function generate(levelDescription, callback){
   }
 }
 
+/**
+* generates the level with the given discription and callback.
+* It Generates the rooms by creating a list of avaliable spots on a level, then iterating over the rooms which have minimums until
+* the rooms have been placed, the leftover are filled by trying to place a rooms
+* using [tryToPlace]{@link #tryToPlace} until one returns true.
+* @param {RoomDiscription[]} avaliableRooms the avaliable rooms
+* @param {LevelDiscription} levelDiscription the level Discription
+* @param {function} callback the callback for when finished
+* @param {Object} roomMinMaxMap a map between a roomName and a minimum and maximum number of that room.
+*/
 function build(avaliableRooms, levelDescription, callback, roomMinMaxMap){
   let avaliableRoomMap = {};
   for(let room of avaliableRooms){
@@ -96,6 +121,17 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap){
   callback(elements, rooms);
 }
 
+/**
+* Tries to place a room by checking its requirements and if none are violated placing it.
+* @param {RoomDiscription} roomToPlace the room's description which we are trying to place.
+* @param {Room[][]} roomGrid a 2d array of rooms
+* @param {number} w the width position of the room
+* @param {number} h the height position of the room
+* @param {LevelDiscription} levelDiscription the discription of the level
+* @param {Object} avaliableRoomMap a map of names of rooms to room discriptions
+* @param {Room[]} rooms a list of rooms having been placed
+* @returns {boolean} returns whether or not the room was sucessfully placed
+*/
 function tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms){
   let can = true;
   for(let location in roomToPlace.roomRequirements){
@@ -142,6 +178,14 @@ function tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoom
   return true;
 }
 
+/**
+* tells whether or not a room can be placed based on world size
+* @param {number} x the x position of the room
+* @param {number} y the y position of the room
+* @param {LevelDiscription} levelDiscription the discription for the level
+* @param {Room[][]} a 2d array of existing rooms
+* @returns {boolean} returns whether the room would be in the world bounds.
+*/
 function canPlace(x, y, levelDescription, rooms){
   let can = true;
   can = can && x>=0;
@@ -152,6 +196,12 @@ function canPlace(x, y, levelDescription, rooms){
   return can;
 }
 
+/**
+* based on the size of the rooms tells whether one intersects any other room
+* @param {Room} room the room to see if it intersects
+* @param {Room[][]} rooms a 2d array of all rooms in the world
+* @returns {boolean} returns whether or not the room intersects
+*/
 function roomIntersectsRooms(room, rooms){
   for(let roomToCheck of rooms){
     if(room.box.intersects(roomToCheck.box, roomToCheck.x- room.x, roomToCheck.y - room.y) !== 0){
