@@ -1,5 +1,9 @@
 import SideJump from "./SideJump.js";
-
+/**
+* creates stair blocks to create a stairwell
+* @param {Object[]} args array that holds values that represent top, height and size of stairs
+* @returns {Element[]} retruns array full of Side Jump elements
+*/
 function generator(args){
   let top = args[0];
   let height = args[1];

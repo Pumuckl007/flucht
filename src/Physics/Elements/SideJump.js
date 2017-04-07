@@ -1,5 +1,5 @@
 import Element from "./Element.js";
-/** creates element type "SideJump"*/
+/** creates element of type "Side Jump" that can be moved through from the side*/
 class SideJump extends Element{
   /**
   * creates a Side Jump element using Element constructor and assigns type "SideJump"
