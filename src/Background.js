@@ -1,6 +1,10 @@
 import AnimatedTexture from "./AnimateTexture.js";
-
+/** Creates the background of the stage*/
 class Background{
+  /**
+  * Gets the background texture from given url
+  * @param {String} url the location of the background image
+  */
   constructor(url){
     this.stage = new PIXI.Container();
     this.elements = [];
@@ -13,6 +17,9 @@ class Background{
     this.httpRequest.send();
   }
 
+  /**
+  * addes animated textures to the background of the stage
+  */
   loadElements(){
     if (this.httpRequest.readyState === XMLHttpRequest.DONE) {
       if (this.httpRequest.status === 200) {
@@ -44,7 +51,11 @@ class Background{
       }
     }
   }
-
+/**
+* updates all the animated textures in the background
+* @param {number} x x-coordinate of the background
+* @param {number} y y-coordinate of the background
+*/
   update(x, y){
     for(let element of this.elements){
       element.update();
