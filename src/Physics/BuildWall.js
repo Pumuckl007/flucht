@@ -1,5 +1,17 @@
 import Element from "./Elements/Element.js";
+/**
+ * A module used for building walls
+ * @module Physics/BuildWall
+ */
 
+/**
+Builds the wall for a room with the given gateways
+@param {numbeer} start the coordinate to start at
+@param {number} end the coordinate to end at
+@param {boolean} x if the wall is along the x-axis
+@param {Gateway[]} gateways a list of gateways
+@return {Element[]} the wall elements of type element
+*/
 function buildWall(start, end, x, gateways){
   let elements = [];
   if(gateways.length < 1){

@@ -1,3 +1,15 @@
+/**
+ * A module used for collision detection
+ * @module Physics/Collisions
+ */
+
+/**
+Finds any collisions between the terrain elements and the entity and calls the respective methods.
+After finding a collision if the entity returns true and the terrain element returns true
+the position of the entity will not be corrected, if both return false then the entity will be.
+@param {Terrain} terrain the terrain who's elements to check collisiosn against.
+@param {Entity} entity the entity to use for collision detection
+*/
 function terrainAndEntity(terrain, entity){
   for(let terrainElement of terrain.elements){
     if(terrainElement.ghost){
@@ -30,6 +42,12 @@ function terrainAndEntity(terrain, entity){
   }
 }
 
+/**
+Corrects the x direction of the entity returning which direction it was corrected, left = 2, right = 0
+@param {Entity} toMove the entity to check and to move
+@param {Entity} notToMove the entity to check and not to move
+@param {number} xOff the offset in the x direction of the two elements, how far further left the notToMove is.
+*/
 function correctX(toMove, notToMove, xOff){
   let direction = 0;
   if(xOff !== 0)
@@ -41,6 +59,12 @@ function correctX(toMove, notToMove, xOff){
   return (direction < 0) ? 2 : 0;
 }
 
+/**
+Corrects the y direction of the entity returning which direction it was corrected, down = 2, up = 0
+@param {Entity} toMove the entity to check and to move
+@param {Entity} notToMove the entity to check and not to move
+@param {number} yOff the offset in the y direction of the two elements, how far further up the notToMove is.
+*/
 function correctY(toMove, notToMove, yOff){
   let direction = 0;
   if(yOff !== 0)
