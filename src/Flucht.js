@@ -2,7 +2,12 @@ import Runner from "./Physics/Runner.js";
 import World from "./Physics/World.js";
 import Renderer from "./Renderer.js";
 
+/** class creates world, runner and renderer to begin the game*/
 class Flucht{
+  /**
+  * creates the world, renderer and player  assigns event listeners to world class
+  * @constructor
+  */
   constructor(){
     let self = this;
     this.world = new World({spawnRunner:function(data){
@@ -15,10 +20,16 @@ class Flucht{
     this.world.addEntity(this.runner);
   }
 
+  /**
+  * renderers all the elements in the stage
+  */
   render(){
     this.renderer.render();
   }
 
+  /**
+  * updates the world after 20 milliseconds
+  */
   update(){
     this.world.tick(20/1000);
   }
