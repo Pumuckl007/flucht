@@ -211,6 +211,13 @@ function roomIntersectsRooms(room, rooms){
   return false;
 }
 
+/**
+* based on the gateway and the room returns the x y position of the center of the gateway.
+* @param {Object} gateway the gateway to check
+* @param {String} gateway.location the location of the gateway top, right, left, bottom
+* @param {Room[][]} rooms a 2d array of all rooms in the world
+* @returns {boolean} returns whether or not the room intersects
+*/
 function findLocation(gateway, room){
   let x = (gateway.location === "right") ? room.box.width/2 : ((gateway.location==="left") ? -room.box.width/2 : 0);
   let y = (gateway.location === "top") ? room.box.height/2 : ((gateway.location==="bottom") ? -room.box.height/2 : 0);
