@@ -1,6 +1,8 @@
 import AnimatedEntityRenderer from "./AnimatedEntityRenderer.js";
 import AnimatedTexture from "./AnimatedTexture.js";
-
+/**
+* @module Renderer
+*/
 /** Creates the stage and updates the stage*/
 class Renderer{
   /**
@@ -100,7 +102,7 @@ class Renderer{
 
 /**
 * The map relays the name of an entity to Json assets
-* @param {map} map the map to be initionalized 
+* @param {map} map the map to be initionalized
 */
 function initMap(map){
   map["Runner"] = "assets/Runner/Runner.json";
