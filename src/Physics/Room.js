@@ -2,7 +2,18 @@ import Box from "./Box.js"
 import BuildWall from "./BuildWall.js";
 import ElementMap from "./Elements/ElementMap.js";
 
+/**
+* A class representative of a given room at cooridnates x, y, with a discription
+*/
 class Room{
+
+  /**
+  * creates a new room at x, y with discription discription.
+  * @constructor
+  * @param {number} x the x position of the room.
+  * @param {number} y the y position of the room.
+  * @param {Object} description the discription of the room.
+  */
   constructor(x, y, description){
     this.elements = [];
     this.x = x;
@@ -17,6 +28,9 @@ class Room{
     }
   }
 
+  /**
+  * Generates the walls for a room
+  */
   generateWalls(){
 
     let right = BuildWall(0, this.box.height-20, false, this.types.right);
@@ -80,6 +94,9 @@ class Room{
     }
   }
 
+  /**
+  * Generates the elements in the room
+  */
   generateElements(){
     for(let element of this.description.elements){
       let built = new ElementMap[element.type](element.x, element.y, element.width, element.height, element);
@@ -94,6 +111,11 @@ class Room{
     }
   }
 
+  /**
+  * Mirrors an element over the x or y axis of the room.
+  * @param {Element[]} elements the elements to mirror
+  * @param {boolean} x whether or not the mirror is over the x-axis
+  */
   mirror(elements, x){
     for(let element of elements){
       if(!x){

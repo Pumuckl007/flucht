@@ -39,6 +39,11 @@ setTimeout(function(){
    animate();
  });
 
+ /**
+  * An array of keys that are pushed down if true and false if released.
+  * The index is the ascii code of the charater.
+  * @var {number[]} keys
+  */
  window.keys = [];
  window.onkeyup = function(e) {keys[e.keyCode]=false;}
  window.onkeydown = function(e) {keys[e.keyCode]=true;}
