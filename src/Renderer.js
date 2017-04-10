@@ -1,7 +1,13 @@
 import AnimatedEntityRenderer from "./AnimatedEntityRenderer.js";
 import AnimatedTexture from "./AnimatedTexture.js";
 
+/** Creates the stage and updates the stage*/
 class Renderer{
+  /**
+  * Creates the render object and creates and prepares the stage to be drawn on
+  * @constructor
+  * @param {Runner} runner the player
+  */
   constructor(runner){
     this.runner = runner;
     this.typeMap = {};
@@ -19,7 +25,11 @@ class Renderer{
     let self = this;
     window.onresize = function(event){ self.resize(event)};
   }
-
+ /**
+ * Checks if Entity is added, terain is udated or if level is Loaded
+ * @param {String} type the event that is passed
+ * @param {Object} object the entity, terrian or level that is added in the event
+ */
   onEvent(type, object){
     if(type === "Entity Added"){
       let renderer = new AnimatedEntityRenderer(object, this.typeMap[object.type], true);
@@ -50,11 +60,17 @@ class Renderer{
       }
     }
   }
-
+ /**
+ * Resizes the stage when the window is resized
+  @param {resizeEvent} event the resizeEvent
+ */
   resize(event){
     this.renderer.resize(document.body.offsetWidth, document.body.offsetHeight);
   }
 
+  /**
+  * positions the stage and updates it
+  */
   render(){
     this.stage.y = this.scale*this.runner.pos.y+document.body.offsetHeight/2;
     this.stage.x = -this.scale*this.runner.pos.x+document.body.offsetWidth/2;
@@ -82,6 +98,10 @@ class Renderer{
   }
 }
 
+/**
+* The map relays the name of an entity to Json assets
+* @param {map} map the map to be initionalized 
+*/
 function initMap(map){
   map["Runner"] = "assets/Runner/Runner.json";
 }
