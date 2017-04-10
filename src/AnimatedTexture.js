@@ -1,7 +1,7 @@
-/** Creates animated texture for any animated entity in the stage*/
+/** Creates animated texture for any animated entity that does not move in the stage*/
 class AnimatedTexture{
   /**
-  * Finds the background image frames from the given url
+  * Finds the image frames from the given url
   * @constructor
   * @param {String} url location of the background images
   * @param {number} x x-coordinate of texture
