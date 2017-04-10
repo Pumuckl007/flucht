@@ -1,4 +1,4 @@
-/** Animates the frames of the player character*/
+/** Animates the entities that move in the stage*/
 class AnimatedEntityRenderer{
   /**
   * Retrieves the frames of the character animations
