@@ -1,4 +1,4 @@
-/** Creates animated background texture for the background of the stage*/
+/** Creates animated texture for any animated entity in the stage*/
 class AnimatedTexture{
   /**
   * Finds the background image frames from the given url
@@ -23,7 +23,7 @@ class AnimatedTexture{
   }
 
   /**
-  * adds background images to array to be animated
+  * adds images to array to be animated
   */
   finish(){
     if (this.httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -53,7 +53,7 @@ class AnimatedTexture{
     }
   }
 /**
-* updates the animated background image
+* updates the animated image
 */
   update(){
     if(!this.sprite){
