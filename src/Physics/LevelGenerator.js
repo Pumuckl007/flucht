@@ -1,7 +1,5 @@
 import Element from "./Elements/Element.js";
-import Box from "./Box.js";
-import BuildWall from "./BuildWall.js";
-import ElementMap from "./Elements/ElementMap.js";
+import Room from "./Room.js"
 /**
  * A module used for level generation
  * @module Physics/LevelGenerator
@@ -215,8 +213,8 @@ function roomIntersectsRooms(room, rooms){
 * based on the gateway and the room returns the x y position of the center of the gateway.
 * @param {Object} gateway the gateway to check
 * @param {String} gateway.location the location of the gateway top, right, left, bottom
-* @param {Room[][]} rooms a 2d array of all rooms in the world
-* @returns {boolean} returns whether or not the room intersects
+* @param {Room} room the room to used a position for the gateways
+* @returns {number[]} returns an array with the [x, y] positions of the gateway's center
 */
 function findLocation(gateway, room){
   let x = (gateway.location === "right") ? room.box.width/2 : ((gateway.location==="left") ? -room.box.width/2 : 0);
@@ -229,111 +227,12 @@ function findLocation(gateway, room){
   return [x, y];
 }
 
-class Room{
-  constructor(x, y, description){
-    this.elements = [];
-    this.x = x;
-    this.y = y;
-    this.box = new Box(description.width + 20, description.height + 20);
-    this.description = description;
-    this.types = {
-      left: [],
-      right: [],
-      top: [],
-      bottom: []
-    }
-  }
-
-  generateWalls(){
-
-    let right = BuildWall(0, this.box.height-20, false, this.types.right);
-    this.mirror(right, false);
-    let up = BuildWall(-10, this.box.width-10, true, this.types.top);
-    this.mirror(up, true);
-    if(this.description.leftEntrance){
-      let left = BuildWall(0, this.box.height-20, false, [{
-        "location": "left",
-        "position": 0,
-        "width": 200
-      }]);
-      this.elements = this.elements.concat(left);
-    } else {
-      let left = BuildWall(0, this.box.height-20, false, []);
-      this.elements = this.elements.concat(left);
-    }
-    if(this.description.rightEntrance){
-      let right = BuildWall(0, this.box.height-20, false, [{
-        "location": "right",
-        "position": 0,
-        "width": 200
-      }]);
-      this.mirror(right, false);
-      this.elements = this.elements.concat(right);
-    } else {
-      let right = BuildWall(0, this.box.height-20, false, []);
-      this.mirror(right, false);
-      this.elements = this.elements.concat(right);
-    }
-    if(this.description.topEntrance){
-      let top = BuildWall(-10, this.box.width-10, true, [{
-        "location": "top",
-        "position": this.box.height-120,
-        "width": 240
-      }]);
-      this.mirror(top, true);
-      this.elements = this.elements.concat(top);
-    } else {
-      let top = BuildWall(-10, this.box.width-10, true, []);
-      this.mirror(top, true);
-      this.elements = this.elements.concat(top);
-    }
-    if(this.description.bottomEntrance){
-      let bottom = BuildWall(-10, this.box.width-10, true, [{
-        "location": "bottom",
-        "position": this.box.height-120,
-        "width": 240
-      }]);
-      this.elements = this.elements.concat(bottom);
-    } else {
-      let bottom = BuildWall(-10, this.box.width-10, true, []);
-      this.elements = this.elements.concat(bottom);
-    }
-    let dX = this.box.width/2-this.x;
-    let dY = this.box.height/2-this.y;
-    this.generateElements();
-    for(let element of this.elements){
-      element.pos.x -= dX;
-      element.pos.y -= dY;
-    }
-  }
-
-  generateElements(){
-    for(let element of this.description.elements){
-      let built = new ElementMap[element.type](element.x, element.y, element.width, element.height, element);
-      this.elements.push(built);
-    }
-    if(!this.description.specialElements){
-      return;
-    }
-    for(let element of this.description.specialElements){
-      let built = ElementMap[element.type](element.args);
-      this.elements = this.elements.concat(built);
-    }
-  }
-
-  mirror(elements, x){
-    for(let element of elements){
-      if(!x){
-        element.pos.x += this.box.width-10;
-      } else {
-        element.pos.y += this.box.height-10;
-      }
-    }
-  }
-}
-
-
-
+/**
+* makes an XMLHttpRequest with the given arguments at the url and calls the callback with the data
+* @param {String} url the url to querry
+* @param {Function} callback the callback function
+* @param {Object} passArg the arguments to directly pass into the callback
+*/
 function httpRequest(url, callback, passArg){
   let httpRequest = new XMLHttpRequest();
   httpRequest.onreadystatechange = function(){
