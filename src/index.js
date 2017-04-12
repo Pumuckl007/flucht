@@ -2,7 +2,7 @@ import NetworkConnection from "./NetworkConnection.js";
 import PartyWorld from "./PartyWorld.js";
 import Flucht from "./Flucht.js";
 
-
+/** Creates a new network Connection and runs the game*/
 setTimeout(function(){
   var networkConnection = new NetworkConnection();
   window.networkConnection = networkConnection;
