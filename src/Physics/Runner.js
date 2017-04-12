@@ -1,6 +1,18 @@
 import Entity from "./Entity.js";
 
+/**
+* A class representitive of the runner which the player controls
+*/
 class Runner extends Entity{
+
+  /**
+  * creates a new runner with width and height at x and y
+  * @constructor
+  * @param {number} width the width of the runner
+  * @param {number} height the height of the runner
+  * @param {number} x the x pos of the runner
+  * @param {number} y the y pos of the runner
+  */
   constructor(width, height, x=0, y=0){
     super(width, height);
     this.hasPhysics = true;
@@ -12,7 +24,8 @@ class Runner extends Entity{
   }
 
   /**
-  * @peram timestep the part of one second passed
+  * moves the entity with the given timestep
+  * @param timestep the part of one second passed
   */
   update(timestep){
     this.pos.x += this.vel.x*timestep;
@@ -20,6 +33,9 @@ class Runner extends Entity{
     this.vel.y -= 20;
   }
 
+  /**
+  * used to recive user input for the runner
+  */
   tick(){
     if(keys[68]){
       this.vel.x = 300;
@@ -39,6 +55,11 @@ class Runner extends Entity{
     }
   }
 
+  /**
+  * called upon a collision with a terrain element, type is the type of collision.
+  * @param {TerrainElement} terrainElement the terrain element collided with
+  * @param {number} type the side of which the collision occured on
+  */
   collision(terrainElement, type){
     if(type == 2){
       this.onGround = true;

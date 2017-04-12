@@ -1,5 +1,4 @@
 import Box from "./Box.js";
-
 /**
 A class that is representitive of an entity, it has a position
 width height, represented as a box, and a velocity as well as a type and state.
