@@ -1,10 +1,20 @@
 import User from "./User";
 
+/** Class representing the users who are currently playing*/
 class UserWorld{
+  /**
+  * Creates list to represent users
+  * @constructor
+  */
   constructor(){
     this.users = {};
   }
 
+  /**
+  * runs task based on key provided
+  * @param {String} key the task to be runs
+  * @param {String} msg the new user data
+  */
   onWebsocketMessage(key, msg){
     if(key === "id"){
       this.users[msg.id] = new User(msg.name, msg.id, msg.wsConnection);
