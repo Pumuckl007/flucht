@@ -1,4 +1,12 @@
+/** Establishes connection between other players*/
 class WebRTCConnection{
+  /**
+  * looks for possible candidates and makes an offer, if offer is accepted connection is made
+  * @constructor
+  * @param {RTCSessionDescription} offer offered description of peer to be connected with
+  * @param {String} channelId the id of the channelId
+  * @param {function} handler function to be passed on event
+  */
   constructor(offer, channelId = "channel-"+Math.random(), handler){
     this.RTCPeerConnection = window.webkitRTCPeerConnection || window.RTCPeerConnection;
     this.channel = null;
@@ -58,6 +66,10 @@ class WebRTCConnection{
     this.handler = handler;
   }
 
+  /**
+  * changes the description to be passed to peer
+  * @param {RTCSessionDescription} description the new description to be passed
+  */
   setRemoteDescription(description){
     this.connection.setRemoteDescription(description);
   }
