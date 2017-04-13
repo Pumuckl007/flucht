@@ -12,6 +12,7 @@ class FileServer{
 
   request(request, response){
     var filePath = '.' + request.url;
+    filePath.replace("%20", " ");
     if (filePath == './')
         filePath = './index.html';
 

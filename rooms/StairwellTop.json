@@ -10,6 +10,17 @@
       "width": 240,
       "height": 10,
       "type": "Drop Down"
+    },
+    {
+      "x": 730,
+      "y": 43,
+      "width": 34,
+      "height": 106,
+      "type": "Textured Element",
+      "url": "/assets/Candle/Candle.json",
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": true
     }
   ],
   "roomRequirements": {
