@@ -21,6 +21,19 @@ class Runner extends Entity{
     this.type = "Runner";
     this.onGround = true;
     this.pos = {x:x, y:y};
+
+    //add light to player
+     this.lightbulb = new PIXI.Graphics();
+     var rr = Math.random() * 0x80 | 0;
+     var rg = Math.random() * 0x80 | 0;
+     var rb = Math.random() * 0x80 | 0;
+     this.lightbulb.beginFill((rr << 16) + (rg << 8) + rb, 1.0);
+     var rad = 50;
+     this.lightbulb.drawCircle(0, 0, rad); //
+     this.lightbulb.endFill();
+     this.lightbulb.parentLayer = lighting;//<-- try comment it
+
+     this.addChild(this.lightbulb);
   }
 
   /**
