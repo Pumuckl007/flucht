@@ -26,25 +26,10 @@ class Renderer{
     initMap(this.typeMap);
     let self = this;
     window.onresize = function(event){ self.resize(event)};
-
-    //Create the lighting mask layer
-    var lighting = new PIXI.display.Layer();
-    lighting.on('display', function (element) {
-        element.blendMode = PIXI.BLEND_MODES.ADD
-    });
-    lighting.filters = [new PIXI.filters.VoidFilter()];
-    lighting.filters[0].blendMode = PIXI.BLEND_MODES.MULTIPLY;
-    lighting.filterArea = new PIXI.Rectangle(0, 0, this.stage.width, this.stage.height);
-    this.stage.addChild(lighting);
-    var ambient = new PIXI.Graphics();
-    ambient.beginFill(0x808080, 1.0);
-    ambient.drawRect(0, 0, this.stage.width, this.stage.height);
-    ambient.endFill();
-    lighting.addChild(ambient);
   }
 
  /**
- * Checks if Entity is added, terain is udated or if level is Loaded
+ * Checks if Entity is added, terain is updated or if level is Loaded
  * @param {String} type the event that is passed
  * @param {Object} object the entity, terrian or level that is added in the event
  */
