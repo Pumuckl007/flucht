@@ -1,5 +1,6 @@
 import AnimatedEntityRenderer from "./AnimatedEntityRenderer.js";
 import AnimatedTexture from "./AnimatedTexture.js";
+import LightingMask from "./LightingMask.js";
 /**
 * @module Renderer
 */
@@ -26,6 +27,9 @@ class Renderer{
     initMap(this.typeMap);
     let self = this;
     window.onresize = function(event){ self.resize(event)};
+
+    //add Lighting mask
+    this.light = new LightingMask(this.stage, this.graphics, this.renderer);
   }
 
  /**
@@ -89,6 +93,7 @@ class Renderer{
     }
     this.graphics.clear();
     this.graphics.beginFill(0x000000);
+    this.light.animate(); //animate the lighting mask
     for(let element of this.terrain.elements){
       if(element.renderAsBox){
         this.graphics.drawRect(element.pos.x-element.box.width/2,
