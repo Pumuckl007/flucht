@@ -1,11 +1,11 @@
 {
   "name":"Stairwell Top",
   "width": 832,
-  "height": 418,
+  "height": 438,
   "background": "/assets/background.png",
   "elements":[
     {
-      "x": 438,
+      "x": 478,
       "y": -5,
       "width": 240,
       "height": 10,

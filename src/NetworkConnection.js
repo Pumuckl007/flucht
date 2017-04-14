@@ -103,6 +103,8 @@ class NetworkConnection{
         this.emitEvent("connectionEstablished", userId);
         this.webRTCConnections[userId] = this.pendingConnections[userId];
         this.pendingConnections[userId] = null;
+      } else if(event.type === "message"){
+        this.emitEvent("webRTCMessage", {userId: userId, json:event.json})
       }
     });
   }
@@ -130,6 +132,8 @@ class NetworkConnection{
         this.emitEvent("connectionEstablished", user.id);
         this.webRTCConnections[user.id] = this.pendingConnections[user.id];
         this.pendingConnections[user.id] = null;
+      } else if(event.type === "message"){
+        this.emitEvent("webRTCMessage", {userId: user.id, json:event.json})
       }
     });
   }

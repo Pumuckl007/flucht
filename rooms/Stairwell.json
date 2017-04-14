@@ -1,7 +1,7 @@
 {
   "name":"Stairwell",
   "width": 832,
-  "height": 418,
+  "height": 438,
   "background": "/assets/background.png",
   "elements":[
   ],
@@ -9,8 +9,8 @@
     {
       "type": "Stairs",
       "args": [
-        558,
-        438,
+        588,
+        458,
         10
       ]
     }
