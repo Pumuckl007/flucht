@@ -14,6 +14,10 @@ setTimeout(function(){
   networkConnection.registerHandler("answer", partyWorld);
   networkConnection.registerHandler("ice", partyWorld);
   networkConnection.registerHandler("connectionEstablished", partyWorld);
+  let test = function(e, v){ console.log("index.js:17", e, v)}
+  networkConnection.registerHandler("webRTCMessage", {
+    onWSMessage: test
+  });
   window.connect = function(e){
     networkConnection.connect(e)
   };
