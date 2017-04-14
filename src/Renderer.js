@@ -29,7 +29,7 @@ class Renderer{
     window.onresize = function(event){ self.resize(event)};
 
     //add Lighting mask
-    this.light = new LightingMask(this.stage, this.graphics, this.renderer);
+    this.light = new LightingMask(this.stage, this.renderer);
   }
 
  /**
