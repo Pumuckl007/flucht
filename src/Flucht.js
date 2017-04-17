@@ -1,6 +1,7 @@
 import Runner from "./Physics/Runner.js";
 import World from "./Physics/World.js";
 import Renderer from "./Renderer.js";
+import PacketManager from "./PacketManager.js";
 
 /** class creates world, runner and renderer to begin the game*/
 class Flucht{
@@ -16,6 +17,7 @@ class Flucht{
     }});
     this.runner = new Runner(64, 108, 0, 76);
     this.renderer = new Renderer(this.runner);
+    this.packetManager = new PacketManager();
     this.world.addEventListener(this.renderer);
     this.world.addEntity(this.runner);
   }
