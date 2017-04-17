@@ -1,5 +1,6 @@
 import AnimatedEntityRenderer from "./AnimatedEntityRenderer.js";
 import AnimatedTexture from "./AnimatedTexture.js";
+import LightingMask from "./LightingMask.js";
 /**
 * @module Renderer
 */
@@ -26,9 +27,13 @@ class Renderer{
     initMap(this.typeMap);
     let self = this;
     window.onresize = function(event){ self.resize(event)};
+
+    //add Lighting mask
+    this.light = new LightingMask(this.stage, this.renderer);
   }
+
  /**
- * Checks if Entity is added, terain is udated or if level is Loaded
+ * Checks if Entity is added, terain is updated or if level is Loaded
  * @param {String} type the event that is passed
  * @param {Object} object the entity, terrian or level that is added in the event
  */
@@ -97,6 +102,7 @@ class Renderer{
       }
     }
     this.renderer.render(this.stage);
+    this.light.animate(); //animate the lighting mask
   }
 }
 
