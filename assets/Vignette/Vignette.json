@@ -1,0 +1,15 @@
+{
+  "base": "/assets/Vignette/VignetteLight",
+  "width": 500,
+  "height": 500,
+  "default": "light",
+  "animations": [
+    {
+      "name": "light",
+      "path": "",
+      "extension": ".png",
+      "range": [0,0],
+      "frameDuration": 1000000
+    }
+  ]
+}
