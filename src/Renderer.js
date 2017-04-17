@@ -93,7 +93,6 @@ class Renderer{
     }
     this.graphics.clear();
     this.graphics.beginFill(0x000000);
-    this.light.animate(); //animate the lighting mask
     for(let element of this.terrain.elements){
       if(element.renderAsBox){
         this.graphics.drawRect(element.pos.x-element.box.width/2,
@@ -103,6 +102,7 @@ class Renderer{
       }
     }
     this.renderer.render(this.stage);
+    this.light.animate(); //animate the lighting mask
   }
 }
 
