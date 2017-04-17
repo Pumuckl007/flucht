@@ -22,6 +22,19 @@ class PacketManager{
   }
 
   /**
+  * adds a listener to the packet id
+  * @param {String} id the id of the packet to listen to.
+  * @param {Object} listener the listener
+  * @param {Function} listener.onPacket the function called with the packet
+  */
+  addListener(id, listener){
+    if(!idMap[id]){
+      idMap[id] = [];
+    }
+    idMap[id].push(listener);
+  }
+
+  /**
   * emits a packet event to all of the listeners of the packets type.
   * @param {Packet} packet the packet to emit the events for
   */

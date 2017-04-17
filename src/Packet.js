@@ -11,6 +11,9 @@ class Packet{
   * @param {Object} data the data for the packet
   */
   constructor(senderId == networkConnection.id, recieverId, id, data){
+    if(!senderId){
+      senderId = networkConnection.id;
+    }
     this.senderId = senderId;
     this.recieverId = recieverId;
     this.id = id;
