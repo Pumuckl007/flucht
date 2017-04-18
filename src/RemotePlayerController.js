@@ -45,7 +45,7 @@ class RemotePlayerController{
   */
   updatePlayer(playerUpdateEvent){
     let runner = this.players[playerUpdateEvent.playerId];
-    runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching);
+    runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching, playerUpdateEvent.state);
   }
 
   /**
@@ -63,7 +63,7 @@ class RemotePlayerController{
   * sends and update to all listeners
   */
   update(){
-    let data = {pos: this.runner.pos, vel:this.runner.vel, crouching:keys[83], playerId:networkConnection.id};
+    let data = {pos: this.runner.pos, vel:this.runner.vel, crouching:keys[83], state:this.runner.state, playerId:networkConnection.id};
     for(let listener of this.listeners) {
       let packet = new Packet(false, listener, PacketTypes.runnerUpdated, data);
       this.packetManager.send(packet);
