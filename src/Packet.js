@@ -10,7 +10,10 @@ class Packet{
   * @param {String} id the id of packet
   * @param {Object} data the data for the packet
   */
-  constructor(senderId == networkConnection.id, recieverId, id, data){
+  constructor(senderId, recieverId, id, data){
+    if(!senderId){
+      senderId = networkConnection.id;
+    }
     this.senderId = senderId;
     this.recieverId = recieverId;
     this.id = id;

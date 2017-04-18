@@ -113,6 +113,7 @@ class Renderer{
 */
 function initMap(map){
   map["Runner"] = "assets/Runner/Runner.json";
+  map["Remote Runner"] = "assets/Runner/Runner.json";
 }
 
 export default Renderer;
