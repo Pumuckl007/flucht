@@ -17,7 +17,7 @@ class Renderer{
     this.stage = new PIXI.Container();
     this.stage.y = this.runner.pos.y+400;
     this.stage.x = -this.runner.pos.x+300;
-    this.renderer = new PIXI.WebGLRenderer(1600, 900);
+    this.renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);//new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight);
     this.renderers = [];
     this.renderer.backgroundColor = 0x101010;
     this.graphics = new PIXI.Graphics();
@@ -29,7 +29,7 @@ class Renderer{
     window.onresize = function(event){ self.resize(event)};
 
     //add Lighting mask
-    this.light = new LightingMask(this.stage, this.renderer);
+    this.light = new LightingMask(this.stage, this.renderer, runner);
   }
 
  /**
@@ -40,6 +40,7 @@ class Renderer{
   onEvent(type, object){
     if(type === "Entity Added"){
       let renderer = new AnimatedEntityRenderer(object, this.typeMap[object.type], true);
+      this.light.addLightSource(object, true);
       this.renderers.push(renderer);
     }
     if(type === "Terrain Updated"){

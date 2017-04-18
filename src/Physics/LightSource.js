@@ -10,14 +10,15 @@ class LightSource extends Entity{
   * @param {Object}  object Entity or element containing the position of the sprite
   * @param {boolean} moves true if the light needs to move to follow sprite
   */
-  constructor(width, height, object, moving){
+  constructor(width, height, object, moving, sprite){
     super(width, height);
     this.follow = object;
     this.hasPhysics = moving; //calls update method
     this.needsTick = false; //calls tick method
     this.worldCollisions = false;
     this.type = "LightSource";
-    this.pos = {x:this.follow.pos.x, y:this.follow.pos.y};
+    this.sprite = sprite
+    //this.pos = {x:this.follow.pos.x, y:this.follow.pos.y};
   }
 
   /**
@@ -25,8 +26,8 @@ class LightSource extends Entity{
   * @param timestep the part of one second passed
   */
   update(timestep){
-    this.pos.x = this.follow.pos.x;
-    this.pos.y = this.follow.pos.y;
+    this.sprite.position.x = this.follow.pos.x;
+    this.sprite.position.y = this.follow.pos.y;
   }
 }
 
