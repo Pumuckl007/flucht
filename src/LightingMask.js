@@ -8,6 +8,7 @@ class LightingMask{
     * @param {PIXI.WebGLRenderer} renderer the renderer of the game
     */
     constructor(stage,renderer, runner){
+      this.pulseValue = 0.008;
       this.runner = runner;
       this.lightSources = [];
       this.draw = renderer;
@@ -74,9 +75,21 @@ class LightingMask{
       //this.light.alpha = this.light.alpha - 0.01; //change opacity of light
       for(let light of this.lightSources){
         light.update();
+        this.pulse(light);
       }
       //Render the new texture for lights
       this.draw.render(this.lights, this.texture);
+    }
+
+    pulse(lightSource){
+      let sprite = lightSource.sprite;
+      if(sprite.alpha >= 1){
+        this.pulseValue *= -1;
+      }
+      if(sprite.alpha <= 0.5){
+        this.pulseValue *= -1;
+      }
+      sprite.alpha += this.pulseValue;
     }
 }
 export default LightingMask;

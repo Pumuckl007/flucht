@@ -3,15 +3,15 @@ class LightSource{
   /**
   * Creates the light source with sprite to follow
   * @constructor
-  * @param {number} width the width of the light
-  * @param {number} height the height of the light
-  * @param {Object}  object Entity or element containing the position of the sprite
-  * @param {boolean} moves true if the light needs to move to follow sprite
+  * @param {Object}  follow Entity or element containing the position of the sprite
+  * @param {boolean} moving true if the light needs to move to follow sprite
+  * @param {Sprite} sprite the light image that the Light Source moves
   */
-  constructor(object, moving, sprite){
-    this.follow = object;
+  constructor(follow, moving, sprite){
+    this.follow = follow;
     this.hasPhysics = moving; //calls update method
     this.sprite = sprite
+    this.sprite.alpha = Math.random()/2+.5;
     //this.pos = {x:this.follow.pos.x, y:this.follow.pos.y};
   }
 
