@@ -1,23 +1,17 @@
-import Entity from "./Entity.js";
-
 /** Class representing light source entity that moves and follows other Enities and textures*/
-class LightSource extends Entity{
+class LightSource{
   /**
   * Creates the light source with sprite to follow
   * @constructor
-  * @param {number} width the width of the light
-  * @param {number} height the height of the light
-  * @param {Object}  object Entity or element containing the position of the sprite
-  * @param {boolean} moves true if the light needs to move to follow sprite
+  * @param {Object}  follow Entity or element containing the position of the sprite
+  * @param {boolean} moving true if the light needs to move to follow sprite
+  * @param {Sprite} sprite the light image that the Light Source moves
   */
-  constructor(width, height, object, moving, sprite){
-    super(width, height);
-    this.follow = object;
+  constructor(follow, moving, sprite){
+    this.follow = follow;
     this.hasPhysics = moving; //calls update method
-    this.needsTick = false; //calls tick method
-    this.worldCollisions = false;
-    this.type = "LightSource";
     this.sprite = sprite
+    this.sprite.alpha = Math.random()/2+.5;
     //this.pos = {x:this.follow.pos.x, y:this.follow.pos.y};
   }
 
@@ -26,8 +20,9 @@ class LightSource extends Entity{
   * @param timestep the part of one second passed
   */
   update(timestep){
-    this.sprite.position.x = this.follow.pos.x;
-    this.sprite.position.y = this.follow.pos.y;
+    //console.log("update");
+    this.sprite.position.x = this.follow.pos.x - this.sprite.width/2;
+    this.sprite.position.y = this.follow.pos.y - this.sprite.height/2;
   }
 }
 

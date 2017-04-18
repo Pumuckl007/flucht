@@ -8,6 +8,7 @@ class LightingMask{
     * @param {PIXI.WebGLRenderer} renderer the renderer of the game
     */
     constructor(stage,renderer, runner){
+      this.pulseValue = 0.008;
       this.runner = runner;
       this.lightSources = [];
       this.draw = renderer;
@@ -21,6 +22,7 @@ class LightingMask{
 			this.daylight.drawRect(0, 0, width, height);
 			//Create a container for lights, a texture will be made from this later
 			this.lights  = new PIXI.Container();
+      this.lightEntities = new PIXI.Container();
 			//Create lights from light cookie
       /**
 			this.light = new PIXI.Sprite(PIXI.Texture.fromImage("/assets/Vignette/Vignette.png", false, PIXI.SCALE_MODES.NEAREST));
@@ -33,6 +35,7 @@ class LightingMask{
 			//this.light.blendMode = PIXI.BLEND_MODES.ADD;
 			this.daylight.blendMode = PIXI.BLEND_MODES.ADD;
       this.lights.addChild(this.daylight);
+      this.lights.addChild(this.lightEntities);
 			//this.lights.addChild(this.light);
 
 			//Create a texture where lights will be rendered to
@@ -46,18 +49,18 @@ class LightingMask{
 
     /**
     * Adds new light source to the stage that follows sprite
-    * @param {object} object the entity or element that light follows
+    * @param {object} follow the entity or element that light follows
     * @param {boolean} moving true if light has to move across stage
     */
-    addLightSource(object, moving){
-      console.log("test, Lightmask.js:52");
+    addLightSource(follow, moving){
+      //console.log("test, Lightmask.js:52");
       let newLight = new PIXI.Sprite(PIXI.Texture.fromImage("/assets/Vignette/VignetteLight.png", false, PIXI.SCALE_MODES.NEAREST));
-      newLight.position.x = object.pos.x+newLight.width;
-      newLight.position.y = object.pos.y+newLight.width;
+      newLight.position.x = follow.pos.x - newLight.width/2;
+      newLight.position.y = follow.pos.y - newLight.height/2;
       newLight.blendMode = PIXI.BLEND_MODES.ADD;
-      this.lights.addChild(newLight);
+      this.lightEntities.addChild(newLight);
       if(moving){
-        let source = new LightSource(500, 500, object, moving, newLight);
+        let source = new LightSource(follow, moving, newLight);
         this.lightSources.push(source);
       }
     }
@@ -66,15 +69,27 @@ class LightingMask{
     * updates the position of the lights according to all light sources
     */
     animate() {
-    //  this.lights.y = this.runner.pos.y+document.body.offsetHeight/2;
-    //  this.lights.x = this.runner.pos.x+document.body.offsetWidth/2;
-      console.log("animated with ", this.lightSources.length);
+      this.lightEntities.y = -this.runner.pos.y+document.body.offsetHeight/2;
+      this.lightEntities.x = -this.runner.pos.x+document.body.offsetWidth/2;
+      //console.log("animated with ", this.lightSources.length);
       //this.light.alpha = this.light.alpha - 0.01; //change opacity of light
       for(let light of this.lightSources){
         light.update();
+        this.pulse(light);
       }
       //Render the new texture for lights
       this.draw.render(this.lights, this.texture);
+    }
+
+    pulse(lightSource){
+      let sprite = lightSource.sprite;
+      if(sprite.alpha >= 1){
+        this.pulseValue *= -1;
+      }
+      if(sprite.alpha <= 0.5){
+        this.pulseValue *= -1;
+      }
+      sprite.alpha += this.pulseValue;
     }
 }
 export default LightingMask;
