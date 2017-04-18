@@ -3,7 +3,7 @@ import Entity from "./Entity.js";
 /**
 * A class representitive of the runner which the player controls
 */
-class Runner extends Entity{
+class RemoteRunner extends Entity{
 
   /**
   * creates a new runner with width and height at x and y
@@ -64,4 +64,4 @@ class Runner extends Entity{
   }
 }
 
-export default Runner;
+export default RemoteRunner;
