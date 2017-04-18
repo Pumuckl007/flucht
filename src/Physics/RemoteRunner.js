@@ -43,7 +43,7 @@ class RemoteRunner extends Entity{
       this.onGround = true;
     }
     if(terrainElement.type === "Side Jump"){
-      return (type === 4 || type === 1) || keys[83];
+      return (type === 4 || type === 1) || this.crouching;
     } else if(terrainElement.type === "Drop Down"){
       return this.crouching;
     }
