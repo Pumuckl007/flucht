@@ -17,7 +17,7 @@ class Runner extends Entity{
     super(width, height);
     this.hasPhysics = true;
     this.worldCollisions = true;
-    this.type = "Runner";
+    this.type = "Remote Runner";
     this.onGround = true;
     this.crouching = false;
     this.pos = {x:x, y:y};

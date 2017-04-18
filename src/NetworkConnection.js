@@ -100,9 +100,9 @@ class NetworkConnection{
           ice: event.ice
         }))
       } else if(event.type === "channelOpen"){
-        this.emitEvent("connectionEstablished", userId);
         this.webRTCConnections[userId] = this.pendingConnections[userId];
         this.pendingConnections[userId] = null;
+        this.emitEvent("connectionEstablished", userId);
       } else if(event.type === "message"){
         this.emitEvent("webRTCMessage", {userId: userId, json:event.json})
       }
@@ -129,9 +129,9 @@ class NetworkConnection{
           answer: event.answer
         }))
       } else if(event.type === "channelOpen"){
-        this.emitEvent("connectionEstablished", user.id);
         this.webRTCConnections[user.id] = this.pendingConnections[user.id];
         this.pendingConnections[user.id] = null;
+        this.emitEvent("connectionEstablished", user.id);
       } else if(event.type === "message"){
         this.emitEvent("webRTCMessage", {userId: user.id, json:event.json})
       }

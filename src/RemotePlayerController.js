@@ -1,4 +1,6 @@
 import PacketTypes from "./PacketTypes.js";
+import Packet from "./Packet.js";
+import RemoteRunner from "./Physics/RemoteRunner.js"
 
 /**
 * A class to controll the remote players
@@ -15,6 +17,14 @@ class RemotePlayerController{
     this.packetManager = packetManager;
     this.runner = runner;
     this.listeners = [];
+    let self = this;
+    window.remotePlayerController = this;
+    this.packetManager.addListener(PacketTypes.runnerCreation, {onPacket:function(e){
+      self.addPlayer(e.data);
+    }});
+    this.packetManager.addListener(PacketTypes.runnerUpdated, {onPacket:function(e){
+      self.updatePlayer(e.data);
+    }});
   }
 
   /**
@@ -53,11 +63,12 @@ class RemotePlayerController{
   * sends and update to all listeners
   */
   update(){
-    let data = {pos: this.runner.pos, vel:this.runner.pos.y, crouching:keys[83], playerId:networkConnection.id};
-    let packet = new Packet(false, id, PacketTypes.runnerUpdated, data);
-    for(let listener : this.listeners){
-      packet.recieverId = listener;
+    let data = {pos: this.runner.pos, vel:this.runner.vel, crouching:keys[83], playerId:networkConnection.id};
+    for(let listener of this.listeners) {
+      let packet = new Packet(false, listener, PacketTypes.runnerUpdated, data);
       this.packetManager.send(packet);
     }
   }
 }
+
+export default RemotePlayerController;

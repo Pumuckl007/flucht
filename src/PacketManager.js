@@ -1,3 +1,4 @@
+import Packet from "./Packet.js";
 
 /**
 * a class to manager who gets which packet, information gets passed in packets over all forms of comuncation, a packet has a sender, recipient, id, and data objects as seen in packet.
@@ -18,6 +19,7 @@ class PacketManager{
   onWSMessage(type, event){
     if(type === "webRTCMessage"){
       let packet = new Packet(event.userId, networkConnection.id, event.json.id, event.json.data);
+      this.emitPacketEvent(packet);
     }
   }
 
@@ -28,10 +30,10 @@ class PacketManager{
   * @param {Function} listener.onPacket the function called with the packet
   */
   addListener(id, listener){
-    if(!idMap[id]){
-      idMap[id] = [];
+    if(!this.idMap[id]){
+      this.idMap[id] = [];
     }
-    idMap[id].push(listener);
+    this.idMap[id].push(listener);
   }
 
   /**
@@ -39,8 +41,8 @@ class PacketManager{
   * @param {Packet} packet the packet to emit the events for
   */
   emitPacketEvent(packet){
-    if(idMap[packet.id]){
-      for(let listener of idMap[packet.id]){
+    if(this.idMap[packet.id]){
+      for(let listener of this.idMap[packet.id]){
         listener.onPacket(packet);
       }
     }
@@ -51,9 +53,9 @@ class PacketManager{
   * @param {Packet} packet the packet to send.
   */
   send(packet){
-    let connection = networkConnection.connections[packet.recieverId];
+    let connection = networkConnection.webRTCConnections[packet.recieverId];
     if(connection){
-      connection.send(JSON.stringify({id : packet.senderId, data : packet.data}));
+      connection.channel.send(JSON.stringify({id : packet.id, data : packet.data}));
     }
   }
 }
