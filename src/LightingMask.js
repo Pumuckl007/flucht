@@ -70,27 +70,16 @@ class LightingMask{
     * updates the position of the lights according to all light sources
     */
     animate() {
-      this.lightEntities.y = -this.runner.pos.y+document.body.offsetHeight/2;
+      this.lightEntities.y = this.runner.pos.y+document.body.offsetHeight/2;
       this.lightEntities.x = -this.runner.pos.x+document.body.offsetWidth/2;
       //console.log("animated with ", this.lightSources.length);
       //this.light.alpha = this.light.alpha - 0.01; //change opacity of light
       for(let light of this.lightSources){
         light.update();
-        this.pulse(light);
       }
       //Render the new texture for lights
       this.draw.render(this.lights, this.texture);
     }
 
-    pulse(lightSource){
-      let sprite = lightSource.sprite;
-      if(sprite.alpha >= 1){
-        this.pulseValue *= -1;
-      }
-      if(sprite.alpha <= 0.8){
-        this.pulseValue *= -1;
-      }
-      sprite.alpha += this.pulseValue;
-    }
 }
 export default LightingMask;

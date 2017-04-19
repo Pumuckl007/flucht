@@ -11,6 +11,7 @@ class LightSource{
     this.follow = follow;
     this.hasPhysics = moving; //calls update method
     this.sprite = sprite;
+    this.pulseValue = 0.005;
     //this.pos = {x:this.follow.pos.x, y:this.follow.pos.y};
   }
 
@@ -21,7 +22,14 @@ class LightSource{
   update(){
     //console.log("update");
     this.sprite.position.x = this.follow.pos.x - this.sprite.width/2;
-    this.sprite.position.y = this.follow.pos.y - this.sprite.height/2;
+    this.sprite.position.y = -this.follow.pos.y - this.sprite.height/2;
+    if(this.sprite.alpha >= 1){
+      this.pulseValue *= -1;
+    }
+    if(this.sprite.alpha <= 0.8){
+      this.pulseValue *= -1;
+    }
+    this.sprite.alpha += this.pulseValue;
   }
 }
 
