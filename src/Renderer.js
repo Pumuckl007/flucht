@@ -59,15 +59,15 @@ class Renderer{
       }
       this.stage.addChild(this.graphics);
       for(let element of this.terrain.elements){
-        if(element.type === "Textured Element"){
+        if(element.type === "Textured Element" || element.type === "Lit Element"){
           let self = this;
           let done = function(animatedTexture){
             self.graphics.addChild(animatedTexture.sprite);
             self.renderers.push(animatedTexture);
           }
-          if(element.url === "/assets/Candle/Candle.json"){
+          if(element.type === "Lit Element"){
             console.log("candle added");
-            this.light.addLightSource(element);
+            this.light.addLightSource(element, true);
           }
           new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done);
         }

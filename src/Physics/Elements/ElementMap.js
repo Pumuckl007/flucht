@@ -3,6 +3,7 @@ import SideJump from "./SideJump.js";
 import Stairs from "./Stairs.js";
 import DropDown from "./DropDown.js";
 import TexturedElement from "./TexturedElement.js";
+import LitElement from "./LitElement.js";
 
 export default {
   "Element": Element,
@@ -10,5 +11,6 @@ export default {
   "Side Jump": SideJump,
   "Stairs": Stairs,
   "Drop Down": DropDown,
-  "Textured Element": TexturedElement
+  "Textured Element": TexturedElement,
+  "Lit Element": LitElement
 }
