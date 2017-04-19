@@ -4,8 +4,8 @@ class LightSource{
   * Creates the light source with sprite to follow
   * @constructor
   * @param {Object}  follow Entity or element containing the position of the sprite
-  * @param {boolean} moving true if the light needs to move to follow sprite
   * @param {Sprite} sprite the light image that the Light Source moves
+  * @param {boolean} pulse true if the light source is not a runner and light needs to pulse
   */
   constructor(follow, sprite, pulse){
     this.follow = follow;
@@ -18,7 +18,6 @@ class LightSource{
 
   /**
   * update location of light
-  * @param timestep the part of one second passed
   */
   update(){
     //console.log("update");

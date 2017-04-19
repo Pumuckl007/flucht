@@ -8,7 +8,7 @@ class LightingMask{
     * @param {PIXI.WebGLRenderer} renderer the renderer of the game
     * @param {Runner} runner the player character in the center of the screen
     */
-    constructor(stage,renderer, runner){
+    constructor(stage, renderer, runner){
       this.pulseValue = 0.005;
       this.runner = runner;
       this.lightSources = [];
@@ -73,8 +73,6 @@ class LightingMask{
     animate() {
       this.lightEntities.y = this.runner.pos.y+document.body.offsetHeight/2;
       this.lightEntities.x = -this.runner.pos.x+document.body.offsetWidth/2;
-      //console.log("animated with ", this.lightSources.length);
-      //this.light.alpha = this.light.alpha - 0.01; //change opacity of light
       for(let light of this.lightSources){
         light.update();
       }
