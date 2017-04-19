@@ -5,6 +5,7 @@
   "height": 64,
   "scaleY": 2,
   "default": "burning",
+  "emitLight": true,
   "animations":[
     {
       "name": "burning",

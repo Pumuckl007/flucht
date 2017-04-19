@@ -6,9 +6,10 @@ class LightingMask{
     * @constructor
     * @param {PIXI.Container} stage the stage that the game is played on
     * @param {PIXI.WebGLRenderer} renderer the renderer of the game
+    * @param {Runner} runner the player character in the center of the screen
     */
     constructor(stage,renderer, runner){
-      this.pulseValue = 0.008;
+      this.pulseValue = 0.005;
       this.runner = runner;
       this.lightSources = [];
       this.draw = renderer;
@@ -86,7 +87,7 @@ class LightingMask{
       if(sprite.alpha >= 1){
         this.pulseValue *= -1;
       }
-      if(sprite.alpha <= 0.5){
+      if(sprite.alpha <= 0.8){
         this.pulseValue *= -1;
       }
       sprite.alpha += this.pulseValue;

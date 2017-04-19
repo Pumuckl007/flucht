@@ -1,7 +1,7 @@
 import Box from "./Box.js"
 import BuildWall from "./BuildWall.js";
 import ElementMap from "./Elements/ElementMap.js";
- 
+
 /**
 * A class representative of a given room at cooridnates x, y, with a discription
 */
@@ -110,7 +110,7 @@ class Room{
       this.elements = this.elements.concat(built);
     }
   }
-
+  
   /**
   * Mirrors an element over the x or y axis of the room.
   * @param {Element[]} elements the elements to mirror

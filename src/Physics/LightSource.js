@@ -10,8 +10,7 @@ class LightSource{
   constructor(follow, moving, sprite){
     this.follow = follow;
     this.hasPhysics = moving; //calls update method
-    this.sprite = sprite
-    this.sprite.alpha = Math.random()/2+.5;
+    this.sprite = sprite;
     //this.pos = {x:this.follow.pos.x, y:this.follow.pos.y};
   }
 
@@ -19,7 +18,7 @@ class LightSource{
   * update location of light
   * @param timestep the part of one second passed
   */
-  update(timestep){
+  update(){
     //console.log("update");
     this.sprite.position.x = this.follow.pos.x - this.sprite.width/2;
     this.sprite.position.y = this.follow.pos.y - this.sprite.height/2;

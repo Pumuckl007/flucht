@@ -63,6 +63,10 @@ class Renderer{
             self.graphics.addChild(animatedTexture.sprite);
             self.renderers.push(animatedTexture);
           }
+          if(element.url === "/assets/Candle/Candle.json"){
+            console.log("candle added");
+            this.light.addLightSource(element);
+          }
           new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done);
         }
       }
