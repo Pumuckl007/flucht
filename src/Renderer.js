@@ -40,7 +40,9 @@ class Renderer{
   onEvent(type, object){
     if(type === "Entity Added"){
       let renderer = new AnimatedEntityRenderer(object, this.typeMap[object.type], true);
-      this.light.addLightSource(object, true);
+      if(object.type === "Runner"){
+        this.light.addLightSource(object, true);
+      }
       this.renderers.push(renderer);
     }
     if(type === "Terrain Updated"){

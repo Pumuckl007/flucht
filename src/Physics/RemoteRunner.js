@@ -55,11 +55,12 @@ class RemoteRunner extends Entity{
   * @param {Velocity} vel the velocity of the Runner
   * @param {boolean} crouching whether or not the runner is crouching
   */
-  remoteUpdate(pos, vel, crouching){
+  remoteUpdate(pos, vel, crouching, state){
     this.pos.x = pos.x;
     this.pos.y = pos.y;
     this.vel.x = vel.x;
     this.vel.y = vel.y;
+    this.state = state;
     this.crouching = crouching;
   }
 }
