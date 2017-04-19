@@ -13,9 +13,10 @@ class Element{
   */
   constructor(x, y, width, height, type = "Element", renderAsBox = true){
     this.pos = {x:x, y:y};
-    this.box = new Box(width, height);
+    this.box = new Box(width, height); //collision hit box
     this.type = type;
-    this.renderAsBox = renderAsBox;
+    this.renderAsBox = renderAsBox; //draws this as black square
+    this.color = 0x000000; // color of square
   }
   /**
   * empty method called when collision occurs and returns which side collided
