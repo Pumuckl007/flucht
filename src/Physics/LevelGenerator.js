@@ -10,8 +10,8 @@ import Room from "./Room.js"
  * @param {String} urlToDescription the url for the level json
  * @param {function} callback the callback
  */
-function generateLevel(urlToDescription, callback){
-  httpRequest(urlToDescription, generate, callback);
+function generateLevel(urlToDescription, callback, random){
+  httpRequest(urlToDescription, generate, callback, random);
 }
 
 /**
@@ -20,7 +20,7 @@ function generateLevel(urlToDescription, callback){
 * @param {Room[]} levelDescription.rooms the rooms of the level
 * @param {function} callback the callback
 */
-function generate(levelDescription, callback){
+function generate(levelDescription, callback, random){
   let i = levelDescription.rooms.length;
   let avaliableRooms = [];
   let roomMinMax = {};
@@ -33,7 +33,7 @@ function generate(levelDescription, callback){
       if(i <= 0){
         avaliableRooms.push(data);
         roomMinMax[data.name] = room;
-        build(avaliableRooms, levelDescription, callback, roomMinMax);
+        build(avaliableRooms, levelDescription, callback, roomMinMax, random);
       } else {
         avaliableRooms.push(data);
         roomMinMax[data.name] = room;
@@ -52,7 +52,7 @@ function generate(levelDescription, callback){
 * @param {function} callback the callback for when finished
 * @param {Object} roomMinMaxMap a map between a roomName and a minimum and maximum number of that room.
 */
-function build(avaliableRooms, levelDescription, callback, roomMinMaxMap){
+function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random){
   let avaliableRoomMap = {};
   for(let room of avaliableRooms){
     avaliableRoomMap[room.name] = room;
@@ -233,12 +233,12 @@ function findLocation(gateway, room){
 * @param {Function} callback the callback function
 * @param {Object} passArg the arguments to directly pass into the callback
 */
-function httpRequest(url, callback, passArg){
+function httpRequest(url, callback, passArg, random){
   let httpRequest = new XMLHttpRequest();
   httpRequest.onreadystatechange = function(){
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
       if (httpRequest.status === 200) {
-        callback(JSON.parse(httpRequest.responseText), passArg)
+        callback(JSON.parse(httpRequest.responseText), passArg, random)
       }
     }
   };

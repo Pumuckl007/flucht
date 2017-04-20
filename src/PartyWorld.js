@@ -146,7 +146,7 @@ class PartyWorld{
   @param {String} userId the id of the user connected to
   */
   connectionEstablished(userId){
-    this.getUserById(userId).isConnected = true;
+    this.getUserById(userId.id).isConnected = true;
     this.update();
   }
 
