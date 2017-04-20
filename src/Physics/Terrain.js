@@ -11,7 +11,7 @@ class Terrain{
   * @param {String} url the url which the json is located at
   * @param {Function} handler the object which has a spawn runner method that will be called once the elements are loaded
   */
-  constructor(url, handler){
+  constructor(url, handler, seed = Date.now()){
     this.handler = handler;
     this.spawn = {x: 0, y:100};
     this.elements = [];

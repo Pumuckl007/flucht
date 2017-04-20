@@ -14,7 +14,7 @@ class World{
   constructor(spawnHandler){
     this.entities = [];
     this.tickingEntities = [];
-    this.terrain = new Terrain("/levels/Level1.json", spawnHandler);
+    this.terrain = new Terrain("/levels/Level1.json", spawnHandler, true || seed);
     this.listeners = [];
   }
 

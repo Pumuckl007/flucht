@@ -11,6 +11,8 @@ class Flucht{
   */
   constructor(){
     let self = this;
+    this.seed = "Saya-" + Date.now();
+    Math.seedrandom(this.seed);
     this.world = new World({spawnRunner:function(data){
       self.runner.pos = data.spawn;
       self.renderer.onEvent("Level Loaded", data.background);

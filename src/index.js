@@ -3,6 +3,7 @@ import PartyWorld from "./PartyWorld.js";
 import Flucht from "./Flucht.js";
 import RemotePlayerController from "./RemotePlayerController.js";
 import PacketManager from "./PacketManager.js";
+import Packet from "./Packet.js";
 
 /** Creates a new network Connection and runs the game*/
 setTimeout(function(){
@@ -26,9 +27,17 @@ setTimeout(function(){
   networkConnection.registerHandler("webRTCMessage", {
     onWSMessage: test
   });
+  pm.addListener({onPacket:function(packet){
+    if(packet.type === "Seed"){
+      Math.seedrandom(packet.seed);
+    }
+  }});
   let remotePlayerController = new RemotePlayerController(flucht.world, pm, flucht.runner);
   networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
-    remotePlayerController.addRemotePlayerListener(v);
+    remotePlayerController.addRemotePlayerListener(v.id);
+    if(v.offerer){
+      pm.send(new Packet(false, v.id, "Seed", {seed:flucht.seed}));
+    }
   }});
   let update = function(){
     setTimeout(update, 100);
