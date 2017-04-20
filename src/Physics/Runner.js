@@ -21,6 +21,8 @@ class Runner extends Entity{
     this.type = "Runner";
     this.onGround = true;
     this.pos = {x:x, y:y};
+
+    this.tapCount = 0;
   }
 
   /**
@@ -37,22 +39,36 @@ class Runner extends Entity{
   * used to recive user input for the runner
   */
   tick(){
-    if(keys[68]){
-      this.vel.x = 300;
-      this.state = "running";
-    } else if(keys[65]){
-      this.vel.x = -300;
-      this.state = "running";
-    } else {
-      this.vel.x = 0;
-      this.state = "idle";
-    }
-    if(keys[32]){
-      if(this.onGround){
-        this.onGround = false;
-        this.vel.y = 500;
+    if(this.hasPhysics){
+      if(keys[68]){
+        this.vel.x = 300;
+        this.state = "running";
+      } else if(keys[65]){
+        this.vel.x = -300;
+        this.state = "running";
+      } else {
+        this.vel.x = 0;
+        this.state = "idle";
+      }
+      if(keys[32]){
+        if(this.onGround){
+          this.onGround = false;
+          this.vel.y = 500;
+        }
       }
     }
+    else{
+      console.log(this.tapCount);
+      if(keys[68]){
+        this.lastKey = keys[68];
+        this.tapCount += 1;
+      }
+      else if(keys[65]){
+        this.lastKey = keys[65];
+        this.tapCount += 1;
+      }
+    }
+
   }
 
   /**

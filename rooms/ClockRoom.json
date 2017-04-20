@@ -21,14 +21,14 @@
     },
     {
       "x": 200,
-      "y": 53,
+      "y": 10,
       "width": 30,
       "height": 10,
       "type": "Trap",
       "url": "/assets/Traps/BearTrap/BearTrap.json",
-      "offsetX": -16,
-      "offsetY": -8,
-      "ghost": true
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": false
     }
   ],
   "roomRequirements": {
