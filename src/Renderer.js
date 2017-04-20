@@ -41,7 +41,7 @@ class Renderer{
     if(type === "Entity Added"){
       let renderer = new AnimatedEntityRenderer(object, this.typeMap[object.type], true);
       if(object.type === "Runner"){
-        this.light.addLightSource(object, true);
+        this.light.addLightSource(object);
       }
       this.renderers.push(renderer);
     }
@@ -66,8 +66,7 @@ class Renderer{
             self.renderers.push(animatedTexture);
           }
           if(element.type === "Lit Element"){
-            console.log("candle added");
-            this.light.addLightSource(element, true);
+            this.light.addLightSource(element);
           }
           new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done);
         }
@@ -102,6 +101,7 @@ class Renderer{
     this.graphics.beginFill(0x000000);
     for(let element of this.terrain.elements){
       if(element.renderAsBox){
+        this.graphics.beginFill(element.color);
         this.graphics.drawRect(element.pos.x-element.box.width/2,
           -element.pos.y-element.box.height/2,
           element.box.width,

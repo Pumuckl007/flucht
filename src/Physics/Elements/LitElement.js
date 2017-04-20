@@ -1,13 +1,13 @@
 import Element from "./Element.js";
-/** Creates an element that is type "TexturedElement" that exists to display an image*/
+/** Creates an element that is type "Lit Element" that exists to display an image*/
 class LitElement extends Element{
   /**
   * Creates Textured Element using element constructor and setting type to "Textured Element"
   * @constructor
-  * @param {number} x the x-coordinates of the Textured Element
-  * @param {number} y the y-coordinate of the Textured Element
-  * @param {number} width the width of the Textured Element
-  * @param {number} height the height of the Textured Element
+  * @param {number} x the x-coordinates of the Lit Element
+  * @param {number} y the y-coordinate of the Lit Element
+  * @param {number} width the width of the Lit Element
+  * @param {number} height the height of the Lit Element
   * @param {ElementDescription} element the description of the element that the image is displayed on
   */
   constructor(x, y, width, height, element){

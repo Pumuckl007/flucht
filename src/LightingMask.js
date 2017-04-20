@@ -8,7 +8,7 @@ class LightingMask{
     * @param {PIXI.WebGLRenderer} renderer the renderer of the game
     * @param {Runner} runner the player character in the center of the screen
     */
-    constructor(stage,renderer, runner){
+    constructor(stage, renderer, runner){
       this.pulseValue = 0.005;
       this.runner = runner;
       this.lightSources = [];
@@ -51,19 +51,20 @@ class LightingMask{
     /**
     * Adds new light source to the stage that follows sprite
     * @param {object} follow the entity or element that light follows
-    * @param {boolean} moving true if light has to move across stage
     */
-    addLightSource(follow, moving){
+    addLightSource(follow){
       //console.log("test, Lightmask.js:52");
       let newLight = new PIXI.Sprite(PIXI.Texture.fromImage("/assets/Vignette/VignetteLight.png", false, PIXI.SCALE_MODES.NEAREST));
       newLight.position.x = follow.pos.x - newLight.width/2;
       newLight.position.y = follow.pos.y - newLight.height/2;
       newLight.blendMode = PIXI.BLEND_MODES.ADD;
       this.lightEntities.addChild(newLight);
-      if(moving){
-        let source = new LightSource(follow, moving, newLight);
-        this.lightSources.push(source);
+      let pulse = true;
+      if(follow.type === "Runner"){
+        pulse = false;
       }
+      let source = new LightSource(follow, newLight, pulse);
+      this.lightSources.push(source);
     }
 
     /**
@@ -72,8 +73,6 @@ class LightingMask{
     animate() {
       this.lightEntities.y = this.runner.pos.y+document.body.offsetHeight/2;
       this.lightEntities.x = -this.runner.pos.x+document.body.offsetWidth/2;
-      //console.log("animated with ", this.lightSources.length);
-      //this.light.alpha = this.light.alpha - 0.01; //change opacity of light
       for(let light of this.lightSources){
         light.update();
       }
