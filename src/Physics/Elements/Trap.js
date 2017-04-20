@@ -30,10 +30,9 @@ class Trap extends Element{
   */
     collision(entity, side, entityX, entityY){
       if(entity.type === "Runner"){
-        entity.hasPhysics = false;
-        entity.state = "idle";
+        entity.trapped(this);
       }
-      if(entity.tapCount === 5){
+      if(entity.tapCount >= 5){
         this.ghost = true;
       }
     }
