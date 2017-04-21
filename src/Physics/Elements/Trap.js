@@ -18,7 +18,7 @@ class Trap extends Element{
     this.offY = element.offsetY;
     this.offX = element.offsetX;
     this.ghost = element.ghost;
-    this.color = 0xffffff;
+    this.color = 0x0000ff;
   }
 
   /**
