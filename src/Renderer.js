@@ -49,6 +49,8 @@ class Renderer{
       this.terrain = object;
     }
     if(type === "Level Loaded"){
+      this.stage.removeChildren();
+      console.log(this.stage);
       for(let room of this.terrain.rooms){
         let sprite = new PIXI.Sprite(PIXI.Texture.fromImage(room.description.background, false, PIXI.SCALE_MODES.NEAREST));
         sprite.position.x = room.x-room.box.width/2;

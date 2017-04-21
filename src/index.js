@@ -4,6 +4,7 @@ import Flucht from "./Flucht.js";
 import RemotePlayerController from "./RemotePlayerController.js";
 import PacketManager from "./PacketManager.js";
 import Packet from "./Packet.js";
+import PacketTypes from "./PacketTypes.js";
 
 /** Creates a new network Connection and runs the game*/
 setTimeout(function(){
@@ -27,16 +28,17 @@ setTimeout(function(){
   networkConnection.registerHandler("webRTCMessage", {
     onWSMessage: test
   });
-  pm.addListener({onPacket:function(packet){
-    if(packet.type === "Seed"){
-      Math.seedrandom(packet.seed);
-    }
-  }});
+  // pm.addListener({onPacket:function(packet){
+  //   if(packet.type === "Seed"){
+  //     Math.seedrandom(packet.seed);
+  //   }
+  // }});
+  pm.addListener(PacketTypes.seed, flucht)
   let remotePlayerController = new RemotePlayerController(flucht.world, pm, flucht.runner);
   networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
     remotePlayerController.addRemotePlayerListener(v.id);
     if(v.offerer){
-      pm.send(new Packet(false, v.id, "Seed", {seed:flucht.seed}));
+      pm.send(new Packet(false, v.id, PacketTypes.seed, {seed:flucht.seed}));
     }
   }});
   let update = function(){
@@ -47,7 +49,7 @@ setTimeout(function(){
   //  console.log("STarting");
   //  var test = new WebRTCConnection("ChannelName");
   //  test.doSomething();
-}, 1)
+}, 10)
 
  var flucht = new Flucht();
 

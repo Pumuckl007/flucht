@@ -83,7 +83,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
         continue;
       }
       for(let i = 0; i<min && localAvaliableSpots.length > 0; i++){
-        let index = Math.floor(Math.random()*localAvaliableSpots.length);
+        let index = Math.floor(random()*localAvaliableSpots.length);
         let posToPlaceAt = localAvaliableSpots[index];
         localAvaliableSpots.splice(index, 1);
         let roomToPlace = avaliableRoomMap[roomName];
@@ -99,7 +99,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
       }
       let localAvaliableRooms = avaliableRooms.slice(0);
       while(localAvaliableRooms.length > 0){
-        let index = Math.floor(Math.random()*localAvaliableRooms.length);
+        let index = Math.floor(random()*localAvaliableRooms.length);
         let roomToPlace = localAvaliableRooms[index];
         localAvaliableRooms.splice(index, 1);
         if(tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms)){

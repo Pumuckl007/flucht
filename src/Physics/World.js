@@ -11,10 +11,12 @@ class World{
   * @param {Object} spawnHandler the spawn handler to have spawn runner called on
   * @param {Function} spawnHandler.spawnRunner a method that should spawn a runner
   */
-  constructor(spawnHandler){
+  constructor(spawnHandler, seed){
     this.entities = [];
+    this.seed = seed;
     this.tickingEntities = [];
-    this.terrain = new Terrain("/levels/Level1.json", spawnHandler, true || seed);
+    this.terrain = new Terrain("/levels/Level1.json", spawnHandler, seed);
+    this.spawnHanlder = spawnHandler;
     this.listeners = [];
   }
 
@@ -58,6 +60,15 @@ class World{
         Collisions.terrainAndEntity(this.terrain, entity);
       }
     }
+  }
+
+  /**
+  * resets the world
+  * @param {String} seed the seed to use if blank uses prior seed
+  */
+  reset(seed = this.seed){
+    this.seed = seed;
+    this.terrain = new Terrain("/levels/Level1.json", this.spawnHandler, this.seed);
   }
 }
 

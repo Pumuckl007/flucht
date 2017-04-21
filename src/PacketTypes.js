@@ -1,5 +1,6 @@
 
 export default {
   runnerCreation:"Runner Created",
-  runnerUpdated:"Runner Updated"
+  runnerUpdated:"Runner Updated",
+  seed:"Seed"
 }

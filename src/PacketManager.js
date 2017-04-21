@@ -45,6 +45,8 @@ class PacketManager{
       for(let listener of this.idMap[packet.id]){
         listener.onPacket(packet);
       }
+    } else {
+      console.log("Unhandled Packet", packet);
     }
   }
 
