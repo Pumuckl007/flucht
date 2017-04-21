@@ -21,6 +21,8 @@ class Runner extends Entity{
     this.type = "Runner";
     this.onGround = true;
     this.pos = {x:x, y:y};
+
+
   }
 
   /**
@@ -52,6 +54,33 @@ class Runner extends Entity{
         this.onGround = false;
         this.vel.y = 500;
       }
+    }
+    if(!this.hasPhysics){
+      this.escape();
+      //console.log("escape");
+    }
+
+  }
+
+  trapped(trap){
+    this.tapCount = 0;
+    this.hasPhysics = false;
+    this.trap = trap;
+  }
+
+  escape(){
+    if(keys[68] && this.lastKey != 0){
+      this.lastKey = 0;
+      this.tapCount += 1;
+    }
+    else if(keys[65] && this.lastKey != 1){
+      this.lastKey = 1;
+      this.tapCount += 1;
+    }
+    if(this.tapCount === 20){
+      this.trap.ghost = true;
+      this.hasPhysics = true;
+      this.tapCount = 0;
     }
   }
 
