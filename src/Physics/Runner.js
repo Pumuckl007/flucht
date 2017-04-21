@@ -81,6 +81,7 @@ class Runner extends Entity{
       this.trap.ghost = true;
       this.hasPhysics = true;
       this.tapCount = 0;
+      this.trap.color = 0x00FF22;
     }
   }
 

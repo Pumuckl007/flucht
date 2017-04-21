@@ -17,6 +17,17 @@
       "url": "/assets/Armchair/Armchair.json",
       "offsetX": 0,
       "offsetY": -48
+    },
+    {
+      "x": 416,
+      "y": 252,
+      "width": 1,
+      "height": 1,
+      "type": "Lit Element",
+      "url": "/assets/Chandelier/Chandelier.json",
+      "offsetX": -92,
+      "offsetY": -185,
+      "ghost": true
     }
   ],
   "roomRequirements": {

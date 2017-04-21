@@ -18,7 +18,7 @@ class Trap extends Element{
     this.offY = element.offsetY;
     this.offX = element.offsetX;
     this.ghost = element.ghost;
-    this.color = 0x0000ff;
+    this.color = 0xff0022;
   }
 
   /**
@@ -33,6 +33,7 @@ class Trap extends Element{
         entity.trapped(this);
       }
       if(entity.tapCount >= 5){
+        this.color = 0x00ff22;
         this.ghost = true;
       }
     }
