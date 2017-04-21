@@ -1,0 +1,17 @@
+{
+  "base": "/assets/Chandelier/chandelier_Animation1_",
+  "width": 96,
+  "scaleX": 2,
+  "height": 128,
+  "scaleY": 2,
+  "default": "swinging",
+  "animations":[
+    {
+      "name": "swinging",
+      "path": "",
+      "extention": ".png",
+      "range": [0,7],
+      "frameDuration": 200
+    }
+  ]
+}
