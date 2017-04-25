@@ -39,7 +39,6 @@ class Background{
               stage.addChild(this.sprite);
             });
             this.elements.push(newElement);
-
           }
         }
         this.background = new PIXI.Sprite.fromImage(this.data.background, false, PIXI.SCALE_MODES.NEAREST);
