@@ -17,7 +17,9 @@ class RemotePlayerController{
     this.packetManager = packetManager;
     this.runner = runner;
     this.listeners = [];
+    this.added = true;
     let self = this;
+    this.world.addEventListener(this);
     window.remotePlayerController = this;
     this.packetManager.addListener(PacketTypes.runnerCreation, {onPacket:function(e){
       self.addPlayer(e.data);
@@ -37,6 +39,22 @@ class RemotePlayerController{
     let remoteRunner = new RemoteRunner(64, 108, x, y);
     this.players[playerCreationEvent.playerId] = remoteRunner;
     this.world.addEntity(remoteRunner);
+  }
+
+  /**
+  * called when the world sends an event
+  */
+  onEvent(type){
+    if(type === "Reset"){
+      this.added = false;
+    }
+    if(type === "Entity Added" && !this.added){
+      this.added = true;
+      for(let playerId in this.players){
+        let player = this.players[playerId];
+        this.world.addEntity(player);
+      }
+    }
   }
 
   /**

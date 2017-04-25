@@ -49,6 +49,14 @@ class LightingMask{
     }
 
     /**
+    * called to clear all of the lights from the lighting mask
+    */
+    clear(){
+      this.lightSources = [];
+      this.lightEntities.removeChildren();
+    }
+
+    /**
     * Adds new light source to the stage that follows sprite
     * @param {object} follow the entity or element that light follows
     */

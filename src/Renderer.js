@@ -48,9 +48,16 @@ class Renderer{
     if(type === "Terrain Updated"){
       this.terrain = object;
     }
-    if(type === "Level Loaded"){
+    if(type === "Reset"){
+      for(let renderer of this.renderers){
+        if(renderer.sprite)
+          this.graphics.removeChild(renderer.sprite);
+      }
+      this.light.clear();
       this.stage.removeChildren();
-      console.log(this.stage);
+      this.renderers = [];
+    }
+    if(type === "Level Loaded"){
       for(let room of this.terrain.rooms){
         let sprite = new PIXI.Sprite(PIXI.Texture.fromImage(room.description.background, false, PIXI.SCALE_MODES.NEAREST));
         sprite.position.x = room.x-room.box.width/2;
@@ -64,6 +71,7 @@ class Renderer{
         if(element.type === "Textured Element" || element.type === "Lit Element"){
           let self = this;
           let done = function(animatedTexture){
+            console.log(element);
             self.graphics.addChild(animatedTexture.sprite);
             self.renderers.push(animatedTexture);
           }

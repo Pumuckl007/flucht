@@ -46,7 +46,6 @@ class Background{
         this.background.scale.x = this.data.scaleX;
         this.background.scale.y = this.data.scaleY;
         this.background.position.y = -this.data.height-this.data.offsetY;
-        console.log(this.background.scale.x);
         this.stage.addChild(this.background);
       }
     }
