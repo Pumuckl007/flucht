@@ -31,7 +31,7 @@ function terrainAndEntity(terrain, entity){
         side = 1;
         side += correctX(entity, terrainElement, xOff);
       }
-      let bool = terrainElement.collision(entity, side, oldX, oldY);
+      let bool = terrainElement.collision(entity, side, oldX, oldY) || terrainElement.dontMoveOnCollision;
       if(bool || entity.collision(terrainElement, side)){
         entity.pos.x = oldX;
         entity.pos.y = oldY;
