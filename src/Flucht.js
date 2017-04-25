@@ -14,9 +14,11 @@ class Flucht{
     let self = this;
     this.seed = "Saya-" + Date.now();
     this.world = new World({spawnRunner:function(data){
-      console.log(data);
       self.runner.pos = data.spawn;
       self.renderer.onEvent("Level Loaded", data.background);
+      if(self.world.entities.length < 1){
+        self.world.addEntity(self.runner, false);
+      }
     }}, this.seed);
     this.runner = new Runner(64, 108, 0, 76);
     this.renderer = new Renderer(this.runner);

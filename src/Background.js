@@ -39,14 +39,12 @@ class Background{
               stage.addChild(this.sprite);
             });
             this.elements.push(newElement);
-
           }
         }
         this.background = new PIXI.Sprite.fromImage(this.data.background, false, PIXI.SCALE_MODES.NEAREST);
         this.background.scale.x = this.data.scaleX;
         this.background.scale.y = this.data.scaleY;
         this.background.position.y = -this.data.height-this.data.offsetY;
-        console.log(this.background.scale.x);
         this.stage.addChild(this.background);
       }
     }

@@ -16,7 +16,7 @@ class World{
     this.seed = seed;
     this.tickingEntities = [];
     this.terrain = new Terrain("/levels/Level1.json", spawnHandler, seed);
-    this.spawnHanlder = spawnHandler;
+    this.spawnHandler = spawnHandler;
     this.listeners = [];
   }
 
@@ -32,6 +32,7 @@ class World{
   /**
   * adds a new entity to the world
   * @param {Entity} entity the entity to add
+  * @param {Boolean} notifyObservers whether or not to notify listeners
   */
   addEntity(entity){
     this.entities.push(entity);
@@ -68,7 +69,27 @@ class World{
   */
   reset(seed = this.seed){
     this.seed = seed;
-    this.terrain = new Terrain("/levels/Level1.json", this.spawnHandler, this.seed);
+    for(let listener of this.listeners){
+      listener.onEvent("Reset");
+    }
+    this.entities = [window.flucht.runner];
+    let self = this;
+    this.terrain = new Terrain("/levels/Level1.json", {spawnRunner:function(data){
+      for(let listener of self.listeners){
+        listener.onEvent("Terrain Updated", self.terrain);
+        self.spawnHandler.spawnRunner(data);
+        listener.onEvent("Entity Added", window.flucht.runner);
+      }
+    }} , this.seed);
+    for(let listener of this.listeners){
+      // listener.onEvent("Terrain Updated", this.terrain);
+      // for(let entity of this.terrain.elements){
+      //   listener.onEvent("Entity Added", entity);
+      // }
+      // for (let entity of this.entities){
+      //   listener.onEvent("Entity Added", entity);
+      // }
+    }
   }
 }
 

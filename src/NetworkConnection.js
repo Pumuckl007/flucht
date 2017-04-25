@@ -31,7 +31,6 @@ class NetworkConnection{
   */
   onWSMessage(event){
     let message = JSON.parse(event.data);
-    console.log(event);
     this.emitEvent(message.type, message);
   }
 
@@ -116,7 +115,6 @@ class NetworkConnection{
   * @param {RTCSessionDescription} offer the offer to use to accept the connection
   */
   acceptConnection(user, offer){
-    console.log(user);
     if(this.pendingConnections[user.id]){
       console.warn("Already making a connection to this user!");
     }
@@ -164,7 +162,6 @@ class NetworkConnection{
       return;
     }
     this.pendingConnections[user.id].connection.addIceCandidate(ice);
-    console.log("ice");
   }
 }
 
