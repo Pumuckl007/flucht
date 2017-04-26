@@ -31,12 +31,16 @@ class BearTrap extends Element{
   * @param {number} entityY the y-coordinate of the entity that is collided with
   */
     collision(entity, side, entityX, entityY){
+      //console.log(entity.vel.x+" after");
       if(entity.type === "Runner"){
         let runner = entity;
-        this.dontMoveOnCollision = true;
-        runner.freeze();
-        if(this.tapCount <20){
-          let vel = runner.getVelocityX;
+        if(!runner.frozen){
+          this.dontMoveOnCollision = true;
+          runner.freeze();
+        }
+        if(this.tapCount <30){
+          let vel = runner.getVelocityX();
+          //console.log(vel);
           if(vel > 0 && this.lastVel != vel){
             this.lastVel = vel;
             this.tapCount++;
@@ -51,7 +55,7 @@ class BearTrap extends Element{
           this.ghost = true;
           runner.unfreeze();
         }
-        console.log(this.tapCount);
+        //console.log(this.tapCount);
     }
   }
 

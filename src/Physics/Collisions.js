@@ -31,6 +31,7 @@ function terrainAndEntity(terrain, entity){
         side = 1;
         side += correctX(entity, terrainElement, xOff);
       }
+      //console.log(entity.vel.x +" before");
       let bool = terrainElement.collision(entity, side, oldX, oldY) || terrainElement.dontMoveOnCollision;
       if(bool || entity.collision(terrainElement, side)){
         entity.pos.x = oldX;
@@ -54,7 +55,9 @@ function correctX(toMove, notToMove, xOff){
     direction = -Math.abs(xOff)/xOff;
   else
     return 0;
-  toMove.vel.x = 0;
+  if(notToMove.dontMoveCollision){
+    toMove.vel.x = 0;
+  }
   toMove.pos.x = notToMove.pos.x + direction*(toMove.box.width/2 + notToMove.box.width/2);
   return (direction < 0) ? 2 : 0;
 }

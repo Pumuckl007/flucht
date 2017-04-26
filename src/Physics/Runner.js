@@ -34,7 +34,7 @@ class Runner extends Entity{
       this.pos.y += this.vel.y*timestep;
       this.vel.y -= 20;
     }
-
+    //console.log(this.vel.x);
   }
 
   /**
@@ -64,10 +64,7 @@ class Runner extends Entity{
   }
 
   freeze(){
-    if(!this.frozen){
-      this.frozen = true;
-    }
-    this.state = "idle";
+    this.frozen = true;
   }
 
   unfreeze(){
