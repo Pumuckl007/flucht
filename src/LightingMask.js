@@ -48,6 +48,9 @@ class LightingMask{
 			this.draw.roundPixels = true;
     }
 
+    /**
+    * updates the size of the maskinging layer to fit the size of the window
+    */
     resize(){
       this.texture = new PIXI.RenderTexture.create(this.draw.view.width,this.draw.view.height);
 			this.lightsTex = new PIXI.Sprite(this.texture);
@@ -90,7 +93,6 @@ class LightingMask{
       for(let light of this.lightSources){
         light.update();
       }
-      //Render the new texture for lights
       this.draw.render(this.lights, this.texture);
     }
 }
