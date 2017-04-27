@@ -89,6 +89,7 @@ class Renderer{
  */
   resize(event){
     this.renderer.resize(document.body.offsetWidth, document.body.offsetHeight);
+    this.light.resize();
   }
 
   /**
