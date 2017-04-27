@@ -33,7 +33,8 @@ class Flucht{
   */
   onPacket(packet){
     if(packet.id === PacketTypes.seed){
-      this.world.reset(packet.data.seed);
+      this.seed = packet.data.seed;
+      this.world.reset(this.seed);
       this.runner.pos.x = 0;
       this.runner.pos.y = 76;
     }

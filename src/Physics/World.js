@@ -67,7 +67,7 @@ class World{
   * resets the world
   * @param {String} seed the seed to use if blank uses prior seed
   */
-  reset(seed = this.seed){
+  reset(seed){
     this.seed = seed;
     for(let listener of this.listeners){
       listener.onEvent("Reset");

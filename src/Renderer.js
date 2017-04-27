@@ -71,7 +71,6 @@ class Renderer{
         if(element.type === "Textured Element" || element.type === "Lit Element"){
           let self = this;
           let done = function(animatedTexture){
-            console.log(element);
             self.graphics.addChild(animatedTexture.sprite);
             self.renderers.push(animatedTexture);
           }
