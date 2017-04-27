@@ -9,7 +9,7 @@ class NetworkConnection{
   *  Creates a new network connection witht the given name
   *  @param {String} [name] the name of the client
   */
-  constructor(name = "Saya"){
+  constructor(name = "Sayarr"){
     this.websocket = new WebSocket("ws://" + document.URL.replace("http://", ""), "webrtcmitigation");
     let self = this;
     this.websocket.onmessage = function(e){

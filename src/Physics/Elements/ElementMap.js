@@ -4,7 +4,7 @@ import Stairs from "./Stairs.js";
 import DropDown from "./DropDown.js";
 import TexturedElement from "./TexturedElement.js";
 import LitElement from "./LitElement.js";
-import Trap from "./Trap.js";
+import BearTrap from "./BearTrap.js";
 
 export default {
   "Element": Element,
@@ -14,5 +14,5 @@ export default {
   "Drop Down": DropDown,
   "Textured Element": TexturedElement,
   "Lit Element": LitElement,
-  "Trap": Trap
+  "Bear Trap": BearTrap
 }

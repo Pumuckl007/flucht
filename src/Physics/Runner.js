@@ -21,8 +21,7 @@ class Runner extends Entity{
     this.type = "Runner";
     this.onGround = true;
     this.pos = {x:x, y:y};
-
-
+    this.frozen = false;
   }
 
   /**
@@ -30,9 +29,12 @@ class Runner extends Entity{
   * @param timestep the part of one second passed
   */
   update(timestep){
-    this.pos.x += this.vel.x*timestep;
-    this.pos.y += this.vel.y*timestep;
-    this.vel.y -= 20;
+    if(!this.frozen){
+      this.pos.x += this.vel.x*timestep;
+      this.pos.y += this.vel.y*timestep;
+      this.vel.y -= 20;
+    }
+    //console.log(this.vel.x);
   }
 
   /**
@@ -55,34 +57,18 @@ class Runner extends Entity{
         this.vel.y = 500;
       }
     }
-    if(!this.hasPhysics){
-      this.escape();
-      //console.log("escape");
-    }
-
   }
 
-  trapped(trap){
-    this.tapCount = 0;
-    this.hasPhysics = false;
-    this.trap = trap;
+  getVelocityX(){
+    return this.vel.x;
   }
 
-  escape(){
-    if(keys[68] && this.lastKey != 0){
-      this.lastKey = 0;
-      this.tapCount += 1;
-    }
-    else if(keys[65] && this.lastKey != 1){
-      this.lastKey = 1;
-      this.tapCount += 1;
-    }
-    if(this.tapCount === 20){
-      this.trap.ghost = true;
-      this.hasPhysics = true;
-      this.tapCount = 0;
-      this.trap.color = 0x00FF22;
-    }
+  freeze(){
+    this.frozen = true;
+  }
+
+  unfreeze(){
+    this.frozen = false;
   }
 
   /**

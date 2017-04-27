@@ -14,7 +14,7 @@ class LightingMask{
       this.lightSources = [];
       this.draw = renderer;
       let width = this.draw.view.width;
-      let height = this.draw.view.width;
+      let height = this.draw.view.height;
       this.baseStage = stage;
       this.daylight = new PIXI.Graphics();
 			//Set this.daylight color to shade from Black to White (dont use alpha coz it doesnt blend well)
@@ -46,6 +46,12 @@ class LightingMask{
 			this.draw.render(this.lights, this.texture);
 			this.baseStage.mask = this.lightsTex;
 			this.draw.roundPixels = true;
+    }
+
+    resize(){
+      this.texture = new PIXI.RenderTexture.create(this.draw.view.width,this.draw.view.height);
+			this.lightsTex = new PIXI.Sprite(this.texture);
+      this.baseStage.mask = this.lightsTex;
     }
 
     /**
@@ -87,6 +93,5 @@ class LightingMask{
       //Render the new texture for lights
       this.draw.render(this.lights, this.texture);
     }
-
 }
 export default LightingMask;
