@@ -1,17 +1,31 @@
 {
-  "base": "",
-  "width": 30,
+  "base": "/assets/Traps/BearTrap/trap_Animation1_",
+  "width": 32,
   "scaleX": 2,
-  "height": 10,
+  "height": 32,
   "scaleY": 2,
-  "default": "bear",
+  "default": "idle",
   "animations":[
     {
-      "name": "bear",
+      "name": "closing",
       "path": "",
       "extention": ".png",
-      "range": [0,3],
+      "range": [0,2],
       "frameDuration": 120
+    },
+    {
+      "name": "idle",
+      "path": "",
+      "extention": ".png",
+      "range": [0,0],
+      "frameDuration": 120
+    },
+    {
+      "name": "closed",
+      "path": "",
+      "extention": ".png",
+      "range": [2,2],
+      "frameDuration": 1000
     }
   ]
 }

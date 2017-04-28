@@ -12,7 +12,7 @@ class BearTrap extends Element{
   * @param {ElementDescription} element the description of the element that the image is displayed on
   */
   constructor(x, y, width, height, element){
-    super(x, y, width, height, "Bear Trap");
+    super(x, y, width, height, "Bear Trap", false);
     this.state = "idle";
     this.url = element.url;
     this.offY = element.offsetY;
@@ -34,6 +34,9 @@ class BearTrap extends Element{
       //console.log(entity.vel.x+" after");
       if(entity.type === "Runner"){
         let runner = entity;
+        if(this.state === "idle"){
+          this.state = "closing";
+        }
         if(!runner.frozen){
           this.dontMoveOnCollision = true;
           runner.freeze();
