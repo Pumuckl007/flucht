@@ -68,12 +68,7 @@ class Renderer{
       }
       this.stage.addChild(this.graphics);
       for(let element of this.terrain.elements){
-<<<<<<< HEAD
         if(element.type === "Textured Element" || element.type === "Lit Element"|| element.type === "Bear Trap"){
-=======
-        console.log(element);
-        if(element.type === "Textured Element" || element.type === "Lit Element"){
->>>>>>> 5488482f8f05076cbb60a8867afdd0ad2f892b3b
           let self = this;
           let done = function(animatedTexture){
             self.graphics.addChild(animatedTexture.sprite);
