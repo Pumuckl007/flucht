@@ -71,7 +71,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
     roomGrid[i] = [];
   }
 
-  avaliableSpots = [];
+  let avaliableSpots = [];
   for(let h = 0; h<levelDescription.height; h++){
     avaliableSpots.push(h);
   }
@@ -233,18 +233,20 @@ function findLocation(gateway, room){
 * @param {Function} callback the callback function
 * @param {Object} passArg the arguments to directly pass into the callback
 */
-function httpRequest(url, callback, passArg, random){
-  let httpRequest = new XMLHttpRequest();
-  httpRequest.onreadystatechange = function(){
-    if (httpRequest.readyState === XMLHttpRequest.DONE) {
-      if (httpRequest.status === 200) {
-        callback(JSON.parse(httpRequest.responseText), passArg, random)
+var httpRequest = function httpRequest(url, callback, passArg, random){
+  let theHttpRequest = new XMLHttpRequest();
+  theHttpRequest.onreadystatechange = function(){
+    if (theHttpRequest.readyState === XMLHttpRequest.DONE) {
+      if (theHttpRequest.status === 200) {
+        if(url === "/levels/Level1.json")
+        console.log("updateing");
+        callback(JSON.parse(theHttpRequest.responseText), passArg, random)
       }
     }
   };
-  httpRequest.open('GET', url);
-  httpRequest.setRequestHeader('Content-Type', 'text/json');
-  httpRequest.send();
+  theHttpRequest.open('GET', url);
+  theHttpRequest.setRequestHeader('Content-Type', 'text/json');
+  theHttpRequest.send();
 }
 
 export default generateLevel;
