@@ -21,6 +21,7 @@ class BearTrap extends Element{
     this.color = 0xff0022;
     this.lastVel = 0;
     this.tapCount = 0;
+    this.interactive = true;
   }
 
   /**

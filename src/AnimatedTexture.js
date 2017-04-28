@@ -1,4 +1,4 @@
-/** Creates animated texture for any animated entity that does not move in the stage*/
+/** Creates animated texture for any animated element that does not move in the stage*/
 class AnimatedTexture{
   /**
   * Finds the image frames from the given url
@@ -8,7 +8,7 @@ class AnimatedTexture{
   * @param {number} y y-coordinate of texture
   * @param {function} done adds child to the stage
   */
-  constructor(url, x, y, done){
+  constructor(url, x, y, done, element){
     this.httpRequest = new XMLHttpRequest();
     this.x = x;
     this.y = y;
@@ -20,6 +20,9 @@ class AnimatedTexture{
     this.httpRequest.send();
     this.animations = {};
     this.done = done;
+    if(element){
+      this.element = element;
+    }
   }
 
   /**
@@ -67,6 +70,17 @@ class AnimatedTexture{
       }
       this.sprite.texture = this.animations[this.animation][this.index];
       this.delayLeft = this.delay;
+    }
+    if(!this.element){
+      return;
+    }
+    if(this.animation !== this.element.state){
+      if(this.animations[this.element.state]){
+        this.delayLeft = 0;
+        //UPDATE VALUE 60FPS right now
+        this.delay = this.animations[this.element.state].frameDuration/16;
+        this.animation = this.element.state;
+      }
     }
   }
 }
