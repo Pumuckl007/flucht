@@ -75,9 +75,13 @@ class World{
     this.entities = [window.flucht.runner];
     let self = this;
     this.terrain = new Terrain("/levels/Level1.json", {spawnRunner:function(data){
+      let first = true;
       for(let listener of self.listeners){
         listener.onEvent("Terrain Updated", self.terrain);
-        self.spawnHandler.spawnRunner(data);
+        if(first){
+          self.spawnHandler.spawnRunner(data);
+          first = false;
+        }
         listener.onEvent("Entity Added", window.flucht.runner);
       }
     }} , this.seed);
