@@ -37,6 +37,10 @@ class BearTrap extends Element{
         let runner = entity;
         if(this.state === "idle"){
           this.state = "closing";
+          this.time = Date.now();
+        }
+        if(Date.now()- this.time > 10){
+          this.state = "closed";
         }
         if(!runner.frozen){
           this.dontMoveOnCollision = true;
