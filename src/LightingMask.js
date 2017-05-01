@@ -5,10 +5,9 @@ class LightingMask{
     * Creates a canvas layer over the game that darkens the enviorment and lighens up certain areas
     * @constructor
     * @param {PIXI.Container} stage the stage that the game is played on
-    * @param {PIXI.WebGLRenderer} renderer the renderer of the game
+    * @param {PIXI.Renderer} renderer the renderer of the game
     */
     constructor(stage, renderer){
-      this.pulseValue = 0.005;
       this.runner = false;
       this.lightSources = [];
       this.draw = renderer;
@@ -17,27 +16,16 @@ class LightingMask{
       this.baseStage = stage;
       this.daylight = new PIXI.Graphics();
 			//Set this.daylight color to shade from Black to White (dont use alpha coz it doesnt blend well)
-			this.daylight.beginFill(0x0B0B0B);//0x0B0B0B);//0x111111);//0x151515);//0x202021);//0x4f4f50);
+			this.daylight.beginFill(0x0B0B0B);
 			//Draw a rectangle for daylight (size of stage)
 			this.daylight.drawRect(0, 0, width, height);
 			//Create a container for lights, a texture will be made from this later
 			this.lights  = new PIXI.Container();
       this.lightEntities = new PIXI.Container();
-			//Create lights from light cookie
-      /**
-			this.light = new PIXI.Sprite(PIXI.Texture.fromImage("/assets/Vignette/Vignette.png", false, PIXI.SCALE_MODES.NEAREST));
-			this.light.width= 500;
-			this.light.height= 500;
-      this.light.position.x = 425;
-      this.light.position.y = 50;
-      */
 			//Use ADDITIVE blend modes so lights merge nicely.
-			//this.light.blendMode = PIXI.BLEND_MODES.ADD;
 			this.daylight.blendMode = PIXI.BLEND_MODES.ADD;
       this.lights.addChild(this.daylight);
       this.lights.addChild(this.lightEntities);
-			//this.lights.addChild(this.light);
-
 			//Create a texture where lights will be rendered to
 			this.texture = new PIXI.RenderTexture.create(width,height);
 			this.lightsTex = new PIXI.Sprite(this.texture);
