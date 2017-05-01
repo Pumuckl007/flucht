@@ -22,6 +22,7 @@ class Runner extends Entity{
     this.onGround = true;
     this.pos = {x:x, y:y};
     this.frozen = false;
+    this.health = 100;
   }
 
   /**
@@ -59,16 +60,34 @@ class Runner extends Entity{
     }
   }
 
+  /**
+  * returns the current x velecity of the runner
+  * @return the velocity of runner on x axis
+  */
   getVelocityX(){
     return this.vel.x;
   }
 
+  /**
+  * freezes the runner so they can not move left or right
+  */
   freeze(){
     this.frozen = true;
   }
 
+  /**
+  * unfreezes the runner so they can move left or right
+  */
   unfreeze(){
     this.frozen = false;
+  }
+
+  /**
+  * decreases the health of the runner
+  * @param {number} damage the amount of health to removeChild
+  */
+  hurt(damage){
+    this.health -= damage;
   }
 
   /**
