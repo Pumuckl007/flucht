@@ -11,12 +11,10 @@ class Renderer{
   * @constructor
   * @param {Runner} runner the player
   */
-  constructor(runner){
-    this.runner = runner;
+  constructor(){
+    this.runner = false;
     this.typeMap = {};
     this.stage = new PIXI.Container();
-    this.stage.y = this.runner.pos.y+400;
-    this.stage.x = -this.runner.pos.x+300;
     this.renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);//new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight);
     this.renderers = [];
     this.renderer.backgroundColor = 0x101010;
@@ -29,7 +27,7 @@ class Renderer{
     window.onresize = function(event){ self.resize(event)};
 
     //add Lighting mask
-    this.light = new LightingMask(this.stage, this.renderer, runner);
+    this.light = new LightingMask(this.stage, this.renderer);
   }
 
  /**
@@ -96,11 +94,22 @@ class Renderer{
   }
 
   /**
+  * adds the runner to the renderer
+  * @param {Runner} runner the player character in the center of the screen
+  */
+  addRunner(runner){
+    this.runner = runner;
+    this.light.addRunner(runner);
+  }
+
+  /**
   * positions the stage and updates it
   */
   render(){
-    this.stage.y = this.scale*this.runner.pos.y+document.body.offsetHeight/2;
-    this.stage.x = -this.scale*this.runner.pos.x+document.body.offsetWidth/2;
+    if(this.runner){
+      this.stage.y = this.scale*this.runner.pos.y+document.body.offsetHeight/2;
+      this.stage.x = -this.scale*this.runner.pos.x+document.body.offsetWidth/2;
+    }
     if(this.background){
       this.background.update(this.stage.x, this.stage.y);
     }

@@ -27,6 +27,7 @@ class RemotePlayerController{
     this.packetManager.addListener(PacketTypes.runnerUpdated, {onPacket:function(e){
       self.updatePlayer(e.data);
     }});
+    this.update();
   }
 
   /**
@@ -72,7 +73,7 @@ class RemotePlayerController{
   */
   addRemotePlayerListener(id){
     this.listeners.push(id);
-    let data = {x: this.runner.pos.x, y:this.runner.pos.y, playerId:networkConnection.id};
+    let data = {x: this.runner.pos.x, y:this.runner.pos.y, playerId:flucht.networkConnection.id};
     let packet = new Packet(false, id, PacketTypes.runnerCreation, data);
     this.packetManager.send(packet);
   }
@@ -81,7 +82,12 @@ class RemotePlayerController{
   * sends and update to all listeners
   */
   update(){
-    let data = {pos: this.runner.pos, vel:this.runner.vel, crouching:keys[83], state:this.runner.state, playerId:networkConnection.id};
+    let self = this;
+    window.setTimeout(function(){self.update()}, 100);
+    if(!window.flucht){
+      return;
+    }
+    let data = {pos: this.runner.pos, vel:this.runner.vel, crouching:keys[83], state:this.runner.state, playerId:flucht.networkConnection.id};
     for(let listener of this.listeners) {
       let packet = new Packet(false, listener, PacketTypes.runnerUpdated, data);
       this.packetManager.send(packet);

@@ -6,11 +6,10 @@ class LightingMask{
     * @constructor
     * @param {PIXI.Container} stage the stage that the game is played on
     * @param {PIXI.WebGLRenderer} renderer the renderer of the game
-    * @param {Runner} runner the player character in the center of the screen
     */
-    constructor(stage, renderer, runner){
+    constructor(stage, renderer){
       this.pulseValue = 0.005;
-      this.runner = runner;
+      this.runner = false;
       this.lightSources = [];
       this.draw = renderer;
       let width = this.draw.view.width;
@@ -46,6 +45,14 @@ class LightingMask{
 			this.draw.render(this.lights, this.texture);
 			this.baseStage.mask = this.lightsTex;
 			this.draw.roundPixels = true;
+    }
+
+    /**
+    * adds the runner
+    * @param {Runner} runner the player character in the center of the screen
+    */
+    addRunner(runner){
+      this.runner = runner;
     }
 
     /**
@@ -88,8 +95,10 @@ class LightingMask{
     * updates the position of the lights according to all light sources
     */
     animate() {
-      this.lightEntities.y = this.runner.pos.y+document.body.offsetHeight/2;
-      this.lightEntities.x = -this.runner.pos.x+document.body.offsetWidth/2;
+      if(this.runner){
+        this.lightEntities.y = this.runner.pos.y+document.body.offsetHeight/2;
+        this.lightEntities.x = -this.runner.pos.x+document.body.offsetWidth/2;
+      }
       for(let light of this.lightSources){
         light.update();
       }
