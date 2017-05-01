@@ -8,6 +8,32 @@ import PacketTypes from "./PacketTypes.js";
 
 /** Creates a new network Connection and runs the game*/
 setTimeout(function(){
+  var flucht = new Flucht();
+
+  var animate = function animate(){
+    requestAnimationFrame(animate);
+    flucht.render();
+  }
+  var updateFlucht = function update(){
+    setTimeout(updateFlucht, 20);
+    flucht.update();
+  }
+  setTimeout(updateFlucht, 20);
+
+  document.addEventListener("DOMContentLoaded", function(event) {
+    flucht.renderer.resize();
+    animate();
+  });
+
+  /**
+   * An array of keys that are pushed down if true and false if released.
+   * The index is the ascii code of the charater.
+   * @var {number[]} keys
+   */
+  window.keys = [];
+  window.onkeyup = function(e) {keys[e.keyCode]=false;}
+  window.onkeydown = function(e) {keys[e.keyCode]=true;}
+
   var networkConnection = new NetworkConnection();
   window.networkConnection = networkConnection;
   var partyWorld = new PartyWorld(document.getElementById("Party Display"), networkConnection);
@@ -19,20 +45,11 @@ setTimeout(function(){
   networkConnection.registerHandler("ice", partyWorld);
   networkConnection.registerHandler("connectionEstablished", partyWorld);
 
-
-  window.connect = function(e){
-    networkConnection.connect(e)
-  };
   let pm = new PacketManager();
   let test = function(e, v){ pm.onWSMessage(e, v)}
   networkConnection.registerHandler("webRTCMessage", {
     onWSMessage: test
   });
-  // pm.addListener({onPacket:function(packet){
-  //   if(packet.type === "Seed"){
-  //     Math.seedrandom(packet.seed);
-  //   }
-  // }});
   pm.addListener(PacketTypes.seed, flucht)
   let remotePlayerController = new RemotePlayerController(flucht.world, pm, flucht.runner);
   networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
@@ -50,29 +67,3 @@ setTimeout(function(){
   //  var test = new WebRTCConnection("ChannelName");
   //  test.doSomething();
 }, 10)
-
- var flucht = new Flucht();
-
- function animate(){
-   requestAnimationFrame(animate);
-   flucht.render();
- }
- setTimeout(update, 20);
- function update(){
-   setTimeout(update, 20);
-   flucht.update();
- }
-
- document.addEventListener("DOMContentLoaded", function(event) {
-   flucht.renderer.resize();
-   animate();
- });
-
- /**
-  * An array of keys that are pushed down if true and false if released.
-  * The index is the ascii code of the charater.
-  * @var {number[]} keys
-  */
- window.keys = [];
- window.onkeyup = function(e) {keys[e.keyCode]=false;}
- window.onkeydown = function(e) {keys[e.keyCode]=true;}

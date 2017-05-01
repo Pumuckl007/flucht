@@ -11,8 +11,24 @@ class Flucht{
   * @constructor
   */
   constructor(){
-    let self = this;
     this.seed = "Saya-" + Date.now();
+    this.packetManager = new PacketManager();
+    this.listeners = [];
+    this.READY = "ready";
+  }
+
+  /**
+  * adds a listener to flucht
+  */
+  addEventListener(listener){
+    this.listeners.push(listener);
+  }
+
+  /**
+  * creates a new world based on the seed provided to flucht
+  */
+  createWorld(){
+    let self = this;
     this.world = new World({spawnRunner:function(data){
       self.runner.pos = data.spawn;
       self.renderer.onEvent("Level Loaded", data.background);
@@ -22,7 +38,6 @@ class Flucht{
     }}, this.seed);
     this.runner = new Runner(64, 108, 0, 76);
     this.renderer = new Renderer(this.runner);
-    this.packetManager = new PacketManager();
     this.world.addEventListener(this.renderer);
     this.world.addEntity(this.runner);
   }
@@ -51,7 +66,9 @@ class Flucht{
   * updates the world after 20 milliseconds
   */
   update(){
-    this.world.tick(20/1000);
+    if(this.world){
+      this.world.tick(20/1000);
+    }
   }
 }
 
