@@ -111,7 +111,9 @@ class Flucht{
   * renderers all the elements in the stage
   */
   render(){
-    this.renderer.render();
+    if(this.renderer){
+      this.renderer.render();
+    }
   }
 
   /**
