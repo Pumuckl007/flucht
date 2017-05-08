@@ -7,6 +7,7 @@ import RemotePlayerController from "./RemotePlayerController.js";
 import Packet from "./Packet.js";
 import NetworkConnection from "./NetworkConnection.js";
 import PartyWorld from "./PartyWorld.js";
+import UI from "./UI.js";
 
 /** class creates world, runner and renderer to begin the game*/
 class Flucht{
@@ -33,12 +34,28 @@ class Flucht{
     this.networkConnection.registerHandler("ice", this.partyWorld);
     this.networkConnection.registerHandler("connectionEstablished", this.partyWorld);
 
-    this.pm = new PacketManager();
-    let test = function(e, v){ this.pm.onWSMessage(e, v)}
+    this.pm = new PacketManager(this.networkConnection);
+    let pm = this.pm;
+    let test = function(e, v){ pm.onWSMessage(e, v)}
     this.networkConnection.registerHandler("webRTCMessage", {
       onWSMessage: test
     });
-    this.pm.addListener(PacketTypes.seed, this.flucht);
+    this.pm.addListener(PacketTypes.seed, this);
+    this.pm.addListener(PacketTypes.host, this);
+
+    this.ui = new UI(this);
+
+    this.pm.addListener(PacketTypes.ready, this.partyWorld);
+    this.ready = false;
+
+    this.host = this.networkConnection.id;
+    let self = this;
+    this.networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
+      if(v.offerer){
+        self.pm.send(new Packet(false, v.id, PacketTypes.seed, {seed:self.seed}));
+        self.pm.send(new Packet(false, v.id, PacketTypes.host, {host:self.host}));
+      }
+    }});
 
   }
 
@@ -47,6 +64,15 @@ class Flucht{
   */
   addEventListener(listener){
     this.listeners.push(listener);
+  }
+
+  /**
+  * toggles the ready state of the application
+  */
+  toggleReady(){
+    this.ready = !this.ready;
+    this.pm.broadcast(new Packet(false, false, PacketTypes.ready, {ready:this.ready}));
+    this.partyWorld.update();
   }
 
   /**
@@ -88,9 +114,6 @@ class Flucht{
     let self = this;
     this.networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
       remotePlayerController.addRemotePlayerListener(v.id);
-      if(v.offerer){
-        self.pm.send(new Packet(false, v.id, PacketTypes.seed, {seed:self.seed}));
-      }
     }});
   }
 
@@ -101,10 +124,23 @@ class Flucht{
   onPacket(packet){
     if(packet.id === PacketTypes.seed){
       this.seed = packet.data.seed;
-      this.world.reset(this.seed);
-      this.runner.pos.x = 0;
-      this.runner.pos.y = 76;
+      if(this.world){
+        this.world.reset(this.seed);
+      }
+      if(this.runner){
+        this.runner.pos.x = 0;
+        this.runner.pos.y = 76;
+      }
+    } else if(packet.id === PacketTypes.host){
+      this.host = packet.data.host;
     }
+  }
+
+  /**
+  * called when a UI button is clicked
+  */
+  onUserEvent(event){
+    this.ui.event(event);
   }
 
   /**

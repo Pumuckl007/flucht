@@ -238,8 +238,6 @@ var httpRequest = function httpRequest(url, callback, passArg, random){
   theHttpRequest.onreadystatechange = function(){
     if (theHttpRequest.readyState === XMLHttpRequest.DONE) {
       if (theHttpRequest.status === 200) {
-        if(url === "/levels/Level1.json")
-        console.log("updateing");
         callback(JSON.parse(theHttpRequest.responseText), passArg, random)
       }
     }

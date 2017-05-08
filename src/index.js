@@ -31,10 +31,10 @@ setTimeout(function(){
   //  test.doSomething();
 }, 10)
 
-window.whop = function whop(){
-  window.flucht.createWorld(); window.flucht.insertRunner();
-  document.getElementById("GameMenuWrapper").style.display = "none";
-}
+// window.whop = function whop(){
+//   window.flucht.createWorld(); window.flucht.insertRunner();
+//   document.getElementById("GameMenuWrapper").style.display = "none";
+// }
 
 /**
  * An array of keys that are pushed down if true and false if released.

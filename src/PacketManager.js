@@ -8,8 +8,10 @@ class PacketManager{
   /**
   * creates a new package manager
   * @constructor
+  * @param {NetworkConnection} networkConnection the network connection to use
   */
-  constructor(){
+  constructor(networkConnection){
+    this.networkConnection = networkConnection;
     this.idMap = {};
   }
 
@@ -18,7 +20,7 @@ class PacketManager{
   */
   onWSMessage(type, event){
     if(type === "webRTCMessage"){
-      let packet = new Packet(event.userId, networkConnection.id, event.json.id, event.json.data);
+      let packet = new Packet(event.userId, this.networkConnection.id, event.json.id, event.json.data);
       this.emitPacketEvent(packet);
     }
   }
@@ -55,9 +57,20 @@ class PacketManager{
   * @param {Packet} packet the packet to send.
   */
   send(packet){
-    let connection = networkConnection.webRTCConnections[packet.recieverId];
+    let connection = this.networkConnection.webRTCConnections[packet.recieverId];
     if(connection){
       connection.channel.send(JSON.stringify({id : packet.id, data : packet.data}));
+    }
+  }
+
+  /**
+  * boradcasts a packet to all of the clients
+  * @param {Packet} packet the packet to bradcast
+  */
+  broadcast(packet){
+    for(let user in this.networkConnection.webRTCConnections){
+      packet.recieverId = user;
+      this.send(packet);
     }
   }
 }

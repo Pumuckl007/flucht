@@ -6,17 +6,30 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-  <div class="PartyDisplay">
+  <!-- <div class="PartyDisplay" style="display:none">
     <ul id="Party Display"></ul>
-  </div>
-  <div class="GameMenuWrapper" id="GameMenuWrapper">
+  </div> -->
+  <div class="GameMenuWrapper" id="GameMenuWrapper" style="display:none">
     <div class="GameMenu">
-      <div class="MenuButton" id="Join" onclick="whop()">
+      <div class="MenuButton" id="Join" onclick="flucht.onUserEvent('Join')">
         Join Existing Party
       </div>
-      <div class="MenuButton" id="New">
+      <div class="MenuButton" id="New" onclick="flucht.onUserEvent('NewParty')">
         Create New Party
       </div>
+    </div>
+  </div>
+  <div class="PartySelectionWrapper" id="PartySelectionWrapper" style="display:none">
+
+  </div>
+  <div class="PartyWrapper" id="PartyWrapper">
+    <div class="PlayerList">
+      <ul class="PlayerListList" id="Party Display">
+      </ul>
+    </div>
+    <div class="StartButton" onclick="flucht.onUserEvent('Ready')">Ready!</div>
+    <div class="Chat">
+      <input class="ChatInput" placeholder="Type to Chat"></input>
     </div>
   </div>
 </body>

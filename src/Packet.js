@@ -12,7 +12,7 @@ class Packet{
   */
   constructor(senderId, recieverId, id, data){
     if(!senderId){
-      senderId = networkConnection.id;
+      senderId = flucht.networkConnection.id;
     }
     this.senderId = senderId;
     this.recieverId = recieverId;
