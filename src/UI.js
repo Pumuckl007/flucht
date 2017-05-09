@@ -27,8 +27,10 @@ class UI{
     this.mainMenuDOM = document.getElementById("GameMenuWrapper");
     this.partySelectionDOM = document.getElementById("PartySelectionWrapper");
     this.partyDOM = document.getElementById("PartyWrapper");
-    this.screen = this.PARTY;
+    this.nameEntry = document.getElementById("NameInput");
+    this.screen = this.MAINMENU;
 
+    this.nameEntry.value = this.flucht.name;
   }
 
   /**
@@ -36,11 +38,11 @@ class UI{
   * @param {String} key the key for the event
   */
   event(key){
-    console.log(key);
     switch(key){
-      case "Join":
-        this.flucht.createWorld(); this.flucht.insertRunner();
-        this.mainMenuDOM.style.display = "none";
+      case "Start":
+        this.switchScreen(this.PARTY);
+        this.flucht.setName(this.nameEntry.value);
+        this.flucht.initalize();
         break;
       case "NewParty":
         this.switchScreen(this.PARTY);
@@ -74,6 +76,11 @@ class UI{
     }
     if(screen === this.PARTY){
       this.partyDOM.style.display = "block";
+    }
+    if(screen === this.GAME){
+      this.partyDOM.style.display = "none";
+      this.partySelectionDOM.style.display = "none";
+      this.mainMenuDOM.style.display = "none";
     }
     this.screen = screen;
   }

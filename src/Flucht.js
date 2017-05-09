@@ -16,6 +16,29 @@ class Flucht{
   * @constructor
   */
   constructor(){
+    if(localStorage.name){
+      this.name = localStorage.name;
+    } else {
+      this.name = "Saya";
+    }
+    this.ui = new UI(this);
+  }
+
+  /**
+   * sets the name
+   * @param {String} name the new name
+   */
+  setName(name){
+    if(name){
+      localStorage.name = name;
+      this.name = name;
+    }
+  }
+
+  /**
+   * initilizes the flucht game
+   */
+  initalize(){
     this.seed = "Saya-" + Date.now();
     this.packetManager = new PacketManager();
     this.listeners = [];
@@ -24,7 +47,7 @@ class Flucht{
     */
     this.WORLDCREATED = "world created";
 
-    this.networkConnection = new NetworkConnection();
+    this.networkConnection = new NetworkConnection(this.name);
     this.partyWorld = new PartyWorld(document.getElementById("Party Display"), this.networkConnection);
     this.networkConnection.registerHandler("leave", this.partyWorld);
     this.networkConnection.registerHandler("peers", this.partyWorld);
@@ -42,8 +65,7 @@ class Flucht{
     });
     this.pm.addListener(PacketTypes.seed, this);
     this.pm.addListener(PacketTypes.host, this);
-
-    this.ui = new UI(this);
+    this.pm.addListener(PacketTypes.start, this);
 
     this.pm.addListener(PacketTypes.ready, this.partyWorld);
     this.ready = false;
@@ -56,7 +78,6 @@ class Flucht{
         self.pm.send(new Packet(false, v.id, PacketTypes.host, {host:self.host}));
       }
     }});
-
   }
 
   /**
@@ -79,6 +100,10 @@ class Flucht{
   * creates a new world based on the seed provided to flucht
   */
   createWorld(){
+    console.log(this.seed);
+    if(this.world){
+      return;
+    }
     let self = this;
     this.world = new World({spawnRunner:function(data){
       if(self.runner){
@@ -86,6 +111,7 @@ class Flucht{
       } else {
         self.spawn = data.spawn;
       }
+      console.log(self.world.terrain.checksum());
       self.renderer.onEvent("Terrain Updated", self.world.terrain);
       self.renderer.onEvent("Level Loaded", data.background);
       if(self.world.entities.length < 1 && self.runner){
@@ -103,6 +129,9 @@ class Flucht{
   * inserts the runner to the world
   */
   insertRunner(){
+    if(this.runner){
+      return;
+    }
     if(this.spawn){
       this.runner = new Runner(64, 108, this.spawn.x, this.spawn.y);
     } else {
@@ -112,9 +141,9 @@ class Flucht{
     this.world.addEntity(this.runner);
     this.remotePlayerController = new RemotePlayerController(this.world, this.pm, this.runner);
     let self = this;
-    this.networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
-      remotePlayerController.addRemotePlayerListener(v.id);
-    }});
+    for(let userId in this.networkConnection.webRTCConnections){
+      remotePlayerController.addRemotePlayerListener(userId);
+    }
   }
 
   /**
@@ -133,6 +162,8 @@ class Flucht{
       }
     } else if(packet.id === PacketTypes.host){
       this.host = packet.data.host;
+    } else if(packet.id === PacketTypes.start){
+      this.start();
     }
   }
 
@@ -159,6 +190,24 @@ class Flucht{
     if(this.world){
       this.world.tick(20/1000);
     }
+  }
+
+  /**
+  * called when all of the users are ready by PartyWorld
+  */
+  allReady(){
+    console.log(this.host, this.networkConnection.id);
+    if(this.host === this.networkConnection.id){
+      this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true}));
+      this.start();
+    }
+  }
+
+  start(){
+    this.createWorld();
+    this.insertRunner();
+    this.ui.switchScreen(this.ui.GAME);
+    console.log("start");
   }
 }
 

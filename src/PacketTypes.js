@@ -4,5 +4,6 @@ export default {
   runnerUpdated:"Runner Updated",
   seed:"Seed",
   ready:"Ready",
-  host:"Host"
+  host:"Host",
+  start: "Start"
 }

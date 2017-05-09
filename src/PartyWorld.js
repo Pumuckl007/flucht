@@ -106,6 +106,19 @@ class PartyWorld{
       string += "</span></li>";
     }
     this.domElement.innerHTML = string;
+
+    let allReady = true;
+    for(let user of this.users){
+      if(!user.ready){
+        allReady = false;
+      }
+    }
+    if(allReady){
+      flucht.allReady();
+    }
+    if(this.users.length === 1){
+      flucht.host = this.users[0].id;
+    }
   }
 
   /**

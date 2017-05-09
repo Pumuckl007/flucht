@@ -104,6 +104,8 @@ class NetworkConnection{
         this.emitEvent("connectionEstablished", {id:userId, offerer:true});
       } else if(event.type === "message"){
         this.emitEvent("webRTCMessage", {userId: userId, json:event.json})
+      } else if(event.type === "close"){
+        this.webRTCConnections[userId] = null;
       }
     });
   }
@@ -132,6 +134,8 @@ class NetworkConnection{
         this.emitEvent("connectionEstablished", {id:user.id, offerer:false});
       } else if(event.type === "message"){
         this.emitEvent("webRTCMessage", {userId: user.id, json:event.json})
+      } else if(event.type === "close"){
+        this.webRTCConnections[user.id] = null;
       }
     });
   }

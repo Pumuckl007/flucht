@@ -34,6 +34,10 @@ class WebRTCConnection{
       }
     }
 
+    let onClose = function(e){
+      self.handler({type: "close"});
+    }
+
     if(offer){
       this.connection.setRemoteDescription(offer);
       this.connection.createAnswer().then((answer) => {
@@ -46,6 +50,7 @@ class WebRTCConnection{
           self.handler({type: "channelOpen"});
         }
         e.channel.onmessage = onMessage;
+        e.channel.onclose = onClose;
       }
     } else {
       let unopendDataChannel = this.connection.createDataChannel(channelId);
@@ -54,9 +59,7 @@ class WebRTCConnection{
         self.handler({type: "channelOpen"});
         unopendDataChannel.onmessage = onMessage;
       }
-      unopendDataChannel.onclose = function(event){
-        console.log(event);
-      }
+      unopendDataChannel.onclose = onClose;
       unopendDataChannel.onerror = unopendDataChannel.onclose;
       this.connection.createOffer().then(function(offer){
         self.handler({type: "offer", offer: offer});
