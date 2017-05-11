@@ -47,6 +47,8 @@ class LightingMask{
     * updates the size of the maskinging layer to fit the size of the window
     */
     resize(){
+      this.daylight.clear();
+      this.daylight.drawRect(0, 0, this.draw.view.width, this.draw.view.height);
       this.texture = new PIXI.RenderTexture.create(this.draw.view.width,this.draw.view.height);
 			this.lightsTex = new PIXI.Sprite(this.texture);
       this.baseStage.mask = this.lightsTex;

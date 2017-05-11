@@ -1,6 +1,7 @@
 import AnimatedEntityRenderer from "./AnimatedEntityRenderer.js";
 import AnimatedTexture from "./AnimatedTexture.js";
 import LightingMask from "./LightingMask.js";
+import StatusBars from "./StatusBars.js";
 /**
 * @module Renderer
 */
@@ -28,6 +29,8 @@ class Renderer{
 
     //add Lighting mask
     this.light = new LightingMask(this.stage, this.renderer);
+    this.barLayer = new PIXI.Graphics();
+    this.statusBars = new StatusBars(this.stage, this.renderer, this.barLayer);
   }
 
  /**
@@ -41,6 +44,7 @@ class Renderer{
       if(object.type === "Runner"){
         this.light.addLightSource(object);
       }
+      this.statusBars.addHealthBar(object);
       this.renderers.push(renderer);
     }
     if(type === "Terrain Updated"){
@@ -65,6 +69,7 @@ class Renderer{
         this.stage.addChild(sprite);
       }
       this.stage.addChild(this.graphics);
+      this.stage.addChild(this.barLayer);
       for(let element of this.terrain.elements){
         if(element.type === "Textured Element" || element.type === "Lit Element"|| element.interactive){
           let self = this;
@@ -74,6 +79,9 @@ class Renderer{
           }
           if(element.type === "Lit Element"){
             this.light.addLightSource(element);
+          }
+          if(element.interactive){
+            this.statusBars.addBearTrapBar(element);
           }
           if(element.interactive){
             new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done, element);
@@ -120,6 +128,9 @@ class Renderer{
     for(let renderer of this.renderers){
       renderer.update(this.stage);
     }
+    this.barLayer.clear();
+    this.statusBars.update();
+    this.light.animate();
     this.graphics.clear();
     this.graphics.beginFill(0x000000);
     for(let element of this.terrain.elements){
@@ -132,7 +143,6 @@ class Renderer{
       }
     }
     this.renderer.render(this.stage);
-    this.light.animate(); //animate the lighting mask
   }
 }
 

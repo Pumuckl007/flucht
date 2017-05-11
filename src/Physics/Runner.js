@@ -19,7 +19,7 @@ class Runner extends Entity{
     this.needsTick = true;
     this.worldCollisions = true;
     this.type = "Runner";
-    this.onGround = true;
+    this.onGround = true;;
     this.pos = {x:x, y:y};
     this.frozen = false;
     this.health = 100;
@@ -80,6 +80,7 @@ class Runner extends Entity{
   */
   unfreeze(){
     this.frozen = false;
+    this.vel.y = 0;
   }
 
   /**
@@ -88,6 +89,9 @@ class Runner extends Entity{
   */
   hurt(damage){
     this.health -= damage;
+    if(this.health < 0){
+      this.health = 0;
+    }
   }
 
   /**

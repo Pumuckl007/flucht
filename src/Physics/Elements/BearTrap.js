@@ -21,6 +21,7 @@ class BearTrap extends Element{
     this.color = 0xff0022;
     this.lastVel = 0;
     this.tapCount = 0;
+    this.maxTap = 30;
     this.interactive = true;
   }
 
@@ -32,7 +33,6 @@ class BearTrap extends Element{
   * @param {number} entityY the y-coordinate of the entity that is collided with
   */
     collision(entity, side, entityX, entityY){
-      //console.log(entity.vel.x+" after");
       if(entity.type === "Runner"){
         let runner = entity;
         if(this.state === "idle"){
@@ -46,7 +46,8 @@ class BearTrap extends Element{
           this.dontMoveOnCollision = true;
           runner.freeze();
         }
-        if(this.tapCount <30){
+        if(this.tapCount <this.maxTap){
+          runner.hurt(0.1);
           let vel = runner.getVelocityX();
           //console.log(vel);
           if(vel > 0 && this.lastVel != vel){
@@ -62,8 +63,8 @@ class BearTrap extends Element{
           this.color = 0x00ff00;
           this.ghost = true;
           runner.unfreeze();
+          this.state = "open";
         }
-        //console.log(this.tapCount);
     }
   }
 
