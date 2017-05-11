@@ -4,14 +4,11 @@ class StatusBars{
   /**
   * creates the status bar tracker that holds list of entities to track and where to draw
   * @constructor
-  * @param {PIXI.Stage} stage the stage to display the status bars
-  * @param {PIXI.Renderer} renderer the renderer to display the status bars
+  * @param {PIXI.Graphics} graphics the convas to draw the status bars on
   */
-  constructor(stage, renderer, graphics){
+  constructor(graphics){
     this.healthBars = [];
     this.progressBars = [];
-    this.renderer = renderer;
-    this.stage = stage;
     this.graphics = graphics;
   }
 
@@ -20,7 +17,9 @@ class StatusBars{
   * @param {Entity} entity the enitity to keep track of
   */
   addHealthBar(entity){
-    let healthBar = new Tracker(entity, 128, 8, 70);
+    let width = 120;
+    let height = 5;
+    let healthBar = new Tracker(entity, width, height, 70);
     this.healthBars.push(healthBar);
   }
 
@@ -29,7 +28,9 @@ class StatusBars{
   * @param {BearTrap} element the bear trap to track
   */
   addBearTrapBar(element){
-    let progressBar = new Tracker(element, 30, 8, 40, false, 0xfffc00);
+    let width = 30;
+    let height = 8
+    let progressBar = new Tracker(element, width, height, 40, false, 0xfffc00);
     this.progressBars.push(progressBar);
   }
 
@@ -38,6 +39,9 @@ class StatusBars{
   * @param {Tracker} bar the bar to draw on the canvas
   */
   draw(bar){
+    this.graphics.beginFill(0xffffff);
+    this.graphics.drawRect(bar.pos.x-2, bar.pos.y-2, bar.barWidth+4, bar.barHeight+4);
+    this.graphics.endFill();
     this.graphics.beginFill(0x000000);
     this.graphics.drawRect(bar.pos.x, bar.pos.y, bar.barWidth, bar.barHeight);
     this.graphics.endFill();
