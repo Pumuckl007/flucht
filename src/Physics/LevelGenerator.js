@@ -11,7 +11,19 @@ import Room from "./Room.js"
  * @param {function} callback the callback
  */
 function generateLevel(urlToDescription, callback, random){
-  httpRequest(urlToDescription, generate, callback, random);
+  let discription = false;
+  let waitUntilDone = function(levelDiscription){
+    if(!discription){
+      discription = levelDiscription;
+      loadAllToCache(discription.roomTypes);
+    }
+    if(this.allDone){
+      generate(discription, callback, random);
+    } else {
+      setTimeout(waitUntilDone, 10);
+    }
+  }
+  httpRequest(urlToDescription, waitUntilDone);
 }
 
 /**
@@ -72,10 +84,10 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
   }
 
   let avaliableSpots = [];
-  for(let h = 0; h<levelDescription.height; h++){
-    avaliableSpots.push(h);
-  }
   for(let w = 0; w<levelDescription.width; w++){
+    avaliableSpots.push(w);
+  }
+  for(let h = 0; h<levelDescription.height; h++){
     let localAvaliableSpots = avaliableSpots.slice(0);
     for(let roomName in roomMinMaxMap){
       let min = roomMinMaxMap[roomName].min;
@@ -87,7 +99,11 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
         let posToPlaceAt = localAvaliableSpots[index];
         localAvaliableSpots.splice(index, 1);
         let roomToPlace = avaliableRoomMap[roomName];
-        tryToPlace(roomToPlace, roomGrid, w, index, levelDescription, avaliableRoomMap, rooms);
+        if(tryToPlace(roomToPlace, roomGrid, index, h, levelDescription, avaliableRoomMap, rooms)){
+          console.log(index, ",", h, " was placed");
+        } else {
+          console.log(index, ",", h, " could not be placed");
+        }
       }
     }
   }
@@ -227,6 +243,27 @@ function findLocation(gateway, room){
   return [x, y];
 }
 
+var cached = {};
+var allDone = false;
+
+/**
+ * Caches all of the rooms that would be used in the level
+ * @param {String[]} urls the urls to cache
+ */
+var loadAllToCache = function(urls){
+  allDone = false;
+  let numberLeft = urls.length;
+  for(let url of urls){
+    httpRequest(url, function(data){
+      cached[url] = data;
+      numberLeft --;
+      if(numberLeft <= 0){
+        allDone = true;
+      }
+    });
+  }
+}
+
 /**
 * makes an XMLHttpRequest with the given arguments at the url and calls the callback with the data
 * @param {String} url the url to querry
@@ -234,12 +271,15 @@ function findLocation(gateway, room){
 * @param {Object} passArg the arguments to directly pass into the callback
 */
 var httpRequest = function httpRequest(url, callback, passArg, random){
+  if(cached[url]){
+    callback(cached[url], passArg, random);
+    return;
+  } else {
+  }
   let theHttpRequest = new XMLHttpRequest();
   theHttpRequest.onreadystatechange = function(){
     if (theHttpRequest.readyState === XMLHttpRequest.DONE) {
       if (theHttpRequest.status === 200) {
-        if(url === "/levels/Level1.json")
-        console.log("updateing");
         callback(JSON.parse(theHttpRequest.responseText), passArg, random)
       }
     }

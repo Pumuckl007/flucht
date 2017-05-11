@@ -26,6 +26,9 @@ class PartyWorld{
   onWSMessage(type, message){
     if(type === "peers"){
       this.users = message.peers;
+      for(let user of this.users){
+        user.ready = false;
+      }
       this.update();
     } else if(type === "leave"){
       this.removeUser(message.userId);
@@ -85,6 +88,8 @@ class PartyWorld{
   addUser(user){
     console.log("Added", user)
     this.users.push(user);
+    user.ready = false;
+    this.networkConnection.connect(user.id);
     this.update();
   }
 
@@ -95,18 +100,25 @@ class PartyWorld{
     let string = "";
     for(let user of this.users){
       if(user.id === this.networkConnection.id){
-        continue;
+        user.ready = flucht.ready;
       }
-      string += "<li>" + user.name + " " + user.id;
-      if(!user.isConnected){
-        string += "<button onclick=\"connect('" + user.id + "')\" id=\"" + user.id +
-         "\">Connect</button>";
-      } else {
-        string += "connected!";
-      }
-      string += "</li>";
+      string += "<li><span style=\"color:" + ((user.ready) ? "green" : "white") + "\">" + user.name;
+      string += "</span></li>";
     }
     this.domElement.innerHTML = string;
+
+    let allReady = true;
+    for(let user of this.users){
+      if(!user.ready){
+        allReady = false;
+      }
+    }
+    if(allReady){
+      flucht.allReady();
+    }
+    if(this.users.length === 1){
+      flucht.host = this.users[0].id;
+    }
   }
 
   /**
@@ -117,11 +129,7 @@ class PartyWorld{
   createWebrtcConnection(userId, offer){
     let user = this.getUserById(userId);
     if(user){
-      if(confirm("Would you like to join " + user.name + "'s Party?")){
-        this.networkConnection.acceptConnection(user, offer);
-      } else {
-        console.log("TODO: SEND ABORT SIGNAL");
-      }
+      this.networkConnection.acceptConnection(user, offer);
     } else {
       console.log("User tried to connect, but we do not have the user!", userId);
     }
@@ -162,6 +170,19 @@ class PartyWorld{
     } else {
       console.log("Tried to try ice for a user, but we do not have the user!", userId);
     }
+  }
+
+  /**
+  * called when a back is recived
+  * @param {Packet} packet the packet received
+  */
+  onPacket(packet){
+    let user = this.getUserById(packet.senderId);
+    if(!user){
+      return;
+    }
+    user.ready = packet.data.ready;
+    this.update();
   }
 }
 

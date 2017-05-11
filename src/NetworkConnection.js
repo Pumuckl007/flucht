@@ -9,7 +9,7 @@ class NetworkConnection{
   *  Creates a new network connection witht the given name
   *  @param {String} [name] the name of the client
   */
-  constructor(name = "Sayarr"){
+  constructor(name = "Saya"){
     this.websocket = new WebSocket("ws://" + document.URL.replace("http://", ""), "webrtcmitigation");
     let self = this;
     this.websocket.onmessage = function(e){
@@ -104,6 +104,8 @@ class NetworkConnection{
         this.emitEvent("connectionEstablished", {id:userId, offerer:true});
       } else if(event.type === "message"){
         this.emitEvent("webRTCMessage", {userId: userId, json:event.json})
+      } else if(event.type === "close"){
+        this.webRTCConnections[userId] = null;
       }
     });
   }
@@ -132,6 +134,8 @@ class NetworkConnection{
         this.emitEvent("connectionEstablished", {id:user.id, offerer:false});
       } else if(event.type === "message"){
         this.emitEvent("webRTCMessage", {userId: user.id, json:event.json})
+      } else if(event.type === "close"){
+        this.webRTCConnections[user.id] = null;
       }
     });
   }

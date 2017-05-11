@@ -6,7 +6,31 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-  <div class="PartyDisplay">
+  <!-- <div class="PartyDisplay" style="display:none">
     <ul id="Party Display"></ul>
+  </div> -->
+  <div class="GameMenuWrapper" id="GameMenuWrapper">
+    <div class="GameMenu">
+      <input class="NameInput" id="NameInput" placeholder="Name"></input>
+      <div class="MenuButton" id="Join" onclick="flucht.onUserEvent('Start')">
+        Start
+      </div>
+      <div class="MenuButton" id="New" onclick="flucht.onUserEvent('Options')">
+        Options
+      </div>
+    </div>
+  </div>
+  <div class="PartySelectionWrapper" id="PartySelectionWrapper" style="display:none">
+
+  </div>
+  <div class="PartyWrapper" id="PartyWrapper" style="display:none">
+    <div class="PlayerList">
+      <ul class="PlayerListList" id="Party Display">
+      </ul>
+    </div>
+    <div class="StartButton" onclick="flucht.onUserEvent('Ready')">Ready!</div>
+    <div class="Chat">
+      <input class="ChatInput" placeholder="Type to Chat"></input>
+    </div>
   </div>
 </body>

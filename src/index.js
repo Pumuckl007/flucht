@@ -4,6 +4,7 @@ import Flucht from "./Flucht.js";
 /** Creates a new network Connection and runs the game*/
 setTimeout(function(){
   var flucht = new Flucht();
+  window.flucht = flucht;
 
   var animate = function animate(){
     requestAnimationFrame(animate);
@@ -21,14 +22,19 @@ setTimeout(function(){
     animate();
   });
 
-  flucht.createWorld();
-  flucht.insertRunner();
+  // flucht.createWorld();
+  // flucht.insertRunner();
 
 
   //  console.log("STarting");
   //  var test = new WebRTCConnection("ChannelName");
   //  test.doSomething();
 }, 10)
+
+// window.whop = function whop(){
+//   window.flucht.createWorld(); window.flucht.insertRunner();
+//   document.getElementById("GameMenuWrapper").style.display = "none";
+// }
 
 /**
  * An array of keys that are pushed down if true and false if released.

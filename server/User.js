@@ -11,6 +11,7 @@ class User{
     this.name = name;
     this.id = id;
     this.connection = connection;
+    this.ready = false;
   }
 
   /**

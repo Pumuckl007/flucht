@@ -31,6 +31,17 @@ class Terrain{
     this.rooms = rooms;
     this.handler.spawnRunner(this)
   }
+
+  /**
+  * returns a unique id for this terrain
+  */
+  checksum(){
+    let total = 0;
+    for(let room of this.rooms){
+      total += (room.x + room.y)*room.elements.length;
+    }
+    return total;
+  }
 }
 
 export default Terrain;
