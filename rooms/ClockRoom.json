@@ -26,7 +26,7 @@
       "height": 1,
       "type": "Bear Trap",
       "url": "/assets/Traps/BearTrap/BearTrap.json",
-      "offsetX": -34,
+      "offsetX": -32,
       "offsetY": -51,
       "ghost": false
     }
