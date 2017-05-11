@@ -28,6 +28,7 @@ class UI{
     this.partySelectionDOM = document.getElementById("PartySelectionWrapper");
     this.partyDOM = document.getElementById("PartyWrapper");
     this.nameEntry = document.getElementById("NameInput");
+    this.editor = document.getElementById("MurderEditor");
     this.screen = this.MAINMENU;
 
     this.nameEntry.value = this.flucht.name;
@@ -81,6 +82,7 @@ class UI{
       this.partyDOM.style.display = "none";
       this.partySelectionDOM.style.display = "none";
       this.mainMenuDOM.style.display = "none";
+      this.editor.style.display = "block";
     }
     this.screen = screen;
   }
