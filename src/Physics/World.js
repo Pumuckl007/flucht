@@ -85,15 +85,6 @@ class World{
         listener.onEvent("Entity Added", window.flucht.runner);
       }
     }} , this.seed);
-    for(let listener of this.listeners){
-      // listener.onEvent("Terrain Updated", this.terrain);
-      // for(let entity of this.terrain.elements){
-      //   listener.onEvent("Entity Added", entity);
-      // }
-      // for (let entity of this.entities){
-      //   listener.onEvent("Entity Added", entity);
-      // }
-    }
   }
 }
 

@@ -99,11 +99,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
         let posToPlaceAt = localAvaliableSpots[index];
         localAvaliableSpots.splice(index, 1);
         let roomToPlace = avaliableRoomMap[roomName];
-        if(tryToPlace(roomToPlace, roomGrid, index, h, levelDescription, avaliableRoomMap, rooms)){
-          console.log(index, ",", h, " was placed");
-        } else {
-          console.log(index, ",", h, " could not be placed");
-        }
+        tryToPlace(roomToPlace, roomGrid, index, h, levelDescription, avaliableRoomMap, rooms);
       }
     }
   }

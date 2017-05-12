@@ -1,4 +1,5 @@
 import LevelGenerator from "./LevelGenerator.js";
+import BearTrap from "./Elements/BearTrap.js";
 
 /**
 * A class representing all of the terain.
@@ -28,6 +29,12 @@ class Terrain{
   */
   loadElements(elements, rooms){
     this.elements = elements;
+    this.elements.push(new BearTrap(400, 10, 1, 1, {
+      "url":"/assets/Traps/BearTrap/BearTrap.json",
+      "offsetX": -32,
+      "offsetY": -51,
+      "ghost": false
+    }))
     this.rooms = rooms;
     this.handler.spawnRunner(this)
   }

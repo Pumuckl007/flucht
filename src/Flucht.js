@@ -8,6 +8,7 @@ import Packet from "./Packet.js";
 import NetworkConnection from "./NetworkConnection.js";
 import PartyWorld from "./PartyWorld.js";
 import UI from "./UI.js";
+import ElementNetworkSyncController from "./Physics/ElementNetworkSyncController.js";
 
 /** class creates world, runner and renderer to begin the game*/
 class Flucht{
@@ -106,12 +107,12 @@ class Flucht{
     }
     let self = this;
     this.world = new World({spawnRunner:function(data){
+      self.elementNetworkSyncController = new ElementNetworkSyncController(self.pm, self.world);
       if(self.runner){
         self.runner.pos = data.spawn;
       } else {
         self.spawn = data.spawn;
       }
-      console.log(self.world.terrain.checksum());
       self.renderer.onEvent("Terrain Updated", self.world.terrain);
       self.renderer.onEvent("Level Loaded", data.background);
       if(self.world.entities.length < 1 && self.runner){
@@ -189,6 +190,9 @@ class Flucht{
   update(){
     if(this.world){
       this.world.tick(20/1000);
+      if(this.elementNetworkSyncController){
+        this.elementNetworkSyncController.update();
+      }
     }
   }
 

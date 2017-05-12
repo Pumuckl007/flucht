@@ -5,5 +5,6 @@ export default {
   seed:"Seed",
   ready:"Ready",
   host:"Host",
-  start: "Start"
+  start: "Start",
+  elementUpdate: "Element Update"
 }
