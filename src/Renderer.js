@@ -27,10 +27,9 @@ class Renderer{
     let self = this;
     window.onresize = function(event){ self.resize(event)};
 
-    //add Lighting mask
     this.light = new LightingMask(this.stage, this.renderer);
     this.barLayer = new PIXI.Graphics();
-    this.statusBars = new StatusBars(this.stage, this.renderer, this.barLayer);
+    this.statusBars = new StatusBars(this.barLayer);
   }
 
  /**
