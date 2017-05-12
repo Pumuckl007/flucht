@@ -10,13 +10,15 @@ class Element{
   * @param {number} height the height of the element
   * @param {String} type element type that is set to "Element"
   * @param {boolean} renderAsBox specifies if the element is a box or not
+  * @param {number} id the id of the trap
   */
-  constructor(x, y, width, height, type = "Element", renderAsBox = true){
+  constructor(x, y, width, height, type = "Element", renderAsBox = true, id = -1){
     this.pos = {x:x, y:y};
     this.box = new Box(width, height); //collision hit box
     this.type = type;
     this.renderAsBox = renderAsBox; //draws this as black square
     this.color = 0x000000; // color of square
+    this.id = id;
   }
   /**
   * empty method called when collision occurs and returns which side collided

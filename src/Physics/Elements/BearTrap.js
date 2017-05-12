@@ -12,7 +12,7 @@ class BearTrap extends Element{
   * @param {ElementDescription} element the description of the element that the image is displayed on
   */
   constructor(x, y, width, height, element){
-    super(x, y, width, height, "Bear Trap", false);
+    super(x, y, width, height, "Bear Trap", false, 1);
     this.state = "idle";
     this.url = element.url;
     this.offY = element.offsetY;
@@ -23,6 +23,8 @@ class BearTrap extends Element{
     this.tapCount = 0;
     this.maxTap = 30;
     this.interactive = true;
+
+    this.hasChanged = false;
   }
 
   /**
@@ -36,10 +38,12 @@ class BearTrap extends Element{
       if(entity.type === "Runner"){
         let runner = entity;
         if(this.state === "idle"){
+          this.hasChanged = true;
           this.state = "closing";
           this.time = Date.now();
         }
         if(Date.now()- this.time > 10){
+          this.hasChanged = true;
           this.state = "closed";
         }
         if(!runner.frozen){
@@ -53,10 +57,12 @@ class BearTrap extends Element{
           if(vel > 0 && this.lastVel != vel){
             this.lastVel = vel;
             this.tapCount++;
+            this.hasChanged = true;
           }
           else if(vel < 0 && this.lastVel != vel){
             this.lastVel = vel;
             this.tapCount++;
+            this.hasChanged = true;
           }
         }
         else{
@@ -64,8 +70,30 @@ class BearTrap extends Element{
           this.ghost = true;
           runner.unfreeze();
           this.state = "open";
+          this.hasChanged = true;
         }
     }
+  }
+
+  /**
+  * accepts the data which was sent over the network
+  * @param {Object} data the data
+  */
+  accepetPacketData(data){
+    this.state = data.state;
+    this.tapCount = data.tapCount;
+  }
+
+  /**
+  * specifies the data to be sent when hashanged is true
+  */
+  generatePacketData(){
+    this.hasChanged = false;
+    let data = {
+      state: this.state,
+      tapCount: this.tapCount
+    }
+    return data;
   }
 
 }
