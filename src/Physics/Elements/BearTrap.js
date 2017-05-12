@@ -23,7 +23,7 @@ class BearTrap extends Element{
     this.tapCount = 0;
     this.maxTap = 30;
     this.interactive = true;
-
+    this.trappedEntity = -1;
     this.hasChanged = false;
   }
 
@@ -36,41 +36,46 @@ class BearTrap extends Element{
   */
     collision(entity, side, entityX, entityY){
       if(entity.type === "Runner"){
-        let runner = entity;
-        if(this.state === "idle"){
-          this.hasChanged = true;
-          this.state = "closing";
-          this.time = Date.now();
+        if(this.trappedEntity < 0){
+          this.trappedEntity = entity;
         }
-        if(Date.now()- this.time > 10){
-          this.hasChanged = true;
-          this.state = "closed";
-        }
-        if(!runner.frozen){
-          this.dontMoveOnCollision = true;
-          runner.freeze();
-        }
-        if(this.tapCount <this.maxTap){
-          runner.hurt(0.1);
-          let vel = runner.getVelocityX();
-          //console.log(vel);
-          if(vel > 0 && this.lastVel != vel){
-            this.lastVel = vel;
-            this.tapCount++;
+        if(this.trappedEntity === entity){
+          let runner = entity;
+          if(this.state === "idle"){
+            this.hasChanged = true;
+            this.state = "closing";
+            this.time = Date.now();
+          }
+          if(Date.now()- this.time > 10){
+            this.hasChanged = true;
+            this.state = "closed";
+          }
+          if(!runner.frozen){
+            this.dontMoveOnCollision = true;
+            runner.freeze();
+          }
+          if(this.tapCount <this.maxTap){
+            runner.hurt(0.1);
+            let vel = runner.getVelocityX();
+            //console.log(vel);
+            if(vel > 0 && this.lastVel != vel){
+              this.lastVel = vel;
+              this.tapCount++;
+              this.hasChanged = true;
+            }
+            else if(vel < 0 && this.lastVel != vel){
+              this.lastVel = vel;
+              this.tapCount++;
+              this.hasChanged = true;
+            }
+          }
+          else{
+            this.color = 0x00ff00;
+            this.ghost = true;
+            runner.unfreeze();
+            this.state = "open";
             this.hasChanged = true;
           }
-          else if(vel < 0 && this.lastVel != vel){
-            this.lastVel = vel;
-            this.tapCount++;
-            this.hasChanged = true;
-          }
-        }
-        else{
-          this.color = 0x00ff00;
-          this.ghost = true;
-          runner.unfreeze();
-          this.state = "open";
-          this.hasChanged = true;
         }
     }
   }
@@ -82,6 +87,7 @@ class BearTrap extends Element{
   accepetPacketData(data){
     this.state = data.state;
     this.tapCount = data.tapCount;
+    this.trappedEntity = data.trappedEntity;
   }
 
   /**
@@ -91,7 +97,8 @@ class BearTrap extends Element{
     this.hasChanged = false;
     let data = {
       state: this.state,
-      tapCount: this.tapCount
+      tapCount: this.tapCount,
+      trappedEntity: this.trappedEntity
     }
     return data;
   }
