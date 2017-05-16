@@ -18,7 +18,6 @@ class Terrain{
     this.elements = [];
     let self = this;
     let seedFunction = new Math.seedrandom(seed);
-    this.handler = handler;
     LevelGenerator(url, function(elements, rooms){self.loadElements(elements, rooms)}, seedFunction);
   }
 

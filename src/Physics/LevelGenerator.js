@@ -99,7 +99,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
         let posToPlaceAt = localAvaliableSpots[index];
         localAvaliableSpots.splice(index, 1);
         let roomToPlace = avaliableRoomMap[roomName];
-        tryToPlace(roomToPlace, roomGrid, index, h, levelDescription, avaliableRoomMap, rooms);
+        tryToPlace(roomToPlace, roomGrid, posToPlaceAt, h, levelDescription, avaliableRoomMap, rooms);
       }
     }
   }
@@ -143,7 +143,10 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
 * @returns {boolean} returns whether or not the room was sucessfully placed
 */
 function tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms){
-  let can = true;
+  let can = canPlace(w, h, levelDescription, roomGrid);
+  if(!can){
+    return false;
+  }
   for(let location in roomToPlace.roomRequirements){
     if(location === "bottom"){
       can = canPlace(w, h-1, levelDescription, roomGrid);

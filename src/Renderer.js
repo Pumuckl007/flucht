@@ -30,6 +30,7 @@ class Renderer{
     this.light = new LightingMask(this.stage, this.renderer);
     this.barLayer = new PIXI.Graphics();
     this.statusBars = new StatusBars(this.barLayer);
+
   }
 
  /**
@@ -132,6 +133,9 @@ class Renderer{
     this.light.animate();
     this.graphics.clear();
     this.graphics.beginFill(0x000000);
+    if(!this.terrain){
+      return;
+    }
     for(let element of this.terrain.elements){
       if(element.renderAsBox){
         this.graphics.beginFill(element.color);
@@ -143,6 +147,18 @@ class Renderer{
     }
     this.renderer.render(this.stage);
   }
+
+  /**
+  * sets the x and y position of the stage
+  * @param {number} x the x position
+  * @param {number} y the y position
+  */
+  setPos(x, y){
+    this.stage.y = this.scale*y+document.body.offsetHeight/2;
+    this.stage.x = -this.scale*x+document.body.offsetWidth/2;
+  }
+
+  
 }
 
 /**

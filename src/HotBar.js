@@ -9,7 +9,7 @@ class HotBar{
   * creates a new hot bar, always has 10 slots [0,9]
   * @constructor
   */
-  constructor(numberOfSlots){
+  constructor(){
     /**
     * the string for the event fired when a slot is changed
     */
@@ -68,8 +68,17 @@ class HotBar{
   */
   notifyObservers(event, data){
     for(let listener of this.listeners){
-      listener.onEvent(event);
+      listener.onEvent(event, data);
     }
+  }
+
+  /**
+  * sets the selected slot
+  * @param {number} index the index of the slot [0,9]
+  */
+  setSelectedSlot(index){
+    this.currentSelected = index;
+    this.notifyObservers(this.SLOT_CHANGED, index);
   }
 
 }
