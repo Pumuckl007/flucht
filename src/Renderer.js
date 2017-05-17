@@ -158,7 +158,12 @@ class Renderer{
     this.stage.x = -this.scale*x+document.body.offsetWidth/2;
   }
 
-  
+  /**
+  * toggles the lighting for the level
+  */
+  toggleLighting(){
+    this.light.toggle();
+  }
 }
 
 /**

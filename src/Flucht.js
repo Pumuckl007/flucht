@@ -11,6 +11,7 @@ import UI from "./UI.js";
 import ElementNetworkSyncController from "./Physics/ElementNetworkSyncController.js";
 import HotBar from "./HotBar.js";
 import HotBarUI from "./HotBarUI.js";
+import MurderEditor from "./MurderEditor.js";
 
 /** class creates world, runner and renderer to begin the game*/
 class Flucht{
@@ -86,6 +87,11 @@ class Flucht{
     this.hotBarUI = new HotBarUI(this.hotBar);
     this.hotBar.setSelectedSlot(0);
     this.ui.addKeyListener(this.hotBarUI);
+
+    this.murderEditor = new MurderEditor(this);
+    this.murderEditor.disable();
+    this.ui.addKeyListener(this.murderEditor);
+
   }
 
   /**
@@ -221,12 +227,21 @@ class Flucht{
   */
   start(murderID){
     this.createWorld();
-    // this.insertRunner();
+    this.insertRunner();
     if(murderID === this.networkConnection.id){
-      this.ui.switchScreen(this.ui.MURDER_EDITOR);
+      this.ui.switchScreen(this.ui.GAME);
+      this.murderEditor.enable();
     } else {
       this.ui.switchScreen(this.ui.WAITING);
     }
+  }
+
+  /**
+  * called when the murderer editor has changed
+  * @param {Object} data the data
+  */
+  murderEditorChanged(data){
+
   }
 }
 

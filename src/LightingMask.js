@@ -33,6 +33,7 @@ class LightingMask{
 			this.draw.render(this.lights, this.texture);
 			this.baseStage.mask = this.lightsTex;
 			this.draw.roundPixels = true;
+      this.active = true;
     }
 
     /**
@@ -93,6 +94,22 @@ class LightingMask{
         light.update();
       }
       this.draw.render(this.lights, this.texture);
+    }
+
+    /**
+    * toggles the lighting mask
+    */
+    toggle(){
+      this.active = !this.active;
+      if(this.active){
+        this.daylight.beginFill(0x0B0B0B);
+        this.daylight.clear();
+        this.daylight.drawRect(0, 0, this.draw.view.width, this.draw.view.height);
+      } else {
+        this.daylight.beginFill(0xFFFFFF);
+        this.daylight.clear();
+        this.daylight.drawRect(0, 0, this.draw.view.width, this.draw.view.height);
+      }
     }
 }
 export default LightingMask;
