@@ -90,6 +90,7 @@ class Flucht{
 
     this.murderEditor = new MurderEditor(this);
     this.murderEditor.disable();
+    this.renderer.toggleLighting();
     this.ui.addKeyListener(this.murderEditor);
 
   }
@@ -202,6 +203,9 @@ class Flucht{
   * updates the world after 20 milliseconds
   */
   update(){
+    if(this.murderEditor){
+      this.murderEditor.update();
+    }
     if(this.world){
       this.world.tick(20/1000);
       if(this.elementNetworkSyncController){
@@ -227,9 +231,9 @@ class Flucht{
   */
   start(murderID){
     this.createWorld();
-    this.insertRunner();
+    // this.insertRunner();
     if(murderID === this.networkConnection.id){
-      this.ui.switchScreen(this.ui.GAME);
+      this.ui.switchScreen(this.ui.MURDER_EDITOR);
       this.murderEditor.enable();
     } else {
       this.ui.switchScreen(this.ui.WAITING);
@@ -241,7 +245,10 @@ class Flucht{
   * @param {Object} data the data
   */
   murderEditorChanged(data){
-
+    if(data.enableChanged){
+      this.renderer.toggleLighting();
+    }
+    this.renderer.setPos(data.x, data.y);
   }
 }
 

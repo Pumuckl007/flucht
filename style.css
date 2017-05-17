@@ -171,7 +171,6 @@ body{
 .HotBarSlot{
   text-align: center;
   border-right: solid 2px #999999;
-  background-image: url("assets/Traps/BearTrap/trap_Animation1_1.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;

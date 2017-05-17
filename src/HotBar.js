@@ -1,3 +1,5 @@
+import BearTrap from "./Physics/Elements/BearTrap.js";
+import PlaceableItem from "./PlaceableItem.js";
 
 /**
 * a class to manage the hot bar for the murderer or others, items and current postion
@@ -20,7 +22,7 @@ class HotBar{
     */
     this.ITEM_CHANGED = "Item Changed";
 
-    this.items = [];
+    this.items = [new PlaceableItem(BearTrap, "/assets/Traps/BearTrap/trap_Animation1_1.png")];
     this.currentSelected = 0;
     this.listeners = [];
   }
@@ -39,9 +41,9 @@ class HotBar{
   */
   isSlotEmpty(slot){
     if(this.items[slot]){
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   }
 

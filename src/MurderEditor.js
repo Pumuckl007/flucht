@@ -3,11 +3,17 @@
 */
 class MurderEditor{
 
-  constructor(flucht){
+  constructor(flucht, hotBar){
     this.enabled = true;
     this.x = 0;
     this.y = 0;
     this.flucht = flucht;
+    this.hotBar = hotBar;
+
+    let self = this;
+    document.getElementById("MurderEditor").onmousemove = function(e){
+      self.onMouseMove(e);
+    }
   }
 
   /**
@@ -19,16 +25,42 @@ class MurderEditor{
     if(!pressed){
       return;
     }
+
+  }
+
+  /**
+  * called when the mouse moves
+  */
+  onMouseMove(event){
+    let slot = this.hotBar.getSelectedSlot();
+    if(!this.hotBar.isSlotEmpty(slot)){
+      this.trapGhost.show();
+      this.trapGhost.setElement(this.hotBar.getItemInSlot(slot));
+    } else {
+      this.trapGhost.hide();
+    }
+  }
+
+  /**
+  * called once every 20ms
+  */
+  update(){
     if(this.enabled){
-      if(key === 87){
-        this.y ++;
-        this.viewChanged();
-      } else if(key === 83){
-        this.x --;
-      } else if(key === 65){
-        this.x --;
-      } else if(key === 68){
-        this.x ++;
+      if(keys[87]){
+        this.y += 10;
+        this.viewChanged({x: this.x, y:this.y});
+      }
+      if(keys[83]){
+        this.y -= 10;
+        this.viewChanged({x: this.x, y:this.y});
+      }
+      if(keys[65]){
+        this.x -= 10;
+        this.viewChanged({x: this.x, y:this.y});
+      }
+      if(keys[68]){
+        this.x += 10;
+        this.viewChanged({x: this.x, y:this.y});
       }
     }
   }
@@ -46,6 +78,7 @@ class MurderEditor{
   */
   disable(){
     this.enabled = false;
+    this.viewChanged({enableChanged: true});
   }
 
   /**
@@ -53,6 +86,10 @@ class MurderEditor{
   */
   enable(){
     this.enabled = true;
+    this.viewChanged({enableChanged: true});
+    this.x = 0;
+    this.y = 0;
+    this.viewChanged({x: this.x, y:this.y});
   }
 
 }
