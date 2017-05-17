@@ -2,6 +2,8 @@ import AnimatedEntityRenderer from "./AnimatedEntityRenderer.js";
 import AnimatedTexture from "./AnimatedTexture.js";
 import LightingMask from "./LightingMask.js";
 import StatusBars from "./StatusBars.js";
+import MiniMap from "./MiniMap.js";
+
 /**
 * @module Renderer
 */
@@ -30,6 +32,7 @@ class Renderer{
     this.light = new LightingMask(this.stage, this.renderer);
     this.barLayer = new PIXI.Graphics();
     this.statusBars = new StatusBars(this.barLayer);
+    this.miniMap = new MiniMap(this.stage, this.renderer);
   }
 
  /**
@@ -141,6 +144,7 @@ class Renderer{
           element.box.height);
       }
     }
+    this.miniMap.update();
     this.renderer.render(this.stage);
   }
 }

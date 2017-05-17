@@ -4,32 +4,36 @@ class MiniMap{
   * @constructor
   */
   constructor(stage, renderer){
-    this.stage = stage;//new PIXI.Stage(0x005e79);
-     //Game renderer
-    this.renderer = renderer;//new PIXI.autoDetectRenderer(1000, 800, {antialias: true});
-    //document.getElementById("gamearea").appendChild(this.renderer.view);
-    // Renderer:
-  //  Minimap
-    this.minimapRenderer = new PIXI.RenderTexture(1000, 800);
-    // Display object:
-    //Game graphics
-    this.sceneSurface = new PIXI.Container();
-    this.stage.addChild(this.sceneSurface);
-    // Game loop:
-    this.minimapRenderer.render(this.sceneSurface);
-    this.renderer.render(this.stage);
-    // Minimap code:
-    let mapContainer = new PIXI.Graphics();
-    mapContainer.beginFill(0xdb5e5e, 0.5);
-    mapContainer.lineStyle(2, 0xdb5e5e);
-    mapContainer.drawRect(0, 0, 170, 130);
-    this.stage.addChild(mapContainer);
-    let minimap = new PIXI.Sprite(this.minimapRenderer);
-    minimap.position.x = 1;
-    minimap.position.y = 1;
-    minimap.scale.x = 0.15;
-    minimap.scale.y = 0.15;
-    mapContainer.addChild(minimap);
+    this.stage = stage;
+    this.renderer = renderer;
+    this.width = this.renderer.view.width;
+    this.height = this.renderer.view.height;
+
+    this.graphics = new PIXI.Graphics();
+    this.graphics.beginFill(0xdb5e5e, 0.5);
+    this.graphics.lineStyle(2, 0xdb5e5e);
+    this.graphics.drawRect(-200, -200, 170, 130);
+    this.stage.addChild(this.graphics);
+
+  	this.texture = PIXI.RenderTexture.create(this.width, this.height);
+    this.stage.scale.x = this.stage.scale.y = 0.15;
+	  this.renderer.render(this.stage, this.texture);
+	  this.stage.scale.x = this.stage.scale.y = 1;
+
+  	this.miniMap = new PIXI.Sprite(this.texture); //output sprite
+  	this.miniMap.position.set(-200, -200);
+    this.miniMap.scale.x = this.width*0.15;
+    this.miniMap.scale.y = this.height*0.15;
+    console.log(this.miniMap);
+  //	console.log('created mini map at ' + this.miniMap.x, this.miniMap.y);
+
+    this.stage.addChild(this.miniMap);
+  }
+
+  update(){
+    this.stage.scale.x = this.stage.scale.y = 0.15;
+	  this.renderer.render(this.stage, this.texture);
+	  this.stage.scale.x = this.stage.scale.y = 1;
   }
 }
 
