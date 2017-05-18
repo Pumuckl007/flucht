@@ -88,9 +88,8 @@ class Flucht{
     this.hotBar.setSelectedSlot(0);
     this.ui.addKeyListener(this.hotBarUI);
 
-    this.murderEditor = new MurderEditor(this);
+    this.murderEditor = new MurderEditor(this, this.hotBar);
     this.murderEditor.disable();
-    this.renderer.toggleLighting();
     this.ui.addKeyListener(this.murderEditor);
 
   }
@@ -245,10 +244,13 @@ class Flucht{
   * @param {Object} data the data
   */
   murderEditorChanged(data){
-    if(data.enableChanged){
+    if(data.enableChanged && this.renderer){
       this.renderer.toggleLighting();
+      return;
     }
-    this.renderer.setPos(data.x, data.y);
+    if(this.renderer){
+      this.renderer.setPos(data.x, data.y);
+    }
   }
 }
 

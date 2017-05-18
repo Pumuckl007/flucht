@@ -1,3 +1,5 @@
+import TrapGhost from "./TrapGhost.js";
+
 /**
 * a class housing the logic for the murder editor
 */
@@ -14,6 +16,8 @@ class MurderEditor{
     document.getElementById("MurderEditor").onmousemove = function(e){
       self.onMouseMove(e);
     }
+
+    this.trapGhost = new TrapGhost();
   }
 
   /**
