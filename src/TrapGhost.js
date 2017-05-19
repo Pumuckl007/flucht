@@ -9,26 +9,47 @@ class TrapGhost{
     this.textureCache = {};
     this.sprite = new PIXI.Sprite();
     this.urlCache = {};
+    this.element = false;
+    this.width = 0;
+    this.height = 2;
   }
 
   /**
   * loads a new texture into the TrapGhost
   */
   loadTexture(discription){
+    let url = discription.base +
+     discription.animations[discription.defaultId].range[0] +
+     discription.animations[discription.defaultId].extention;
     if(this.textureCache[url]){
       this.sprite.texture = this.textureCache[url];
+      this.sprite.scale.x = discription.scaleX;
+      this.sprite.scale.y = discription.scaleY;
     } else {
       this.textureCache[url] = PIXI.Texture.fromImage(url, false, PIXI.SCALE_MODES.NEAREST);
       this.sprite.texture = this.textureCache[url];
+      this.sprite.scale.x = discription.scaleX;
+      this.sprite.scale.y = discription.scaleY;
     }
+    this.width = discription.width*discription.scaleX;
+    this.height = discripiton.height * discription.scaleY;
+
   }
 
+  /**
+  * sets the element to a new element
+  * @param {Trap} element the element
+  */
   setElement(element){
+    if(this.element === element){
+      return;
+    }
+    this.element = element;
     if(this.urlCache[element.url]){
-      loadTexture(this.urlCache[element.url]);
+      this.loadTexture(this.urlCache[element.url]);
     } else {
       let self = this;
-      httpRequest(element.url, function(response){
+      httpRequest(element.trap.url, function(response){
         self.urlCache[element.url] = response;
         self.loadTexture(response);
       });
@@ -49,6 +70,12 @@ class TrapGhost{
     } else {
       this.sprite.tint = 0xFFAAAA;
     }
+  }
+
+  setPos(x, y){
+    console.log(this.element)
+    this.sprite.x = x - this.width/2;
+    this.sprite.y = y - this.height/2;
   }
 
 }

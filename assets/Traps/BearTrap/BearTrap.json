@@ -6,6 +6,7 @@
   "height": 32,
   "scaleY": 2,
   "default": "idle",
+  "defaultId": 1,
   "animations":[
     {
       "name": "closing",

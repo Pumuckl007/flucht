@@ -29,7 +29,19 @@ class MurderEditor{
     if(!pressed){
       return;
     }
-
+    if(key > 47 && key < 58){
+      let slot = key - 48;
+      if(slot === 0){
+        slot = 10;
+      }
+      slot --;
+      if(!this.hotBar.isSlotEmpty(slot)){
+        this.trapGhost.show();
+        this.trapGhost.setElement(this.hotBar.getItemInSlot(slot));
+      } else {
+        this.trapGhost.hide();
+      }
+    }
   }
 
   /**
@@ -40,6 +52,7 @@ class MurderEditor{
     if(!this.hotBar.isSlotEmpty(slot)){
       this.trapGhost.show();
       this.trapGhost.setElement(this.hotBar.getItemInSlot(slot));
+      this.trapGhost.setPos(event.clientX, event.clientY);
     } else {
       this.trapGhost.hide();
     }

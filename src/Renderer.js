@@ -15,7 +15,11 @@ class Renderer{
   constructor(){
     this.runner = false;
     this.typeMap = {};
+    this.container = new PIXI.Container();
     this.stage = new PIXI.Container();
+    this.placementLayer = new PIXI.Container();
+    this.container.addChild(this.stage);
+    this.container.addChild(this.placementLayer);
     this.renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);//new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight);
     this.renderers = [];
     this.renderer.backgroundColor = 0x101010;
@@ -31,6 +35,14 @@ class Renderer{
     this.barLayer = new PIXI.Graphics();
     this.statusBars = new StatusBars(this.barLayer);
 
+  }
+
+  /**
+  * adds a sprite to the placement layer
+  * @param {Sprite} sprite the sprite to add
+  */
+  addPlacementSprite(sprite){
+    this.placementLayer.addChild(sprite);
   }
 
  /**
@@ -145,7 +157,7 @@ class Renderer{
           element.box.height);
       }
     }
-    this.renderer.render(this.stage);
+    this.renderer.render(this.container);
   }
 
   /**

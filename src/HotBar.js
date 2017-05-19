@@ -22,7 +22,12 @@ class HotBar{
     */
     this.ITEM_CHANGED = "Item Changed";
 
-    this.items = [new PlaceableItem(BearTrap, "/assets/Traps/BearTrap/trap_Animation1_1.png")];
+    this.items = [false, new PlaceableItem(new BearTrap(0,0,100,20, {
+      "url":"/assets/Traps/BearTrap/BearTrap.json",
+      "offsetX": -32,
+      "offsetY": -51,
+      "ghost": false
+    }), "/assets/Traps/BearTrap/trap_Animation1_1.png")];
     this.currentSelected = 0;
     this.listeners = [];
   }
