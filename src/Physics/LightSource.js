@@ -12,17 +12,24 @@ class LightSource{
     this.sprite = sprite;
     this.pulse = pulse;
     this.pulseValue = 0.005;
-
+    this.offsetX = 0;
+    this.offsetY = 0;
     //this.pos = {x:this.follow.pos.x, y:this.follow.pos.y};
   }
+
+  // scale(scale){
+  //   this.sprite.scale.x = this.sprite.scale.y = scale;
+  //   //this.offsetX = -this.sprite.width * (1-scale);
+  //   //console.log(this.sprite.position.x)
+  // }
 
   /**
   * update location of light
   */
   update(){
     //console.log("update");
-    this.sprite.position.x = this.follow.pos.x - this.sprite.width/2;
-    this.sprite.position.y = -this.follow.pos.y - this.sprite.height/2;
+    this.sprite.position.x = this.follow.pos.x - this.sprite.width/2 + this.offsetX;
+    this.sprite.position.y = -this.follow.pos.y - this.sprite.height/2 + this.offsetY;
     if(this.pulse){
       if(this.sprite.alpha >= 1){
         this.pulseValue *= -1;

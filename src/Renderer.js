@@ -18,6 +18,10 @@ class Renderer{
     this.runner = false;
     this.typeMap = {};
     this.stage = new PIXI.Container();
+    this.hud = new PIXI.Container();
+    this.gameScene = new PIXI.Container();
+    this.gameScene.addChild(this.stage);
+    this.gameScene.addChild(this.hud);
     this.renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);//new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight);
     this.renderers = [];
     this.renderer.backgroundColor = 0x101010;
@@ -32,7 +36,8 @@ class Renderer{
     this.light = new LightingMask(this.stage, this.renderer);
     this.barLayer = new PIXI.Graphics();
     this.statusBars = new StatusBars(this.barLayer);
-    this.miniMap = new MiniMap(this.stage, this.renderer);
+    this.miniMap = new MiniMap(this.stage, this.renderer, this.hud, this.light);
+    //this.toggleLighting();
   }
 
  /**
@@ -92,6 +97,7 @@ class Renderer{
           }
         }
       }
+      this.light.resize();
     }
   }
  /**
@@ -101,6 +107,7 @@ class Renderer{
   resize(event){
     this.renderer.resize(document.body.offsetWidth, document.body.offsetHeight);
     this.light.resize();
+    this.miniMap.resize();
   }
 
   /**
@@ -119,6 +126,9 @@ class Renderer{
     if(this.runner){
       this.stage.y = this.scale*this.runner.pos.y+document.body.offsetHeight/2;
       this.stage.x = -this.scale*this.runner.pos.x+document.body.offsetWidth/2;
+      if(this.miniMap.center.x === 0){
+        this.miniMap.centerMap();
+      }
     }
     if(this.background){
       this.background.update(this.stage.x, this.stage.y);
@@ -135,6 +145,9 @@ class Renderer{
     this.light.animate();
     this.graphics.clear();
     this.graphics.beginFill(0x000000);
+    if(!this.terrain){
+      return;
+    }
     for(let element of this.terrain.elements){
       if(element.renderAsBox){
         this.graphics.beginFill(element.color);
@@ -145,7 +158,27 @@ class Renderer{
       }
     }
     this.miniMap.update();
-    this.renderer.render(this.stage);
+    //this.renderer.render(this.stage);
+  //  console.log("hud", this.hud.x, this.hud.y);
+    //console.log("stage", this.stage.x, this.stage.y);
+    this.renderer.render(this.gameScene);
+  }
+
+  /**
+  * sets the x and y position of the stage
+  * @param {number} x the x position
+  * @param {number} y the y position
+  */
+  setPos(x, y){
+    this.stage.y = this.scale*y+document.body.offsetHeight/2;
+    this.stage.x = -this.scale*x+document.body.offsetWidth/2;
+  }
+
+  /**
+  * toggles the lighting for the level
+  */
+  toggleLighting(){
+    this.light.toggle();
   }
 }
 

@@ -9,6 +9,9 @@ import NetworkConnection from "./NetworkConnection.js";
 import PartyWorld from "./PartyWorld.js";
 import UI from "./UI.js";
 import ElementNetworkSyncController from "./Physics/ElementNetworkSyncController.js";
+import HotBar from "./HotBar.js";
+import HotBarUI from "./HotBarUI.js";
+import MurderEditor from "./MurderEditor.js";
 
 /** class creates world, runner and renderer to begin the game*/
 class Flucht{
@@ -79,6 +82,16 @@ class Flucht{
         self.pm.send(new Packet(false, v.id, PacketTypes.host, {host:self.host}));
       }
     }});
+
+    this.hotBar = new HotBar();
+    this.hotBarUI = new HotBarUI(this.hotBar);
+    this.hotBar.setSelectedSlot(0);
+    this.ui.addKeyListener(this.hotBarUI);
+
+    this.murderEditor = new MurderEditor(this);
+    this.murderEditor.disable();
+    this.ui.addKeyListener(this.murderEditor);
+
   }
 
   /**
@@ -107,6 +120,7 @@ class Flucht{
     }
     let self = this;
     this.world = new World({spawnRunner:function(data){
+      console.log("Got callback");
       self.elementNetworkSyncController = new ElementNetworkSyncController(self.pm, self.world);
       if(self.runner){
         self.runner.pos = data.spawn;
@@ -164,7 +178,7 @@ class Flucht{
     } else if(packet.id === PacketTypes.host){
       this.host = packet.data.host;
     } else if(packet.id === PacketTypes.start){
-      this.start();
+      this.start(packet.data.murderer);
     }
   }
 
@@ -200,18 +214,34 @@ class Flucht{
   * called when all of the users are ready by PartyWorld
   */
   allReady(){
-    console.log(this.host, this.networkConnection.id);
+    console.log("Host is", this.host, "I am", this.networkConnection.id);
     if(this.host === this.networkConnection.id){
-      this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true}));
-      this.start();
+      this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true, murderer:this.networkConnection.id}));
+      this.start(this.networkConnection.id);
     }
   }
 
-  start(){
+  /**
+  * starts the game, the murerder id is for the UI and to get the right state
+  * @param {String} murderID the id of the player who is the murderer
+  */
+  start(murderID){
     this.createWorld();
     this.insertRunner();
-    this.ui.switchScreen(this.ui.GAME);
-    console.log("start");
+    if(murderID === this.networkConnection.id){
+      this.ui.switchScreen(this.ui.GAME);
+      this.murderEditor.enable();
+    } else {
+      this.ui.switchScreen(this.ui.WAITING);
+    }
+  }
+
+  /**
+  * called when the murderer editor has changed
+  * @param {Object} data the data
+  */
+  murderEditorChanged(data){
+
   }
 }
 

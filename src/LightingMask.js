@@ -11,28 +11,29 @@ class LightingMask{
       this.runner = false;
       this.lightSources = [];
       this.draw = renderer;
-      let width = this.draw.view.width;
-      let height = this.draw.view.height;
       this.baseStage = stage;
+      this.width = this.baseStage.width;
+      this.height = this.baseStage.height;
       this.daylight = new PIXI.Graphics();
 			//Set this.daylight color to shade from Black to White (dont use alpha coz it doesnt blend well)
 			this.daylight.beginFill(0x0B0B0B);
 			//Draw a rectangle for daylight (size of stage)
-			this.daylight.drawRect(0, 0, width, height);
+			//this.daylight.drawRect(0, 0, this.width, this.height);
 			//Create a container for lights, a texture will be made from this later
-			this.lights  = new PIXI.Container();
+			this.lights = new PIXI.Container();
       this.lightEntities = new PIXI.Container();
 			//Use ADDITIVE blend modes so lights merge nicely.
 			this.daylight.blendMode = PIXI.BLEND_MODES.ADD;
       this.lights.addChild(this.daylight);
       this.lights.addChild(this.lightEntities);
 			//Create a texture where lights will be rendered to
-			this.texture = new PIXI.RenderTexture.create(width,height);
-			this.lightsTex = new PIXI.Sprite(this.texture);
+			//this.texture = new PIXI.RenderTexture.create(this.width,this.height);
+			//this.lightsTex = new PIXI.Sprite(this.texture);
 			//Render the light texture
-			this.draw.render(this.lights, this.texture);
-			this.baseStage.mask = this.lightsTex;
+			//this.draw.render(this.lights, this.texture);
+			//this.baseStage.mask = this.lightsTex;
 			this.draw.roundPixels = true;
+      this.active = true;
     }
 
     /**
@@ -47,9 +48,11 @@ class LightingMask{
     * updates the size of the maskinging layer to fit the size of the window
     */
     resize(){
+      this.width = this.baseStage.width;
+      this.height = this.baseStage.height;
       this.daylight.clear();
-      this.daylight.drawRect(0, 0, this.draw.view.width, this.draw.view.height);
-      this.texture = new PIXI.RenderTexture.create(this.draw.view.width,this.draw.view.height);
+      this.daylight.drawRect(0, 0, this.width, this.height);
+      this.texture = new PIXI.RenderTexture.create(this.width, this.height);
 			this.lightsTex = new PIXI.Sprite(this.texture);
       this.baseStage.mask = this.lightsTex;
     }
@@ -60,6 +63,14 @@ class LightingMask{
     clear(){
       this.lightSources = [];
       this.lightEntities.removeChildren();
+    }
+
+    scaleLight(scale){
+      // for(let lightSource of this.lightSources){
+      //   lightSource.scale(scale);
+      //   lightSource.update();
+      // }
+      this.lights.scale.x = this.lights.scale.y = scale;
     }
 
     /**
@@ -93,6 +104,22 @@ class LightingMask{
         light.update();
       }
       this.draw.render(this.lights, this.texture);
+    }
+
+    /**
+    * toggles the lighting mask
+    */
+    toggle(){
+      this.active = !this.active;
+      if(this.active){
+        this.daylight.beginFill(0x0B0B0B);
+        this.daylight.clear();
+        this.daylight.drawRect(0, 0, this.width, this.height);
+      } else {
+        this.daylight.beginFill(0xFFFFFF);
+        this.daylight.clear();
+        this.daylight.drawRect(0, 0, this.width, this.height);
+      }
     }
 }
 export default LightingMask;
