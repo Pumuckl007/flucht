@@ -77,6 +77,10 @@ class UI{
       case "Ready":
         this.flucht.toggleReady();
         break;
+      case "MurdererDone":
+        this.flucht.sendOutChanges();
+        this.flucht.startGame();
+        break;
       default:
         console.log("Unhandled Key", key);
     }

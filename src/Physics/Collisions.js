@@ -10,7 +10,7 @@ the position of the entity will not be corrected, if both return false then the 
 @param {Terrain} terrain the terrain who's elements to check collisiosn against.
 @param {Entity} entity the entity to use for collision detection
 */
-function terrainAndEntity(terrain, entity){
+function terrainAndEntity(terrain, entity, booleanReturn){
   for(let terrainElement of terrain.elements){
     if(terrainElement.ghost){
       continue;
@@ -32,15 +32,59 @@ function terrainAndEntity(terrain, entity){
         side += correctX(entity, terrainElement, xOff);
       }
       //console.log(entity.vel.x +" before");
-      let bool = terrainElement.collision(entity, side, oldX, oldY) || terrainElement.dontMoveOnCollision;
+      let bool = terrainElement.collision(entity, side, oldX, oldY) || terrainElement.dontMoveOnCollision || booleanReturn;
       if(bool || entity.collision(terrainElement, side)){
         entity.pos.x = oldX;
         entity.pos.y = oldY;
         entity.vel.x = oldVelX;
         entity.vel.y = oldVelY;
       }
+      if(booleanReturn){
+        return true;
+      }
     }
   }
+  return false;
+}
+
+/**
+Finds any collisions between the terrain elements and the element and calls the respective methods.
+After finding a collision if the element returns true and the terrain element returns true
+the position of the element will not be corrected, if both return false then the element will be.
+@param {Terrain} terrain the terrain who's elements to check collisiosn against.
+@param {Entity} element the entity to use for collision detection
+*/
+function terrainAndElement(terrain, element, booleanReturn){
+  for(let terrainElement of terrain.elements){
+    if(terrainElement.ghost){
+      continue;
+    }
+    let xOff = terrainElement.pos.x-element.pos.x;
+    let yOff = terrainElement.pos.y- element.pos.y;
+    let side = 0;
+    if((side = terrainElement.box.intersects(element.box, xOff, yOff)) !== 0){
+      let overlap = terrainElement.box.getOverlap(element.box, xOff, yOff);
+      let oldX = element.pos.x;
+      let oldY = element.pos.y;
+      if(overlap[0] > overlap[1]){
+        side = 2;
+        side += correctY(element, terrainElement, yOff);
+      } else {
+        side = 1;
+        side += correctX(element, terrainElement, xOff);
+      }
+      //console.log(element.vel.x +" before");
+      let bool = terrainElement.dontMoveOnCollision || booleanReturn;
+      if(bool){
+        element.pos.x = oldX;
+        element.pos.y = oldY;
+      }
+      if(booleanReturn){
+        return overlap;
+      }
+    }
+  }
+  return false;
 }
 
 /**
@@ -75,9 +119,11 @@ function correctY(toMove, notToMove, yOff){
   else {
     return 0;
   }
-  toMove.vel.y = 0;
+  if(toMove.vel){
+    toMove.vel.y = 0;
+  }
   toMove.pos.y = notToMove.pos.y + direction*(toMove.box.height/2 + notToMove.box.height/2);
   return (direction < 0) ? 2 : 0;
 }
 
-export default {terrainAndEntity: terrainAndEntity, correctX: correctX, correctY: correctY};
+export default {terrainAndEntity: terrainAndEntity, correctX: correctX, correctY: correctY, terrainAndElement : terrainAndElement};

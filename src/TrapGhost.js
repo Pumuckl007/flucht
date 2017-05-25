@@ -11,7 +11,7 @@ class TrapGhost{
     this.urlCache = {};
     this.element = false;
     this.width = 0;
-    this.height = 2;
+    this.height = 0;
   }
 
   /**
@@ -32,8 +32,7 @@ class TrapGhost{
       this.sprite.scale.y = discription.scaleY;
     }
     this.width = discription.width*discription.scaleX;
-    this.height = discripiton.height * discription.scaleY;
-
+    this.height = discription.height *discription.scaleY;
   }
 
   /**
@@ -66,14 +65,13 @@ class TrapGhost{
 
   setValidity(valid){
     if(valid){
-      this.sprite.tint = 0xAAFFAA;
+      this.sprite.tint = 0x88FF88;
     } else {
-      this.sprite.tint = 0xFFAAAA;
+      this.sprite.tint = 0xFF8888;
     }
   }
 
   setPos(x, y){
-    console.log(this.element)
     this.sprite.x = x - this.width/2;
     this.sprite.y = y - this.height/2;
   }

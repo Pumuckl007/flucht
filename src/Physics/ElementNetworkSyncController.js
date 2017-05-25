@@ -12,6 +12,7 @@ class ElementNetworkSyncController{
   * @param {PacketManager} packetManager the packet manager
   */
   constructor(packetManager, world){
+    world.addEventListener(this);
     this.packetManager = packetManager;
     this.elements = [];
     for(let element of world.terrain.elements){
@@ -34,6 +35,14 @@ class ElementNetworkSyncController{
   onPacket(packet){
     if(this.elements[packet.id]){
       this.elements[packet.id].accepetPacketData(packet .updateData);
+    }
+  }
+
+  onEvent(event, element){
+    if(event === "Element Added"){
+      if(element.id >= 0){
+        this.elements[element.id] = element;
+      }
     }
   }
 

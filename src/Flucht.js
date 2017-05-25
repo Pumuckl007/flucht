@@ -12,6 +12,7 @@ import ElementNetworkSyncController from "./Physics/ElementNetworkSyncController
 import HotBar from "./HotBar.js";
 import HotBarUI from "./HotBarUI.js";
 import MurderEditor from "./MurderEditor.js";
+import TrapMap from "./Physics/Elements/TrapMap.js";
 
 /** class creates world, runner and renderer to begin the game*/
 class Flucht{
@@ -44,7 +45,6 @@ class Flucht{
    */
   initalize(){
     this.seed = "Saya-" + Date.now();
-    this.packetManager = new PacketManager();
     this.listeners = [];
     /**
     * the constant for the world created event
@@ -70,6 +70,7 @@ class Flucht{
     this.pm.addListener(PacketTypes.seed, this);
     this.pm.addListener(PacketTypes.host, this);
     this.pm.addListener(PacketTypes.start, this);
+    this.pm.addListener(PacketTypes.trapPlacement, this);
 
     this.pm.addListener(PacketTypes.ready, this.partyWorld);
     this.ready = false;
@@ -110,13 +111,11 @@ class Flucht{
   * creates a new world based on the seed provided to flucht
   */
   createWorld(){
-    console.log(this.seed);
     if(this.world){
       return;
     }
     let self = this;
     this.world = new World({spawnRunner:function(data){
-      console.log("Got callback");
       self.elementNetworkSyncController = new ElementNetworkSyncController(self.pm, self.world);
       if(self.runner){
         self.runner.pos = data.spawn;
@@ -135,11 +134,11 @@ class Flucht{
       listener.onEvent(this.WORLDCREATED, this.world);
     }
 
-    this.murderEditor = new MurderEditor(this, this.hotBar);
+    this.murderEditor = new MurderEditor(this, this.hotBar, this.world);
     this.murderEditor.disable();
     this.ui.addKeyListener(this.murderEditor);
     this.renderer.addPlacementSprite(this.murderEditor.trapGhost.sprite);
-    this.renderer.toggleLighting();
+    this.renderer.disableLighting();
   }
 
   /**
@@ -181,6 +180,9 @@ class Flucht{
       this.host = packet.data.host;
     } else if(packet.id === PacketTypes.start){
       this.start(packet.data.murderer);
+    } else if(packet.id === PacketTypes.trapPlacement){
+      this.updateTraps(packet.data);
+      this.startGame();
     }
   }
 
@@ -247,12 +249,48 @@ class Flucht{
   */
   murderEditorChanged(data){
     if(data.enableChanged && this.renderer){
-      this.renderer.toggleLighting();
+      console.log(this.murderEditor.enabled)
+      if(this.murderEditor.enabled){
+        this.renderer.disableLighting();
+      } else {
+        this.renderer.enableLighting();
+      }
       return;
     }
     if(this.renderer){
       this.renderer.setPos(data.x, data.y);
     }
+  }
+
+  /**
+  * sends out the changes as in placement of trapGhost
+  */
+  sendOutChanges(){
+    let additions = this.murderEditor.getAdditions();
+    let packet = new Packet(false, false, PacketTypes.trapPlacement, additions);
+    this.pm.broadcast(packet);
+  }
+
+  /**
+  * called as a response to sendOutChanges and updates the world with the new traps
+  */
+  updateTraps(traps){
+    for(let trapJSON of traps){
+      let trapJSONObject = JSON.parse(trapJSON);
+      let constructor = TrapMap[trapJSONObject.type];
+      let trap = new constructor();
+      trap.fromJSON(trapJSONObject);
+      this.world.addElement(trap);
+    }
+  }
+
+  /**
+  * starts the game with the current traps
+  */
+  startGame(){
+    this.insertRunner();
+    this.ui.switchScreen(this.ui.GAME);
+    this.murderEditor.disable();
   }
 }
 

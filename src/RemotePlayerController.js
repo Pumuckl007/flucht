@@ -93,6 +93,10 @@ class RemotePlayerController{
          state:this.runner.state,
           playerId:flucht.networkConnection.id,
            health:flucht.runner.health};
+    if(this.runner.frozen){
+      data.vel.x = 0;
+      data.vel.y = 0;
+    }
     for(let listener of this.listeners) {
       let packet = new Packet(false, listener, PacketTypes.runnerUpdated, data);
       this.packetManager.send(packet);
