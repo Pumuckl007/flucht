@@ -22,6 +22,8 @@ class Renderer{
     this.gameScene = new PIXI.Container();
     this.gameScene.addChild(this.stage);
     this.gameScene.addChild(this.hud);
+    this.placementLayer = new PIXI.Container();
+    this.gameScene.addChild(this.placementLayer);
     this.renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);//new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight);
     this.renderers = [];
     this.renderer.backgroundColor = 0x101010;
@@ -40,6 +42,14 @@ class Renderer{
     //this.toggleLighting();
   }
 
+  /**
+  * adds a sprite to the placement layer
+  * @param {Sprite} sprite the sprite to add
+  */
+  addPlacementSprite(sprite){
+    this.placementLayer.addChild(sprite);
+  }
+
  /**
  * Checks if Entity is added, terain is updated or if level is Loaded
  * @param {String} type the event that is passed
@@ -56,6 +66,27 @@ class Renderer{
     }
     if(type === "Terrain Updated"){
       this.terrain = object;
+    }
+    if(type === "Element Added"){
+      let element = object;
+      if(element.type === "Textured Element" || element.type === "Lit Element"|| element.interactive){
+        let self = this;
+        let done = function(animatedTexture){
+          self.graphics.addChild(animatedTexture.sprite);
+          self.renderers.push(animatedTexture);
+        }
+        if(element.type === "Lit Element"){
+          this.light.addLightSource(element);
+        }
+        if(element.interactive){
+          this.statusBars.addBearTrapBar(element);
+        }
+        if(element.interactive){
+          new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done, element);
+        } else {
+          new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done);
+        }
+      }
     }
     if(type === "Reset"){
       for(let renderer of this.renderers){
@@ -175,10 +206,17 @@ class Renderer{
   }
 
   /**
-  * toggles the lighting for the level
+  * enables the lighting
   */
-  toggleLighting(){
-    this.light.toggle();
+  enableLighting(){
+    this.light.enable();
+  }
+
+  /**
+  * disables the lighting
+  */
+  disableLighting(){
+    this.light.disable();
   }
 }
 

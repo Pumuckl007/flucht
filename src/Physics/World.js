@@ -46,6 +46,18 @@ class World{
   }
 
   /**
+  * adds a new entity to the world
+  * @param {Entity} element the element to add
+  */
+  addElement(element){
+    this.terrain.elements.push(element);
+    for(let listener of this.listeners){
+      listener.onEvent("Element Added", element)
+      listener.onEvent("Terrain Updated", this.terrain);
+    }
+  }
+
+  /**
   * called when a tick occures
   * @param timestep the part of one second passed
   */
@@ -61,6 +73,15 @@ class World{
         Collisions.terrainAndEntity(this.terrain, entity);
       }
     }
+  }
+
+  /**
+  * retursn if the entity collides with the terrain
+  * @param {Element} element the element to check against
+  * @return {Boolean} whether or not the terrain collides with the element
+  */
+  doesTerrainCollide(element){
+    return Collisions.terrainAndElement(this.terrain, element, true);
   }
 
   /**

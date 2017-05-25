@@ -107,19 +107,27 @@ class LightingMask{
     }
 
     /**
-    * toggles the lighting mask
+    * enables the lighting mask
     */
-    toggle(){
-      this.active = !this.active;
-      if(this.active){
+    enable(){
+      if(!this.active){
         this.daylight.beginFill(0x0B0B0B);
         this.daylight.clear();
-        this.daylight.drawRect(0, 0, this.width, this.height);
-      } else {
+        this.daylight.drawRect(0, 0, this.width, this.width);
+      }
+      this.active = true;
+    }
+
+    /**
+    * disables the lighting mask
+    */
+    disable(){
+      if(this.active){
         this.daylight.beginFill(0xFFFFFF);
         this.daylight.clear();
         this.daylight.drawRect(0, 0, this.width, this.height);
       }
+      this.active = false;
     }
 }
 export default LightingMask;

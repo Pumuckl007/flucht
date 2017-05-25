@@ -1,4 +1,5 @@
 import Element from "./Element.js";
+import Box from "./../Box.js";
 
 /** Creates element that is type "Trap" that collides and effects the player*/
 class BearTrap extends Element{
@@ -14,6 +15,10 @@ class BearTrap extends Element{
   constructor(x, y, width, height, element){
     super(x, y, width, height, "Bear Trap", false, 1);
     this.state = "idle";
+    if(!element){
+      return;
+    }
+    this.element = element;
     this.url = element.url;
     this.offY = element.offsetY;
     this.offX = element.offsetX;
@@ -88,6 +93,7 @@ class BearTrap extends Element{
     this.state = data.state;
     this.tapCount = data.tapCount;
     this.trappedEntity = data.trappedEntity;
+    this.ghost = data.ghost;
   }
 
   /**
@@ -98,9 +104,41 @@ class BearTrap extends Element{
     let data = {
       state: this.state,
       tapCount: this.tapCount,
-      trappedEntity: this.trappedEntity
+      trappedEntity: this.trappedEntity,
+      ghost : this.ghost
     }
     return data;
+  }
+
+  /**
+  * clones the trap
+  */
+  clone(){
+    let bearTrap = new BearTrap(this.pos.x, this.pos.y,
+    this.box.width, this.box.height, this.element);
+    bearTrap.state = this.state;
+    bearTrap.url = this.url;
+    bearTrap.offY = this.offY;
+    bearTrap.offX = this.offX;
+    bearTrap.ghost = this.ghost;
+    bearTrap.color = this.color;
+    bearTrap.lastVel = this.lastVel;
+    bearTrap.tapCount = this.tapCount;
+    bearTrap.maxTap = this.maxTap;
+    bearTrap.interactive = this.interactive;
+    bearTrap.trappedEntity = this.trappedEntity;
+    bearTrap.hasChanged = this.hasChanged;
+    return bearTrap;
+  }
+
+  /**
+  * updates the values to match a json representation
+  */
+  fromJSON(json){
+    for(let id in json){
+      this[id] = json[id];
+      this.box = new Box(this.box.width, this.box.height);
+    }
   }
 
 }

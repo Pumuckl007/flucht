@@ -19,6 +19,11 @@ class HotBarUI{
     this.hotBar = hotBar;
     this.pos = -1;
     this.hotBar.addChangeListener(this);
+    for(let i = 0; i<10; i++){
+      if(!this.hotBar.isSlotEmpty(i)){
+        this.onEvent(this.hotBar.ITEM_CHANGED, {index: i, item: this.hotBar.getItemInSlot(i)});
+      }
+    }
   }
 
   /**
@@ -28,7 +33,8 @@ class HotBarUI{
   */
   onEvent(event, data){
     if(event === this.hotBar.ITEM_CHANGED){
-
+      let cell = this.hotBarCells[data.index];
+      cell.style.backgroundImage = "url(" + data.item.getDisplayImageURL() + ")";
     }
     if(event === this.hotBar.SLOT_CHANGED){
       if(data !== this.pos){

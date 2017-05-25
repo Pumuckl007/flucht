@@ -171,19 +171,28 @@ body{
 .HotBarSlot{
   text-align: center;
   border-right: solid 2px #999999;
-  background-image: url("assets/Traps/BearTrap/trap_Animation1_1.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
   image-rendering: pixelated;
 }
 
-#HotBar9{
-  background-image: url("assets/Chandelier/chandelier_Animation1_2.png");
+.MurdererDone{
+  position:absolute;
+  right: 10px;
+  top: 10px;
+  height: 35px;
+  width: 130px;
+  text-align: center;
+  line-height: 35px;
+  background-color:#00FF44;
+  transition: border-radius 100ms, background-color 100ms;
 }
 
-#HotBar7{
-  background-image: url("assets/MonaLisa/MonaLisa0.png");
+.MurdererDone:hover{
+  border-radius:10px;
+  background-color:#22FF88;
+  cursor: pointer;
 }
 
 canvas{

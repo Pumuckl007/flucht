@@ -6,5 +6,6 @@ export default {
   ready:"Ready",
   host:"Host",
   start: "Start",
-  elementUpdate: "Element Update"
+  elementUpdate: "Element Update",
+  trapPlacement: "Trap Placement"
 }

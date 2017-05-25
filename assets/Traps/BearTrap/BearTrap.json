@@ -1,10 +1,12 @@
 {
   "base": "/assets/Traps/BearTrap/trap_Animation1_",
+  "display": "/assets/Traps/BearTrap/trap_Animation1_0.png",
   "width": 32,
   "scaleX": 2,
   "height": 32,
   "scaleY": 2,
   "default": "idle",
+  "defaultId": 1,
   "animations":[
     {
       "name": "closing",

@@ -32,6 +32,7 @@ class Element{
   update(){
 
   }
+
 }
 
 export default Element;
