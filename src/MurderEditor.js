@@ -110,6 +110,9 @@ class MurderEditor{
   * returns the room corrisponding to the position provided
   */
   getRoom(pos){
+    if(!this.world.terrain.rooms){
+      return false;
+    }
     for(let room of this.world.terrain.rooms){
       let soFar = pos.x > (room.x-room.box.width/2);
       soFar = soFar && pos.x < (room.x + room.box.width/2);

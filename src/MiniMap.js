@@ -22,8 +22,6 @@ class MiniMap{
     this.miniMap.position.set(-this.width/2+5,-this.height/3+10);
     this.graphics.beginFill(0x000000);
     this.graphics.drawRect(0, 0, this.miniMap.width/4+10, this.miniMap.height/3.5+20);
-    console.log(this.displayStage.width, this.displayStage.height);
-    console.log(this.texture.width, this.texture.height);
   //  this.lightingMask.resize();
   }
 

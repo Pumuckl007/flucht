@@ -60,7 +60,7 @@ body{
 }
 
 .MenuButton:hover{
-  background-color: red;
+  background-color: #AAAAAA;
 }
 
 .PartySelectionWrapper{
@@ -193,6 +193,95 @@ body{
   border-radius:10px;
   background-color:#22FF88;
   cursor: pointer;
+}
+
+.Won{
+  position: absolute;
+  color: white;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
+  left: 0;
+  text-align: center;
+  height: 100%;
+  top: 0;
+  font-size: 3em;
+  font-weight: 900;
+}
+
+.HelpColoum{
+  width:800px;
+  margin:auto;
+}
+
+.HelpRow{
+  height:150px;
+  width:100%;
+  margin:20px;
+}
+
+.HelpImageWrapper{
+  width:40%;
+  height:100%;
+  float:left;
+  text-align: center;
+}
+
+.HelpImage{
+  height:100%;
+  max-width:100%;
+}
+
+.HelpTextNextToImageWrapper{
+  display:table;
+  height:100%;
+  float:right;
+  width:60%;
+}
+
+.HelpTextNextToImage{
+  display:table-cell;
+  vertical-align: middle;
+  font-size: 1.3em;
+  font-weight: 500;
+  color:white;
+}
+
+.HelpMenuButton{
+  height:30px;
+  padding:0.2em;
+  margin:0.3em;
+  background-color:#DADADA;
+  display:block;
+  line-height:30px;
+  cursor: pointer;
+  transition: background-color 100ms;
+  width:100px;
+  margin: auto;
+  text-align: center;
+}
+
+.HelpMenuButton:hover{
+  background-color: #AAAAAA;
+}
+
+.MessageOverlay{
+  transition: opacity 300ms;
+  background-color: rgba(0,0,0,0.8);
+  position:absolute;
+  color:white;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  text-align: center;
+  opacity:0;
+  font-size:2em;
+  z-index:2;
+}
+
+body{
+  font-family: 'Roboto', sans-serif;
 }
 
 canvas{

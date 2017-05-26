@@ -15,7 +15,12 @@ function generateLevel(urlToDescription, callback, random){
   let waitUntilDone = function(levelDiscription){
     if(!discription){
       discription = levelDiscription;
-      loadAllToCache(discription.roomTypes);
+      let rooms = discription.roomTypes;
+      rooms = rooms.slice(0);
+      if(levelDiscription.exitRoom){
+        rooms.push(levelDiscription.exitRoom.url);
+      }
+      loadAllToCache(rooms);
     }
     if(this.allDone){
       generate(discription, callback, random);
@@ -33,25 +38,28 @@ function generateLevel(urlToDescription, callback, random){
 * @param {function} callback the callback
 */
 function generate(levelDescription, callback, random){
-  let i = levelDescription.rooms.length;
+  let i = levelDescription.rooms.length + 1;
   let avaliableRooms = [];
   let roomMinMax = {};
+  let callbackLocal = function(data, room){
+    i--;
+
+    if(levelDescription.generatorData){
+      data.generatorData = levelDescription.generatorData;
+    }
+    if(i <= 0){
+      avaliableRooms.push(data);
+      roomMinMax[data.name] = room;
+      build(avaliableRooms, levelDescription, callback, roomMinMax, random);
+    } else {
+      avaliableRooms.push(data);
+      roomMinMax[data.name] = room;
+    }
+  };
   for(let room of levelDescription.rooms){
-    httpRequest(room.url, function(data){
-      i--;
-      if(levelDescription.generatorData){
-        data.generatorData = levelDescription.generatorData;
-      }
-      if(i <= 0){
-        avaliableRooms.push(data);
-        roomMinMax[data.name] = room;
-        build(avaliableRooms, levelDescription, callback, roomMinMax, random);
-      } else {
-        avaliableRooms.push(data);
-        roomMinMax[data.name] = room;
-      }
-    });
+    httpRequest(room.url, callbackLocal, room);
   }
+  httpRequest(levelDescription.exitRoom.url, callbackLocal, levelDescription.exitRoom);
 }
 
 /**
@@ -86,6 +94,14 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
   let avaliableSpots = [];
   for(let w = 0; w<levelDescription.width; w++){
     avaliableSpots.push(w);
+  }
+  if(levelDescription.exitRoom){
+    let w = Math.floor(random()*levelDescription.width);
+    let h = Math.floor(random()*levelDescription.height);
+    let roomToPlace = avaliableRoomMap[levelDescription.exitRoom.name];
+    tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms);
+    let index = avaliableRooms.indexOf(roomToPlace);
+    avaliableRooms.splice(index, 1);
   }
   for(let h = 0; h<levelDescription.height; h++){
     let localAvaliableSpots = avaliableSpots.slice(0);
@@ -128,7 +144,37 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
     elements = elements.concat(room.elements);
   }
 
+  //maxx maxy
+  let bounds = [-Infinity, -Infinity];
+
+  for(element of elements){
+    if(element.pos.x > bounds[0]){
+      bounds[0] = element.pos.x;
+    }
+    if(element.pos.y > bounds[1]){
+      bounds[1] = element.pos.y;
+    }
+  }
+
+  elements = elements.concat(makeTheWalls(bounds[0]-5, bounds[1]-5));
+
   callback(elements, rooms);
+}
+
+/**
+* makes the walls
+* @param {number} width the width of the level
+* @param {height} height the height of the area
+* @return {Element[]} a list of the elements composing the wall
+*/
+function makeTheWalls(width, height){
+  let midX = width/2;
+  let midY = height/2;
+  let bottom = new Element(midX, -5, width+20, 10);
+  let top = new Element(midX, height + 5, width+20, 10);
+  let left = new Element(-5, midY, 10, height);
+  let right = new Element(width + 5, midY, 10, height);
+  return [bottom, top, left, right];
 }
 
 /**

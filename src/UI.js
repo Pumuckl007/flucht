@@ -26,6 +26,18 @@ class UI{
     * the screen for the murderer editor placement
     */
     this.MURDER_EDITOR = "Murder Editor";
+    /**
+    * the screen that says you won
+    */
+    this.WON = "Won";
+    /**
+    * the screen that says you are WAITING
+    */
+    this.WAITING = "waiting";
+    /**
+    * help screen
+    */
+    this.HELP = "Help";
 
     this.flucht = flucht;
     this.mainMenuDOM = document.getElementById("GameMenuWrapper");
@@ -33,6 +45,9 @@ class UI{
     this.partyDOM = document.getElementById("PartyWrapper");
     this.nameEntry = document.getElementById("NameInput");
     this.editor = document.getElementById("MurderEditor");
+    this.won = document.getElementById("Won");
+    this.help = document.getElementById("Help");
+    this.messageOverlay = document.getElementById("MessageOverlay");
     this.screen = this.MAINMENU;
 
     this.nameEntry.value = this.flucht.name;
@@ -60,6 +75,24 @@ class UI{
     this.keyListeners.push(listener);
   }
 
+  displayMessage(message, timeout){
+    let animationLength = 300;
+    this.messageOverlay.innerHTML = message;
+    this.messageOverlay.style.display = "block";
+    this.messageOverlay.style["line-height"] = window.innerHeight + "px";
+    this.messageOverlay.style.opacity = "0";
+    let messageOverlay = this.messageOverlay;
+    setTimeout(function(){
+      messageOverlay.style.opacity = "1";
+    }, 50)
+    setTimeout(function(){
+      messageOverlay.style.opacity = "0";
+    }, timeout-animationLength);
+    setTimeout(function(){
+      messageOverlay.style.display="none";
+    }, timeout);
+  }
+
   /**
   * called when a UI event is fired
   * @param {String} key the key for the event
@@ -80,6 +113,12 @@ class UI{
       case "MurdererDone":
         this.flucht.sendOutChanges();
         this.flucht.startGame();
+        break;
+      case "Help":
+        this.switchScreen(this.HELP);
+        break;
+      case "Back":
+        this.switchScreen(this.MAINMENU);
         break;
       default:
         console.log("Unhandled Key", key);
@@ -118,6 +157,19 @@ class UI{
       this.partyDOM.style.display = "none";
       this.partySelectionDOM.style.display = "none";
       this.mainMenuDOM.style.display = "none";
+    }
+    if(this.screen === this.WON){
+      this.won.style.display = "none";
+    }
+    if(screen === this.WON){
+      this.won.style.display = "block";
+      this.won.style["line-height"] = window.innerHeight + "px";
+    }
+    if(this.screen === this.HELP){
+      this.help.style.display = "none";
+    }
+    if(screen === this.HELP){
+      this.help.style.display = "block";
     }
     this.screen = screen;
   }

@@ -4,6 +4,7 @@
   <script src="/lib/seededRandom.js"></script>
   <script src="/bin/rolledup.js"></script>
   <link rel="stylesheet" type="text/css" href="/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
   <!-- <div class="PartyDisplay" style="display:none">
@@ -15,8 +16,8 @@
       <div class="MenuButton" id="Join" onclick="flucht.onUserEvent('Start')">
         Start
       </div>
-      <div class="MenuButton" id="New" onclick="flucht.onUserEvent('Options')">
-        Options
+      <div class="MenuButton" id="HelpButton" onclick="flucht.onUserEvent('Help')">
+        Help
       </div>
     </div>
   </div>
@@ -51,5 +52,42 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  <div class="Won" id="Won" style="display:none">
+    You Won!!!!
+  </div>
+  <div class="GameMenuWrapper" id="Help" style="display:none">
+    <div class="HelpColoum">
+      <div class="HelpRow">
+        <div class="HelpImageWrapper">
+          <img class="HelpImage" src="assets/Runner/running_idle_0.png"></img>
+        </div>
+        <div class="HelpTextNextToImageWrapper">
+          <div class="HelpTextNextToImage">
+            This is the runner. He spends his days running away from the murderer.
+            If you happen to control him use WASD to move around and Space to Jump.
+            If you hold S you will fall through stairs and platforms.
+          </div>
+        </div>
+      </div>
+      <div class="HelpRow">
+        <div class="HelpImageWrapper">
+          <img class="HelpImage" src="assets/Traps/BearTrap/trap_Animation1_1.png"></img>
+        </div>
+        <div class="HelpTextNextToImageWrapper">
+          <div class="HelpTextNextToImage">
+            This is a bear trap. Don't step in it or else you will be trapped and start taking damage.
+            To get out another runner can assist you or you get wiggle yourself
+            loose by repeatedly tapping 'A' and 'D'. Your progress is displayed
+            by a progress bar above the trap.
+          </div>
+        </div>
+      </div>
+      <div class="HelpMenuButton" id="BackButton" onclick="flucht.onUserEvent('Back')">
+        Back
+      </div>
+    </div>
+  </div>
+  <div class="MessageOverlay" id="MessageOverlay" style="display:none">
   </div>
 </body>
