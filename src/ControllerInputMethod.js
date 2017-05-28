@@ -9,6 +9,9 @@ class ControllerInputMethod{
     this.gamePad = navigator.getGamepads()[id];
     this.listeners = [];
 
+    this.leftDebouce = true;
+    this.rightDebouce = true;
+
     this.cursor = {
       x : window.innerWidth/2,
       y : window.innerHeight/2,
@@ -117,7 +120,22 @@ class ControllerInputMethod{
   }
 
   getHotbarPosDelta(){
-    return 0;
+    let delta = 0;
+    if(this.gamePad.buttons[5].pressed && this.rightDebouce){
+      this.rightDebouce = false;
+      delta += 1;
+    }
+    if(!this.gamePad.buttons[5].pressed){
+      this.rightDebouce = true;
+    }
+    if(this.gamePad.buttons[4].pressed && this.leftDebouce){
+      this.leftDebouce = false;
+      delta -= 1;
+    }
+    if(!this.gamePad.buttons[4].pressed){
+      this.leftDebouce = true;
+    }
+    return delta;
   }
 
   getCursor(){

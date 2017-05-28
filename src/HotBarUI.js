@@ -91,7 +91,7 @@ class HotBarUI{
   */
   onInput(inputMethod){
     let pos = inputMethod.getHotbarPosSet();
-    if(pos){
+    if(pos !== false){
       this.hotBar.setSelectedSlot(pos);
     } else {
       let delta = inputMethod.getHotbarPosDelta();
