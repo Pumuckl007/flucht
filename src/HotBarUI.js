@@ -86,21 +86,22 @@ class HotBarUI{
   }
 
   /**
-  * called when key is pressed
-  * @param {number} key the ascii value of the key pressed
-  * @param {boolean} pressed whether or not the key was pressed or released
+  * called every time the inputMethod polls the input
+  * @param {InputMethod} inputMethod the input method
   */
-  onKey(key, pressed){
-    if(!pressed){
-      return;
-    }
-    if(key > 47 && key < 58){
-      let index = key - 48;
-      if(index === 0){
-        index = 10;
+  onInput(inputMethod){
+    let pos = inputMethod.getHotbarPosSet();
+    if(pos){
+      this.hotBar.setSelectedSlot(pos);
+    } else {
+      let delta = inputMethod.getHotbarPosDelta();
+      let oldPos = this.hotBar.getSelectedSlot();
+      oldPos += delta;
+      oldPos = oldPos % 10;
+      if(oldPos < 0){
+        oldPos = 9;
       }
-      index --;
-      this.hotBar.setSelectedSlot(index);
+      this.hotBar.setSelectedSlot(oldPos);
     }
   }
 

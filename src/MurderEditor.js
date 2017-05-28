@@ -13,15 +13,11 @@ class MurderEditor{
     this.hotBar = hotBar;
     this.world = world;
     let self = this;
-    document.getElementById("MurderEditor").onmousemove = function(e){
-      self.onMouseMove(e);
-    }
-    document.getElementById("MurderEditor").onclick = function(e){
-      self.onClick(e);
-    }
     this.additions = [];
     this.trapGhost = new TrapGhost();
     this.id = 10;
+    this.vx = 0;
+    this.vy = 0;
   }
 
   /**
@@ -51,16 +47,16 @@ class MurderEditor{
   /**
   * called when the mouse moves
   */
-  onMouseMove(event){
+  onMouseMove(cursor){
     let slot = this.hotBar.getSelectedSlot();
     if(!this.hotBar.isSlotEmpty(slot)){
       this.trapGhost.show();
       this.element = this.hotBar.getItemInSlot(slot);
       this.trapGhost.setElement(this.element);
-      this.trapGhost.setPos(event.clientX, event.clientY);
+      this.trapGhost.setPos(cursor.x, cursor.y);
       let pos = {
-        x: this.x + (event.clientX-window.innerWidth/2),
-        y: this.y - (event.clientY-window.innerHeight/2)
+        x: this.x + (cursor.x-window.innerWidth/2),
+        y: this.y - (cursor.y-window.innerHeight/2)
       };
       let resultOfCanplace = this.element.canPlace(this.world, pos, this.getRoom(pos));
       if(resultOfCanplace){
@@ -79,8 +75,8 @@ class MurderEditor{
   /**
   * called when the mouse moves
   */
-  onClick(event){
-    if(event.target.id !== "MurderEditor"){
+  onClick(cursor){
+    if(cursor.target !== "MurderEditor"){
       return;
     }
     let slot = this.hotBar.getSelectedSlot();
@@ -88,10 +84,10 @@ class MurderEditor{
       this.trapGhost.show();
       this.element = this.hotBar.getItemInSlot(slot);
       this.trapGhost.setElement(this.element);
-      this.trapGhost.setPos(event.clientX, event.clientY);
+      this.trapGhost.setPos(cursor.x, cursor.y);
       let pos = {
-        x: this.x + (event.clientX-window.innerWidth/2),
-        y: this.y - (event.clientY-window.innerHeight/2)
+        x: this.x + (cursor.x-window.innerWidth/2),
+        y: this.y - (cursor.y-window.innerHeight/2)
       };
       let resultOfCanplace = this.element.canPlace(this.world, pos, this.getRoom(pos));
       if(resultOfCanplace){
@@ -122,7 +118,6 @@ class MurderEditor{
         return room;
       }
     }
-    console.log("default");
     return false;
   }
 
@@ -131,22 +126,9 @@ class MurderEditor{
   */
   update(){
     if(this.enabled){
-      if(keys[87]){
-        this.y += 10;
-        this.viewChanged({x: this.x, y:this.y});
-      }
-      if(keys[83]){
-        this.y -= 10;
-        this.viewChanged({x: this.x, y:this.y});
-      }
-      if(keys[65]){
-        this.x -= 10;
-        this.viewChanged({x: this.x, y:this.y});
-      }
-      if(keys[68]){
-        this.x += 10;
-        this.viewChanged({x: this.x, y:this.y});
-      }
+      this.y += this.vy;
+      this.x += this.vx;
+      this.viewChanged({x: this.x, y:this.y});
     }
   }
 
@@ -183,6 +165,24 @@ class MurderEditor{
   */
   getAdditions(){
     return this.additions;
+  }
+
+  /**
+  * called every time the inputMethod polls the input
+  * @param {InputMethod} inputMethod the input method
+  */
+  onInput(inputMethod){
+    if(!this.enabled){
+      return;
+    }
+    this.vx = 20*inputMethod.getXMovement();
+    this.vy = 20*inputMethod.getYMovement();
+    this.cursor = inputMethod.getCursor();
+    if(this.cursor.click){
+      this.onClick(this.cursor);
+    } else {
+      this.onMouseMove(this.cursor);
+    }
   }
 
 }

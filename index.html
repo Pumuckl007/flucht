@@ -13,7 +13,7 @@
   <div class="GameMenuWrapper" id="GameMenuWrapper">
     <div class="GameMenu">
       <input class="NameInput" id="NameInput" placeholder="Name"></input>
-      <div class="MenuButton" id="Join" onclick="flucht.onUserEvent('Start')">
+      <div class="MenuButton" id="Start" onclick="flucht.onUserEvent('Start')">
         Start
       </div>
       <div class="MenuButton" id="HelpButton" onclick="flucht.onUserEvent('Help')">
@@ -29,13 +29,13 @@
       <ul class="PlayerListList" id="Party Display">
       </ul>
     </div>
-    <div class="StartButton" onclick="flucht.onUserEvent('Ready')">Ready!</div>
+    <div class="StartButton" id="ReadyButton" onclick="flucht.onUserEvent('Ready')">Ready!</div>
     <div class="Chat">
       <input class="ChatInput" placeholder="Type to Chat"></input>
     </div>
   </div>
   <div class="MurderEditor" id="MurderEditor" style="display:none">
-    <div class="MurdererDone" onclick="flucht.onUserEvent('MurdererDone')">Ready!</div>
+    <div class="MurdererDone" id="MurdererDone" onclick="flucht.onUserEvent('MurdererDone')">Ready!</div>
     <table class="HotBar" id="HotBar">
       <tbody>
         <tr>

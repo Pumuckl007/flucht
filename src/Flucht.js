@@ -87,7 +87,7 @@ class Flucht{
     this.hotBar = new HotBar();
     this.hotBarUI = new HotBarUI(this.hotBar);
     this.hotBar.setSelectedSlot(0);
-    this.ui.addKeyListener(this.hotBarUI);
+    this.ui.inputMethod.addInputListener(this.hotBarUI);
 
     this.ingame = false;
 
@@ -138,7 +138,7 @@ class Flucht{
 
     this.murderEditor = new MurderEditor(this, this.hotBar, this.world);
     this.murderEditor.disable();
-    this.ui.addKeyListener(this.murderEditor);
+    this.ui.inputMethod.addInputListener(this.murderEditor);
     this.renderer.addPlacementSprite(this.murderEditor.trapGhost.sprite);
     this.renderer.disableLighting();
   }
@@ -162,6 +162,7 @@ class Flucht{
     for(let userId in this.networkConnection.webRTCConnections){
       remotePlayerController.addRemotePlayerListener(userId);
     }
+    this.ui.inputMethod.addInputListener(this.runner);
   }
 
   /**
@@ -208,6 +209,7 @@ class Flucht{
   * updates the world after 20 milliseconds
   */
   update(){
+    this.ui.update();
     if(this.murderEditor){
       this.murderEditor.update();
     }
@@ -219,7 +221,11 @@ class Flucht{
     }
     if(this.runner && this.runner.won){
       this.runner.won = false;
-      this.ui.switchScreen(this.ui.WON);
+      this.ui.displayMessage("You Won!!!!", 10000);
+    }
+    if(this.runner && this.runner.dead && this.runner.hasPhysics){
+      this.ui.displayMessage("You Died. :(", 10000);
+      this.runner.hasPhysics = false;
     }
   }
 
