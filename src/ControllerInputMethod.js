@@ -74,12 +74,13 @@ class ControllerInputMethod{
     if(this.cursor.y > window.innerHeight){
       this.cursor.y = window.innerHeight;
     }
-    if(this.cursor.unclicked){
-      this.cursor.click = this.gamePad.buttons[11].pressed;
+    if(this.cursor.unclicked && this.gamePad.buttons[11].pressed){
+      this.cursor.click = true;
       this.cursor.unclicked = false;
     }
-    if(!this.gamePad.buttons[11].presse && !this.cursor.unclicked){
+    if(!this.gamePad.buttons[11].pressed && !this.cursor.unclicked){
       this.cursor.unclicked = true;
+      this.cursor.click = false;
     }
     this.cursor.target = "MurderEditor"
     for(let listener of this.listeners){
