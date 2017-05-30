@@ -38,8 +38,7 @@ class Renderer{
     this.light = new LightingMask(this.stage, this.renderer);
     this.barLayer = new PIXI.Graphics();
     this.statusBars = new StatusBars(this.barLayer);
-    this.miniMap = new MiniMap(this.stage, this.renderer, this.hud, this.light);
-    //this.toggleLighting();
+    this.miniMap = new MiniMap(this.stage, this.renderer, this.hud);
   }
 
   /**
@@ -61,11 +60,15 @@ class Renderer{
       if(object.type === "Runner"){
         this.light.addLightSource(object);
       }
+      if(!object.type === "Murderer"){
+        this.miniMap.addEntity(object);
+      }
       this.statusBars.addHealthBar(object);
       this.renderers.push(renderer);
     }
     if(type === "Terrain Updated"){
       this.terrain = object;
+      this.miniMap.updateTerrain(this.terrain);
     }
     if(type === "Element Added"){
       let element = object;

@@ -89,6 +89,10 @@ class Flucht{
     this.hotBar.setSelectedSlot(0);
     this.ui.addKeyListener(this.hotBarUI);
 
+    //start game (delete this)
+    this.start(this.networkConnection.id);
+    this.startGame();
+    //this.renderer.disableLighting();
   }
 
   /**
