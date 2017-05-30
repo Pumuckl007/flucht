@@ -1,0 +1,42 @@
+{
+  "name":"Exit Room",
+  "width": 832,
+  "height": 438,
+  "background": "/assets/background.png",
+  "elements":[
+    {
+      "x": 478,
+      "y": 100,
+      "width": 100,
+      "height": 200,
+      "type": "Exit"
+    },
+    {
+      "x": 130,
+      "y": 43,
+      "width": 34,
+      "height": 106,
+      "type": "Lit Element",
+      "url": "/assets/Candle/Candle.json",
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": true
+    },
+    {
+      "x": 730,
+      "y": 43,
+      "width": 34,
+      "height": 106,
+      "type": "Lit Element",
+      "url": "/assets/Candle/Candle.json",
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": true
+    }
+  ],
+  "mirrorable": false,
+  "leftEntrance": true,
+  "rightEntrance": true,
+  "topEntrance": false,
+  "bottomEntrance": false
+}

@@ -23,6 +23,10 @@
       "url": "/rooms/ClockRoom.json"
     }
   ],
+  "exitRoom":{
+    "name": "Exit Room",
+    "url": "/rooms/ExitRoom.json"
+  },
   "roomTypes":[
     "/rooms/LivingRoom.json",
     "/rooms/StairwellTop.json",

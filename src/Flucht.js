@@ -13,6 +13,7 @@ import HotBar from "./HotBar.js";
 import HotBarUI from "./HotBarUI.js";
 import MurderEditor from "./MurderEditor.js";
 import TrapMap from "./Physics/Elements/TrapMap.js";
+import Murderer from "./Physics/Murderer.js";
 
 /** class creates world, runner and renderer to begin the game*/
 class Flucht{
@@ -87,7 +88,9 @@ class Flucht{
     this.hotBar = new HotBar();
     this.hotBarUI = new HotBarUI(this.hotBar);
     this.hotBar.setSelectedSlot(0);
-    this.ui.addKeyListener(this.hotBarUI);
+    this.ui.inputMethod.addInputListener(this.hotBarUI);
+
+    this.ingame = false;
 
     //start game (delete this)
     this.start(this.networkConnection.id);
@@ -140,7 +143,7 @@ class Flucht{
 
     this.murderEditor = new MurderEditor(this, this.hotBar, this.world);
     this.murderEditor.disable();
-    this.ui.addKeyListener(this.murderEditor);
+    this.ui.inputMethod.addInputListener(this.murderEditor);
     this.renderer.addPlacementSprite(this.murderEditor.trapGhost.sprite);
     this.renderer.disableLighting();
   }
@@ -148,14 +151,22 @@ class Flucht{
   /**
   * inserts the runner to the world
   */
-  insertRunner(){
+  insertRunner(murderer){
     if(this.runner){
       return;
     }
-    if(this.spawn){
-      this.runner = new Runner(64, 108, this.spawn.x, this.spawn.y);
+    if(murderer){
+      if(this.spawn){
+        this.runner = new Murderer(64, 108, this.spawn.x, this.spawn.y);
+      } else {
+        this.runner = new Murderer(64, 108, 0, 76);
+      }
     } else {
-      this.runner = new Runner(64, 108, 0, 76);
+      if(this.spawn){
+        this.runner = new Runner(64, 108, this.spawn.x, this.spawn.y);
+      } else {
+        this.runner = new Runner(64, 108, 0, 76);
+      }
     }
     this.renderer.addRunner(this.runner)
     this.world.addEntity(this.runner);
@@ -164,6 +175,7 @@ class Flucht{
     for(let userId in this.networkConnection.webRTCConnections){
       remotePlayerController.addRemotePlayerListener(userId);
     }
+    this.ui.inputMethod.addInputListener(this.runner);
   }
 
   /**
@@ -210,6 +222,7 @@ class Flucht{
   * updates the world after 20 milliseconds
   */
   update(){
+    this.ui.update();
     if(this.murderEditor){
       this.murderEditor.update();
     }
@@ -219,6 +232,14 @@ class Flucht{
         this.elementNetworkSyncController.update();
       }
     }
+    if(this.runner && this.runner.won){
+      this.runner.won = false;
+      this.ui.displayMessage("You Won!!!!", 10000);
+    }
+    if(this.runner && this.runner.dead && this.runner.hasPhysics){
+      this.ui.displayMessage("You Died. :(", 10000);
+      this.runner.hasPhysics = false;
+    }
   }
 
   /**
@@ -226,6 +247,9 @@ class Flucht{
   */
   allReady(){
     console.log("Host is", this.host, "I am", this.networkConnection.id);
+    if(this.ingame){
+      return;
+    }
     if(this.host === this.networkConnection.id){
       this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true, murderer:this.networkConnection.id}));
       this.start(this.networkConnection.id);
@@ -237,12 +261,15 @@ class Flucht{
   * @param {String} murderID the id of the player who is the murderer
   */
   start(murderID){
+    this.ingame = true;
     this.createWorld();
-    // this.insertRunner();
+    this.murderID = murderID;
     if(murderID === this.networkConnection.id){
       this.ui.switchScreen(this.ui.MURDER_EDITOR);
       this.murderEditor.enable();
+      this.ui.displayMessage("You are the Murderer, place your traps now.", 2000);
     } else {
+      this.ui.displayMessage("Waiting for the Murderer to place the traps.", 2000);
       this.ui.switchScreen(this.ui.WAITING);
     }
   }
@@ -253,7 +280,6 @@ class Flucht{
   */
   murderEditorChanged(data){
     if(data.enableChanged && this.renderer){
-      console.log(this.murderEditor.enabled)
       if(this.murderEditor.enabled){
         this.renderer.disableLighting();
       } else {
@@ -292,9 +318,15 @@ class Flucht{
   * starts the game with the current traps
   */
   startGame(){
-    this.insertRunner();
     this.ui.switchScreen(this.ui.GAME);
     this.murderEditor.disable();
+    if(this.murderID === this.networkConnection.id){
+      this.ui.displayMessage("Find and kill the runners!", 1500);
+      this.insertRunner(true);
+    } else {
+      this.ui.displayMessage("You are a Runner, run to the exit!", 1500);
+      this.insertRunner(false);
+    }
   }
 }
 

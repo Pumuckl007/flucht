@@ -61,7 +61,7 @@ class BearTrap extends Element{
           }
           if(this.tapCount <this.maxTap){
             runner.hurt(0.1);
-            let vel = runner.getVelocityX();
+            let vel = Math.abs(runner.getVelocityX())/runner.getVelocityX();
             //console.log(vel);
             if(vel > 0 && this.lastVel != vel){
               this.lastVel = vel;

@@ -88,11 +88,11 @@ class RemotePlayerController{
       return;
     }
     let data = {pos: this.runner.pos,
-       vel:this.runner.vel,
-        crouching:keys[83],
-         state:this.runner.state,
-          playerId:flucht.networkConnection.id,
-           health:flucht.runner.health};
+      vel:this.runner.vel,
+      crouching:this.runner.crouching,
+      state:this.runner.state,
+      playerId:flucht.networkConnection.id,
+      health:flucht.runner.health};
     if(this.runner.frozen){
       data.vel.x = 0;
       data.vel.y = 0;

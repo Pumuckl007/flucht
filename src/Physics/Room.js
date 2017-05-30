@@ -110,7 +110,7 @@ class Room{
       this.elements = this.elements.concat(built);
     }
   }
-  
+
   /**
   * Mirrors an element over the x or y axis of the room.
   * @param {Element[]} elements the elements to mirror

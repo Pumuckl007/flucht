@@ -1,4 +1,5 @@
 import Entity from "./Entity.js";
+import InputMethodEvents from "./../InputMethodEvents.js";
 
 /**
 * A class representitive of the runner which the player controls
@@ -23,6 +24,9 @@ class Runner extends Entity{
     this.pos = {x:x, y:y};
     this.frozen = false;
     this.health = 100;
+    this.crouching = false;
+    this.jumping = false;
+    this.dead = false;
   }
 
   /**
@@ -42,17 +46,12 @@ class Runner extends Entity{
   * used to recive user input for the runner
   */
   tick(){
-    if(keys[68]){
-      this.vel.x = 300;
-      this.state = "running";
-    } else if(keys[65]){
-      this.vel.x = -300;
+    if(Math.abs(this.vel.x) > 0){
       this.state = "running";
     } else {
-      this.vel.x = 0;
       this.state = "idle";
     }
-    if(keys[32]){
+    if(this.jumping){
       if(this.onGround){
         this.onGround = false;
         this.vel.y = 500;
@@ -90,6 +89,7 @@ class Runner extends Entity{
   hurt(damage){
     this.health -= damage;
     if(this.health < 0){
+      this.dead = true;
       this.health = 0;
     }
   }
@@ -104,10 +104,20 @@ class Runner extends Entity{
       this.onGround = true;
     }
     if(terrainElement.type === "Side Jump"){
-      return (type === 4 || type === 1) || keys[83];
+      return (type === 4 || type === 1) || this.crouching;
     } else if(terrainElement.type === "Drop Down"){
-      return keys[83];
+      return this.crouching;
     }
+  }
+
+  /**
+  * called every time the inputMethod polls the input
+  * @param {InputMethod} inputMethod the input method
+  */
+  onInput(inputMethod){
+    this.vel.x = 300*inputMethod.getXMovement();
+    this.jumping = inputMethod.jumpPushed();
+    this.crouching = inputMethod.crouchHeld();
   }
 }
 
