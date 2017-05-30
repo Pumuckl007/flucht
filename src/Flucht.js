@@ -13,6 +13,7 @@ import HotBar from "./HotBar.js";
 import HotBarUI from "./HotBarUI.js";
 import MurderEditor from "./MurderEditor.js";
 import TrapMap from "./Physics/Elements/TrapMap.js";
+import Murderer from "./Physics/Murderer.js";
 
 /** class creates world, runner and renderer to begin the game*/
 class Flucht{
@@ -146,14 +147,22 @@ class Flucht{
   /**
   * inserts the runner to the world
   */
-  insertRunner(){
+  insertRunner(murderer){
     if(this.runner){
       return;
     }
-    if(this.spawn){
-      this.runner = new Runner(64, 108, this.spawn.x, this.spawn.y);
+    if(murderer){
+      if(this.spawn){
+        this.runner = new Murderer(64, 108, this.spawn.x, this.spawn.y);
+      } else {
+        this.runner = new Murderer(64, 108, 0, 76);
+      }
     } else {
-      this.runner = new Runner(64, 108, 0, 76);
+      if(this.spawn){
+        this.runner = new Runner(64, 108, this.spawn.x, this.spawn.y);
+      } else {
+        this.runner = new Runner(64, 108, 0, 76);
+      }
     }
     this.renderer.addRunner(this.runner)
     this.world.addEntity(this.runner);
@@ -305,13 +314,14 @@ class Flucht{
   * starts the game with the current traps
   */
   startGame(){
-    this.insertRunner();
     this.ui.switchScreen(this.ui.GAME);
     this.murderEditor.disable();
     if(this.murderID === this.networkConnection.id){
       this.ui.displayMessage("Find and kill the runners!", 1500);
+      this.insertRunner(true);
     } else {
       this.ui.displayMessage("You are a Runner, run to the exit!", 1500);
+      this.insertRunner(false);
     }
   }
 }

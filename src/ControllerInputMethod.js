@@ -153,6 +153,10 @@ class ControllerInputMethod{
     return this.gamePad.buttons[9].pressed;
   }
 
+  isStabbing(){
+    return false;
+  }
+
 }
 
 export default ControllerInputMethod;

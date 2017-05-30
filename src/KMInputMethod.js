@@ -22,10 +22,10 @@ class KMInputMethod{
       target: ""
     }
 
-    document.getElementById("MurderEditor").onmousemove = function(e){
+    document.getElementById("Body").onmousemove = function(e){
       self.onMouseMove(e);
     }
-    document.getElementById("MurderEditor").onclick = function(e){
+    document.getElementById("Body").onclick = function(e){
       self.onClick(e);
     }
   }
@@ -123,6 +123,12 @@ class KMInputMethod{
 
   getStartButton(){
     return false;
+  }
+
+  isStabbing(){
+    let stab = this.cursor.click;
+    this.cursor.click = false;
+    return stab;
   }
 
 }
