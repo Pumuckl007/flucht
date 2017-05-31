@@ -126,4 +126,22 @@ function correctY(toMove, notToMove, yOff){
   return (direction < 0) ? 2 : 0;
 }
 
-export default {terrainAndEntity: terrainAndEntity, correctX: correctX, correctY: correctY, terrainAndElement : terrainAndElement};
+/**
+* finds all of the entities which collide with the box
+* @param {Box} box the box to check against
+* @param {Entity[]} entities the entities to check against
+* @return {Entity[]} a list of entities that collided
+*/
+function boxAndEntities(box, entities, x, y){
+  let collided = [];
+  for(let entity of entities){
+    let dx = entity.pos.x - x;
+    let dy = entity.pos.y - y;
+    if(box.intersects(entity.box, dx, dy)){
+      collided.push(entity);
+    }
+  }
+  return collided;
+}
+
+export default {terrainAndEntity: terrainAndEntity, correctX: correctX, correctY: correctY, terrainAndElement : terrainAndElement, boxAndEntities: boxAndEntities};

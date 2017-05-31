@@ -153,9 +153,9 @@ class Flucht{
     }
     if(murderer){
       if(this.spawn){
-        this.runner = new Murderer(64, 108, this.spawn.x, this.spawn.y);
+        this.runner = new Murderer(this.world, 64, 108, this.spawn.x, this.spawn.y);
       } else {
-        this.runner = new Murderer(64, 108, 0, 76);
+        this.runner = new Murderer(this.world, 64, 108, 0, 76);
       }
     } else {
       if(this.spawn){
