@@ -120,10 +120,11 @@ class Flucht{
     let self = this;
     this.world = new World({spawnRunner:function(data){
       self.elementNetworkSyncController = new ElementNetworkSyncController(self.pm, self.world);
+      let spawn = data.spawns[~~(Math.random()*data.spawns.length)];
       if(self.runner){
-        self.runner.pos = data.spawn;
+        self.runner.pos = spawn;
       } else {
-        self.spawn = data.spawn;
+        self.spawn = spawn;
       }
       self.renderer.onEvent("Terrain Updated", self.world.terrain);
       self.renderer.onEvent("Level Loaded", data.background);
