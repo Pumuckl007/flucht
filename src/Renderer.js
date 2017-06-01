@@ -142,9 +142,9 @@ class Renderer{
   @param {resizeEvent} event the resizeEvent
  */
   resize(event){
-    this.renderer.resize(document.body.offsetWidth, document.body.offsetHeight);
+    this.renderer.resize(window.innerWidth, window.innerHeight);
     this.light.resize();
-    this.miniMap.resize();
+    //this.miniMap.resize();
   }
 
   /**
