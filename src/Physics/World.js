@@ -107,6 +107,21 @@ class World{
       }
     }} , this.seed);
   }
+
+  /**
+  * deals damage to all of the elements in the section
+  * @param {Box} box the box to collide with
+  * @param {Number} amount the amount of damage
+  * @param {Entity} emitter the emitter to no do damage to
+  */
+  dealDamage(box, amount, emitter, x, y){
+    let hits = Collisions.boxAndEntities(box, this.entities, x, y);
+    for(let hit of hits){
+      if(hit !== emitter && hit.hurt){
+        hit.hurt(amount);
+      }
+    }
+  }
 }
 
 export default World;

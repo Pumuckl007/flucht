@@ -7,5 +7,6 @@ export default {
   host:"Host",
   start: "Start",
   elementUpdate: "Element Update",
-  trapPlacement: "Trap Placement"
+  trapPlacement: "Trap Placement",
+  murderDamage: "MurderDamage"
 }

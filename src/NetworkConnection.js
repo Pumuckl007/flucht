@@ -128,6 +128,13 @@ class NetworkConnection{
           from: this.id,
           answer: event.answer
         }))
+      } else if(event.type === "ice"){
+        this.websocket.send(JSON.stringify({
+          type:"ice",
+          to:user.id,
+          from:this.id,
+          ice: event.ice
+        }))
       } else if(event.type === "channelOpen"){
         this.webRTCConnections[user.id] = this.pendingConnections[user.id];
         this.pendingConnections[user.id] = null;

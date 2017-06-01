@@ -27,6 +27,9 @@ class RemotePlayerController{
     this.packetManager.addListener(PacketTypes.runnerUpdated, {onPacket:function(e){
       self.updatePlayer(e.data);
     }});
+    this.packetManager.addListener(PacketTypes.murderDamage, {onPacket:function(e){
+      self.hurt(e.data);
+    }});
     this.update();
   }
 
@@ -79,6 +82,17 @@ class RemotePlayerController{
   }
 
   /**
+  * hurts this runner by the amount specified in the data
+  * @param {Object} data the data
+  * @param {Number} data.damage the damage dealt
+  */
+  hurt(data){
+    if(data.damage){
+      this.runner.hurt(data.damage);      
+    }
+  }
+
+  /**
   * sends and update to all listeners
   */
   update(){
@@ -100,6 +114,17 @@ class RemotePlayerController{
     for(let listener of this.listeners) {
       let packet = new Packet(false, listener, PacketTypes.runnerUpdated, data);
       this.packetManager.send(packet);
+    }
+    for(let playerID in this.players){
+      let runner = this.players[playerID];
+      if(runner.healthDelta !== 0){
+        let data = {
+          damage: runner.healthDelta
+        }
+        let packet = new Packet(false, playerID, PacketTypes.murderDamage, data);
+        this.packetManager.send(packet);
+        runner.healthDelta = 0;
+      }
     }
   }
 }

@@ -74,6 +74,7 @@ function generate(levelDescription, callback, random){
 */
 function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random){
   let avaliableRoomMap = {};
+  let spawns = [];
   for(let room of avaliableRooms){
     avaliableRoomMap[room.name] = room;
   }
@@ -99,7 +100,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
     let w = Math.floor(random()*levelDescription.width);
     let h = Math.floor(random()*levelDescription.height);
     let roomToPlace = avaliableRoomMap[levelDescription.exitRoom.name];
-    tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms);
+    tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms, spawns);
     let index = avaliableRooms.indexOf(roomToPlace);
     avaliableRooms.splice(index, 1);
   }
@@ -115,7 +116,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
         let posToPlaceAt = localAvaliableSpots[index];
         localAvaliableSpots.splice(index, 1);
         let roomToPlace = avaliableRoomMap[roomName];
-        tryToPlace(roomToPlace, roomGrid, posToPlaceAt, h, levelDescription, avaliableRoomMap, rooms);
+        tryToPlace(roomToPlace, roomGrid, posToPlaceAt, h, levelDescription, avaliableRoomMap, rooms, spawns);
       }
     }
   }
@@ -130,7 +131,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
         let index = Math.floor(random()*localAvaliableRooms.length);
         let roomToPlace = localAvaliableRooms[index];
         localAvaliableRooms.splice(index, 1);
-        if(tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms)){
+        if(tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms, spawns)){
           break;
         }
       }
@@ -157,8 +158,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
   }
 
   elements = elements.concat(makeTheWalls(bounds[0]-5, bounds[1]-5));
-
-  callback(elements, rooms);
+  callback(elements, rooms, spawns);
 }
 
 /**
@@ -188,7 +188,7 @@ function makeTheWalls(width, height){
 * @param {Room[]} rooms a list of rooms having been placed
 * @returns {boolean} returns whether or not the room was sucessfully placed
 */
-function tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms){
+function tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms, spawns){
   let can = canPlace(w, h, levelDescription, roomGrid);
   if(!can){
     return false;
@@ -234,6 +234,11 @@ function tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoom
   let room = new Room((w+0.5)*(roomToPlace.width+20), (h+0.5)*(roomToPlace.height+20), roomToPlace);
   roomGrid[w][h] = room;
   rooms.push(room);
+  if(roomToPlace.spawn){
+    let spawnX = roomToPlace.spawn.x + room.x;
+    let spawnY = roomToPlace.spawn.y + room.y;
+    spawns.push({x:spawnX, y:spawnY});
+  }
   return true;
 }
 

@@ -22,6 +22,7 @@ class RemoteRunner extends Entity{
     this.crouching = false;
     this.pos = {x:x, y:y};
     this.health = 100;
+    this.healthDelta = 0;
   }
 
   /**
@@ -64,6 +65,14 @@ class RemoteRunner extends Entity{
     this.state = state;
     this.crouching = crouching;
     this.health = health;
+  }
+
+  /**
+  * hurts the remote runner
+  * @param {Number} amount the amount to hurt
+  */
+  hurt(amount){
+    this.healthDelta += amount;
   }
 }
 

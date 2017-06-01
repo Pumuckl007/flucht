@@ -79,6 +79,7 @@ class Flucht{
     this.host = this.networkConnection.id;
     let self = this;
     this.networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
+      self.ui.displayMessage("Connected as " + v.offerer, 1000);
       if(v.offerer){
         self.pm.send(new Packet(false, v.id, PacketTypes.seed, {seed:self.seed}));
         self.pm.send(new Packet(false, v.id, PacketTypes.host, {host:self.host}));
@@ -124,10 +125,11 @@ class Flucht{
     let self = this;
     this.world = new World({spawnRunner:function(data){
       self.elementNetworkSyncController = new ElementNetworkSyncController(self.pm, self.world);
+      let spawn = data.spawns[~~(Math.random()*data.spawns.length)];
       if(self.runner){
-        self.runner.pos = data.spawn;
+        self.runner.pos = spawn;
       } else {
-        self.spawn = data.spawn;
+        self.spawn = spawn;
       }
       self.renderer.onEvent("Terrain Updated", self.world.terrain);
       self.renderer.onEvent("Level Loaded", data.background);
@@ -157,9 +159,9 @@ class Flucht{
     }
     if(murderer){
       if(this.spawn){
-        this.runner = new Murderer(64, 108, this.spawn.x, this.spawn.y);
+        this.runner = new Murderer(this.world, 64, 108, this.spawn.x, this.spawn.y);
       } else {
-        this.runner = new Murderer(64, 108, 0, 76);
+        this.runner = new Murderer(this.world, 64, 108, 0, 76);
       }
     } else {
       if(this.spawn){

@@ -161,8 +161,8 @@ class Renderer{
   */
   render(){
     if(this.runner){
-      this.stage.y = this.scale*this.runner.pos.y+document.body.offsetHeight/2;
-      this.stage.x = -this.scale*this.runner.pos.x+document.body.offsetWidth/2;
+      this.stage.y = this.scale*this.runner.pos.y+window.innerHeight/2;
+      this.stage.x = -this.scale*this.runner.pos.x+window.innerWidth/2;
       if(this.miniMap.center.x === 0){
         this.miniMap.centerMap();
       }
@@ -207,8 +207,8 @@ class Renderer{
   * @param {number} y the y position
   */
   setPos(x, y){
-    this.stage.y = this.scale*y+document.body.offsetHeight/2;
-    this.stage.x = -this.scale*x+document.body.offsetWidth/2;
+    this.stage.y = this.scale*y+window.innerHeight/2;
+    this.stage.x = -this.scale*x+window.innerWidth/2;
   }
 
   /**

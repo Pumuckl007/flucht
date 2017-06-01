@@ -22,6 +22,8 @@ class KMInputMethod{
       target: ""
     }
 
+    this.stabDebounce = true;
+
     document.getElementById("Body").onmousemove = function(e){
       self.onMouseMove(e);
     }
@@ -126,9 +128,7 @@ class KMInputMethod{
   }
 
   isStabbing(){
-    let stab = this.cursor.click;
-    this.cursor.click = false;
-    return stab;
+    return this.keys[81];
   }
 
 }
