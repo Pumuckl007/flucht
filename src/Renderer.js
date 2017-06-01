@@ -34,6 +34,7 @@ class Renderer{
     initMap(this.typeMap);
     let self = this;
     window.onresize = function(event){ self.resize(event)};
+    this.numRunners = 0;
 
     this.light = new LightingMask(this.stage, this.renderer);
     this.barLayer = new PIXI.Graphics();
@@ -65,6 +66,8 @@ class Renderer{
       }
       this.statusBars.addHealthBar(object);
       this.renderers.push(renderer);
+      this.miniMap.addEntity(object);
+      //console.log(object.id);
     }
     if(type === "Terrain Updated"){
       this.terrain = object;
