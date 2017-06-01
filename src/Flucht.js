@@ -92,6 +92,10 @@ class Flucht{
 
     this.ingame = false;
 
+    //start game (delete this)
+    //this.start(this.networkConnection.id);
+    //this.startGame();
+    //this.renderer.disableLighting();
   }
 
   /**
@@ -165,7 +169,7 @@ class Flucht{
         this.runner = new Runner(64, 108, 0, 76);
       }
     }
-    this.renderer.addRunner(this.runner)
+    this.renderer.addRunner(this.runner);
     this.world.addEntity(this.runner);
     this.remotePlayerController = new RemotePlayerController(this.world, this.pm, this.runner);
     let self = this;
