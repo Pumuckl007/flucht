@@ -24,8 +24,8 @@ class HotBar{
 
     this.items = [new PlaceableItem(new BearTrap(0,0,64,64, {
       "url":"/assets/Traps/BearTrap/BearTrap.json",
-      "offsetX": -32,
-      "offsetY": -51,
+      "offsetX": 0,
+      "offsetY": -32,
       "ghost": false
     }), "/assets/Traps/BearTrap/trap_Animation1_1.png")];
     this.currentSelected = 0;

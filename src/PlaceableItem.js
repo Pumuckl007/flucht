@@ -79,8 +79,8 @@ class PlaceableItem{
     this.trap.pos.y -= this.trap.box.height/2;
     let w = this.trap.box.width;
     let h = this.trap.box.height;
-    this.trap.box.width = 1;
-    this.trap.box.height = 1;
+    // this.trap.box.width = 1;
+    // this.trap.box.height = 1;
     let clonedTrap = this.trap.clone();
     clonedTrap.id = id;
     world.addElement(clonedTrap);

@@ -79,7 +79,6 @@ class Flucht{
     this.host = this.networkConnection.id;
     let self = this;
     this.networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
-      self.ui.displayMessage("Connected as " + v.offerer, 1000);
       if(v.offerer){
         self.pm.send(new Packet(false, v.id, PacketTypes.seed, {seed:self.seed}));
         self.pm.send(new Packet(false, v.id, PacketTypes.host, {host:self.host}));

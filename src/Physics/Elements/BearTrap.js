@@ -14,6 +14,7 @@ class BearTrap extends Element{
   */
   constructor(x, y, width, height, element){
     super(x, y, width, height, "Bear Trap", false, 1);
+    console.log(x, y);
     this.state = "idle";
     if(!element){
       return;
@@ -41,6 +42,9 @@ class BearTrap extends Element{
   */
     collision(entity, side, entityX, entityY){
       if(entity.type === "Runner" && (!entity.frozen || this.trappedEntity === entity)){
+        if(!this.isPlayerInTrap(entity)){
+          return true;
+        }
         if(this.trappedEntity < 0){
           this.trappedEntity = entity;
         }
@@ -83,6 +87,17 @@ class BearTrap extends Element{
           }
         }
     }
+  }
+
+  /**
+  * determins if the player is in the trap or not
+  * @param {Entity} entity the entity to check
+  * @return {Boolean} whether or not the entity is in the trap
+  */
+  isPlayerInTrap(entity){
+    let dx = entity.pos.x - this.pos.x;
+    let dy = (entity.pos.y - entity.box.height/2) - (this.pos.y + this.box.height/2);
+    return Math.abs(dx) < 2 && Math.abs(dy) < 1;
   }
 
   /**
