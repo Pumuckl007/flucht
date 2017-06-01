@@ -97,8 +97,8 @@ class LightingMask{
     */
     animate() {
       if(this.runner){
-        this.lightEntities.y = this.runner.pos.y+document.body.offsetHeight/2;
-        this.lightEntities.x = -this.runner.pos.x+document.body.offsetWidth/2;
+        this.lightEntities.y = this.runner.pos.y+window.innerHeight/2;
+        this.lightEntities.x = -this.runner.pos.x+window.innerWidth/2;
       }
       for(let light of this.lightSources){
         light.update();
