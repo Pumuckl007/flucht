@@ -68,6 +68,19 @@ class Flucht{
     this.networkConnection.registerHandler("webRTCMessage", {
       onWSMessage: test
     });
+
+    let self = this;
+
+    let lock = function(e, v){ self.ui.switchScreen(self.ui.WAITING);
+    self.ui.displayMessage("Players are in game, wait here while they finish", 10000) }
+    this.networkConnection.registerHandler("lock",{
+      onWSMessage: lock
+    });
+    let unlock = function(e, v){ self.ui.switchScreen(self.ui.PARTY);
+    self.ui.displayMessage("You get to start!", 1000) }
+    this.networkConnection.registerHandler("unlock",{
+      onWSMessage: unlock
+    });
     this.pm.addListener(PacketTypes.seed, this);
     this.pm.addListener(PacketTypes.host, this);
     this.pm.addListener(PacketTypes.start, this);
@@ -77,9 +90,7 @@ class Flucht{
     this.ready = false;
 
     this.host = this.networkConnection.id;
-    let self = this;
     this.networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
-      self.ui.displayMessage("Connected as " + v.offerer, 1000);
       if(v.offerer){
         self.pm.send(new Packet(false, v.id, PacketTypes.seed, {seed:self.seed}));
         self.pm.send(new Packet(false, v.id, PacketTypes.host, {host:self.host}));
@@ -263,6 +274,7 @@ class Flucht{
   * @param {String} murderID the id of the player who is the murderer
   */
   start(murderID){
+    this.networkConnection.lockMe();
     this.ingame = true;
     this.createWorld();
     this.murderID = murderID;

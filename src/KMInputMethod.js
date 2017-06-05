@@ -67,9 +67,9 @@ class KMInputMethod{
   }
 
   getXMovement(){
-    if(this.keys[65]){
+    if(this.keys[65] || this.keys[37]){
       return -1;
-    } else if(this.keys[68]){
+    } else if(this.keys[68] || this.keys[39]){
       return 1;
     } else {
       return 0;
@@ -77,9 +77,9 @@ class KMInputMethod{
   }
 
   getYMovement(){
-    if(this.keys[83]){
+    if(this.keys[83] || this.keys[40]){
       return -1;
-    } else if(this.keys[87]){
+    } else if(this.keys[87] || this.keys[38]){
       return 1;
     } else {
       return 0;

@@ -11,6 +11,18 @@ class UserWorld{
   }
 
   /**
+  * returns if any users are locked in a game
+  */
+  anyLocked(){
+    for(let id in this.users){
+      if(this.users[id] && this.users[id].lock){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
   * runs task based on key provided
   * @param {String} key the task to be runs
   * @param {String} msg the new user data
@@ -34,6 +46,11 @@ class UserWorld{
         type:"join",
         user:{id:msg.id, name:msg.name}
       }, [this.users[msg.id]]);
+      if(this.anyLocked()){
+        msg.wsConnection.send(JSON.stringify({
+          type: "lock"
+        }));
+      }
     } else if(key === "disconnect"){
       this.userDied(this.users[msg.id]);
     } else if(key === "offer"){
@@ -45,6 +62,8 @@ class UserWorld{
     } else if(key === "ice"){
       this.propogateRequestToUser(JSON.stringify({type: msg.type, to:msg.to,
          from:msg.from, ice:msg.ice}), msg.to, msg.from);
+    } else if(key === "lock"){
+      this.users[msg.id].lock = msg.value;
     }
   }
 
@@ -58,11 +77,17 @@ class UserWorld{
   }
 
   userDied(user){
+    let lock = this.users[user.id].lock;
     this.users[user.id] = false;
     this.brodcastToUsers({
       type:"leave",
       userId: user.id
     }, []);
+    if(lock && !this.anyLocked()){
+      this.brodcastToUsers({
+        type: "unlock"
+      }, [])
+    }
   }
 
   brodcastToUsers(msg, excludes){
