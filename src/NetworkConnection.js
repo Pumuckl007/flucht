@@ -25,6 +25,18 @@ class NetworkConnection{
     this.handlers = {};
   }
 
+
+  /**
+  * sends a signal to the server to lock the game
+  */
+  lockMe(){
+    this.websocket.send(JSON.stringify({
+      type: "lock",
+      value : true,
+      id: this.id
+    }));
+  }
+
   /**
   * handles a websocket message with the even given by the socket
   * @param event the event from the websocket

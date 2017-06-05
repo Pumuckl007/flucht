@@ -67,7 +67,7 @@ class RemotePlayerController{
   */
   updatePlayer(playerUpdateEvent){
     let runner = this.players[playerUpdateEvent.playerId];
-    runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching, playerUpdateEvent.state, playerUpdateEvent.health);
+    runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching, playerUpdateEvent.state, playerUpdateEvent.health, playerUpdateEvent.frozen);
   }
 
   /**
@@ -88,7 +88,7 @@ class RemotePlayerController{
   */
   hurt(data){
     if(data.damage){
-      this.runner.hurt(data.damage);      
+      this.runner.hurt(data.damage);
     }
   }
 
@@ -106,7 +106,8 @@ class RemotePlayerController{
       crouching:this.runner.crouching,
       state:this.runner.state,
       playerId:flucht.networkConnection.id,
-      health:flucht.runner.health};
+      health:flucht.runner.health,
+      frozen: flucht.runner.frozen};
     if(this.runner.frozen){
       data.vel.x = 0;
       data.vel.y = 0;

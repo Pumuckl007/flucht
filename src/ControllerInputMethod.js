@@ -19,6 +19,13 @@ class ControllerInputMethod{
       unClicked : true,
       target: ""
     }
+    this.jump = 0;
+    this.crouch = 10;
+    this.click = 11;
+    this.attack = 2;
+    this.start = 9;
+    this.hotBarPlus = 5;
+    this.hotBarMinus = 4;
   }
 
   /**
@@ -77,11 +84,11 @@ class ControllerInputMethod{
     if(this.cursor.y > window.innerHeight){
       this.cursor.y = window.innerHeight;
     }
-    if(this.cursor.unclicked && this.gamePad.buttons[11].pressed){
+    if(this.cursor.unclicked && this.gamePad.buttons[this.click].pressed){
       this.cursor.click = true;
       this.cursor.unclicked = false;
     }
-    if(!this.gamePad.buttons[11].pressed && !this.cursor.unclicked){
+    if(!this.gamePad.buttons[this.click].pressed && !this.cursor.unclicked){
       this.cursor.unclicked = true;
       this.cursor.click = false;
     }
@@ -108,11 +115,11 @@ class ControllerInputMethod{
   }
 
   jumpPushed(){
-    return this.gamePad.buttons[0].pressed;
+    return this.gamePad.buttons[this.jump].pressed;
   }
 
   crouchHeld(){
-    return this.gamePad.buttons[10].pressed;
+    return this.gamePad.buttons[this.crouch].pressed;
   }
 
   getHotbarPosSet(){
@@ -121,18 +128,18 @@ class ControllerInputMethod{
 
   getHotbarPosDelta(){
     let delta = 0;
-    if(this.gamePad.buttons[5].pressed && this.rightDebouce){
+    if(this.gamePad.buttons[this.hotBarPlus].pressed && this.rightDebouce){
       this.rightDebouce = false;
       delta += 1;
     }
-    if(!this.gamePad.buttons[5].pressed){
+    if(!this.gamePad.buttons[this.hotBarPlus].pressed){
       this.rightDebouce = true;
     }
-    if(this.gamePad.buttons[4].pressed && this.leftDebouce){
+    if(this.gamePad.buttons[this.hotBarMinus].pressed && this.leftDebouce){
       this.leftDebouce = false;
       delta -= 1;
     }
-    if(!this.gamePad.buttons[4].pressed){
+    if(!this.gamePad.buttons[this.hotBarMinus].pressed){
       this.leftDebouce = true;
     }
     return delta;
@@ -150,11 +157,11 @@ class ControllerInputMethod{
   }
 
   getStartButton(){
-    return this.gamePad.buttons[9].pressed;
+    return this.gamePad.buttons[this.start].pressed;
   }
 
   isStabbing(){
-    return false;
+    return this.gamePad.buttons[this.attack].pressed;
   }
 
 }

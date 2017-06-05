@@ -14,7 +14,6 @@ class BearTrap extends Element{
   */
   constructor(x, y, width, height, element){
     super(x, y, width, height, "Bear Trap", false, 1);
-    console.log(x, y);
     this.state = "idle";
     if(!element){
       return;
@@ -29,8 +28,9 @@ class BearTrap extends Element{
     this.tapCount = 0;
     this.maxTap = 30;
     this.interactive = true;
-    this.trappedEntity = -1;
+    this.trappedEntity = false;
     this.hasChanged = false;
+    this.remoteTrap = false;
   }
 
   /**
@@ -41,11 +41,11 @@ class BearTrap extends Element{
   * @param {number} entityY the y-coordinate of the entity that is collided with
   */
     collision(entity, side, entityX, entityY){
-      if(entity.type === "Runner" && (!entity.frozen || this.trappedEntity === entity)){
-        if(!this.isPlayerInTrap(entity)){
-          return true;
-        }
-        if(this.trappedEntity < 0){
+      if(!this.isPlayerInTrap(entity) || this.remoteTrap){
+        return true;
+      }
+      if(entity.type === "Runner" && (!entity.frozen || this.trappedEntity === entity) && !this.remoteTrap){
+        if(!this.trappedEntity){
           this.trappedEntity = entity;
         }
         if(this.trappedEntity === entity){
@@ -97,7 +97,7 @@ class BearTrap extends Element{
   isPlayerInTrap(entity){
     let dx = entity.pos.x - this.pos.x;
     let dy = (entity.pos.y - entity.box.height/2) - (this.pos.y + this.box.height/2);
-    return Math.abs(dx) < 2 && Math.abs(dy) < 1;
+    return Math.abs(dx) < 10 && Math.abs(dy) < 1;
   }
 
   /**
@@ -107,8 +107,11 @@ class BearTrap extends Element{
   accepetPacketData(data){
     this.state = data.state;
     this.tapCount = data.tapCount;
-    this.trappedEntity = data.trappedEntity;
     this.ghost = data.ghost;
+    if(!this.trappedEntity){
+      console.log("I set remote trap", data.remoteTrap)
+      this.remoteTrap = data.remoteTrap;
+    }
   }
 
   /**
@@ -119,8 +122,8 @@ class BearTrap extends Element{
     let data = {
       state: this.state,
       tapCount: this.tapCount,
-      trappedEntity: this.trappedEntity,
-      ghost : this.ghost
+      ghost : this.ghost,
+      remoteTrap : (this.trappedEntity) ? true : false,
     }
     return data;
   }
