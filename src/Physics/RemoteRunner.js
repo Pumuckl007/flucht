@@ -13,7 +13,7 @@ class RemoteRunner extends Entity{
   * @param {number} x the x pos of the runner
   * @param {number} y the y pos of the runner
   */
-  constructor(width, height, x=0, y=0){
+  constructor(width, height, x=0, y=0, name = "saya"){
     super(width, height);
     this.hasPhysics = true;
     this.worldCollisions = true;
@@ -23,6 +23,7 @@ class RemoteRunner extends Entity{
     this.pos = {x:x, y:y};
     this.health = 100;
     this.healthDelta = 0;
+    this.name = name;
   }
 
   /**

@@ -14,7 +14,7 @@ class Runner extends Entity{
   * @param {number} x the x pos of the runner
   * @param {number} y the y pos of the runner
   */
-  constructor(width, height, x=0, y=0){
+  constructor(width, height, x=0, y=0, name = "saya"){
     super(width, height);
     this.hasPhysics = true;
     this.needsTick = true;
@@ -27,6 +27,7 @@ class Runner extends Entity{
     this.crouching = false;
     this.jumping = false;
     this.dead = false;
+    this.name = name;
   }
 
   /**

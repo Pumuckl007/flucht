@@ -14,8 +14,8 @@ class Murderer extends Runner{
   * @param {number} x the x pos of the runner
   * @param {number} y the y pos of the runner
   */
-  constructor(world, width, height, x=0, y=0){
-    super(width, height, x, y);
+  constructor(world, width, height, x=0, y=0, name){
+    super(width, height, x, y, name);
     this.murderer = true;
     this.tryingToStab = false;
     this.world = world;

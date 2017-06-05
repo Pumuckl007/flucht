@@ -16,9 +16,11 @@ class Terrain{
     this.handler = handler;
     this.elements = [];
     this.rooms = [];
+    this.width = 0;
+    this.height = 0;
     let self = this;
     let seedFunction = new Math.seedrandom(seed);
-    LevelGenerator(url, function(elements, rooms, spawns){self.loadElements(elements, rooms, spawns)}, seedFunction);
+    LevelGenerator(url, function(elements, rooms, spawns, width, height){self.loadElements(elements, rooms, spawns, width, height)}, seedFunction);
   }
 
   /**
@@ -26,11 +28,13 @@ class Terrain{
   * @param {Element[]} elements the elements that were generated
   * @param {Room[]} rooms the rooms that were generated
   */
-  loadElements(elements, rooms, spawns){
+  loadElements(elements, rooms, spawns, width, height){
     this.elements = elements;
     this.rooms = rooms;
     this.spawns = spawns;
-    this.handler.spawnRunner(this)
+    this.handler.spawnRunner(this);
+    this.width = width;
+    this.height = height;
   }
 
   /**

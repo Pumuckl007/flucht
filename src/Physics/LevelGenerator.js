@@ -158,7 +158,8 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
   }
 
   elements = elements.concat(makeTheWalls(bounds[0]-5, bounds[1]-5));
-  callback(elements, rooms, spawns);
+  //console.log(levelDescription.width, levelDescription.height, "stage dimensions");
+  callback(elements, rooms, spawns, levelDescription.width, levelDescription.height);
 }
 
 /**

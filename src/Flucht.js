@@ -94,9 +94,9 @@ class Flucht{
     this.ingame = false;
 
     //start game (delete this)
-    //this.start(this.networkConnection.id);
-    //this.startGame();
-    //this.renderer.disableLighting();
+    // this.start(this.networkConnection.id);
+    // this.startGame();
+    // this.renderer.disableLighting();
   }
 
   /**
@@ -159,15 +159,15 @@ class Flucht{
     }
     if(murderer){
       if(this.spawn){
-        this.runner = new Murderer(this.world, 64, 108, this.spawn.x, this.spawn.y);
+        this.runner = new Murderer(this.world, 64, 108, this.spawn.x, this.spawn.y, this.name);
       } else {
-        this.runner = new Murderer(this.world, 64, 108, 0, 76);
+        this.runner = new Murderer(this.world, 64, 108, 0, 76, this.name);
       }
     } else {
       if(this.spawn){
-        this.runner = new Runner(64, 108, this.spawn.x, this.spawn.y);
+        this.runner = new Runner(64, 108, this.spawn.x, this.spawn.y, this.name);
       } else {
-        this.runner = new Runner(64, 108, 0, 76);
+        this.runner = new Runner(64, 108, 0, 76, this.name);
       }
     }
     this.renderer.addRunner(this.runner);
@@ -175,7 +175,7 @@ class Flucht{
     this.remotePlayerController = new RemotePlayerController(this.world, this.pm, this.runner);
     let self = this;
     for(let userId in this.networkConnection.webRTCConnections){
-      remotePlayerController.addRemotePlayerListener(userId);
+      remotePlayerController.addRemotePlayerListener(userId, this.name);
     }
     this.ui.inputMethod.addInputListener(this.runner);
   }

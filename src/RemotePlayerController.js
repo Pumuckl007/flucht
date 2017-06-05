@@ -40,7 +40,7 @@ class RemotePlayerController{
   addPlayer(playerCreationEvent){
     let x = playerCreationEvent.x;
     let y = playerCreationEvent.y;
-    let remoteRunner = new RemoteRunner(64, 108, x, y);
+    let remoteRunner = new RemoteRunner(64, 108, x, y, playerCreationEvent.clientName);
     this.players[playerCreationEvent.playerId] = remoteRunner;
     this.world.addEntity(remoteRunner);
   }
@@ -74,9 +74,9 @@ class RemotePlayerController{
   * adds a remote player listenr of the given id
   * @param {String} id the id of the listener
   */
-  addRemotePlayerListener(id){
+  addRemotePlayerListener(id, name){
     this.listeners.push(id);
-    let data = {x: this.runner.pos.x, y:this.runner.pos.y, playerId:flucht.networkConnection.id};
+    let data = {x: this.runner.pos.x, y:this.runner.pos.y, playerId:flucht.networkConnection.id, clientName: name};
     let packet = new Packet(false, id, PacketTypes.runnerCreation, data);
     this.packetManager.send(packet);
   }
@@ -88,7 +88,7 @@ class RemotePlayerController{
   */
   hurt(data){
     if(data.damage){
-      this.runner.hurt(data.damage);      
+      this.runner.hurt(data.damage);
     }
   }
 

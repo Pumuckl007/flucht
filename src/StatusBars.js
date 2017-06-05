@@ -6,10 +6,12 @@ class StatusBars{
   * @constructor
   * @param {PIXI.Graphics} graphics the convas to draw the status bars on
   */
-  constructor(graphics){
+  constructor(container){
     this.healthBars = [];
     this.progressBars = [];
-    this.graphics = graphics;
+    this.barLayer = container;
+    this.graphics = new PIXI.Graphics();
+    this.barLayer.addChild(this.graphics);
   }
 
   /**
@@ -19,7 +21,14 @@ class StatusBars{
   addHealthBar(entity){
     let width = 120;
     let height = 5;
-    let healthBar = new Tracker(entity, width, height, 70);
+    var style = new PIXI.TextStyle({
+      fill: 0xffffff,
+      fontSize: 18
+    });
+    var text = new PIXI.Text(entity.name, style);
+    this.barLayer.addChild(text);
+    console.log(text);
+    let healthBar = new Tracker(entity, width, height, 70, text);
     this.healthBars.push(healthBar);
   }
 
@@ -30,7 +39,7 @@ class StatusBars{
   addBearTrapBar(element){
     let width = 30;
     let height = 8
-    let progressBar = new Tracker(element, width, height, 40, false, 0xfffc00);
+    let progressBar = new Tracker(element, width, height, 40, null, false, 0xfffc00);
     this.progressBars.push(progressBar);
   }
 
@@ -54,6 +63,7 @@ class StatusBars{
   * updates the position and status of the status bars that are currently available and draws them
   */
   update(){
+    this.graphics.clear();
     for(let bar of this.healthBars){
       bar.updatePos();
       bar.outerWidth = bar.barWidth * (bar.track.health/100);
@@ -87,7 +97,7 @@ class Tracker{
   * @param {boolean} visible true if the bar should be drawn, defaults to true
   * @param {hexadecimal} color the color of the bar to be drawn
   */
-  constructor(entity, width, height, yOffSet, visible = true, color = 0xFF3300){
+  constructor(entity, width, height, yOffSet, text, visible = true, color = 0xFF3300){
     this.track = entity;
     this.barWidth = width;
     this.barHeight = height;
@@ -96,6 +106,7 @@ class Tracker{
     this.color = color;
     this.pos = {x:this.track.pos.x-this.barWidth/2, y:-this.track.pos.y-this.yOffSet};
     this.visible = visible;
+    this.text = text;
   }
 
   /**
@@ -104,6 +115,10 @@ class Tracker{
   updatePos(){
     this.pos.x = this.track.pos.x-this.barWidth/2;
     this.pos.y = -this.track.pos.y-this.yOffSet;
+    if(this.text){
+      this.text.x = this.pos.x;
+      this.text.y = this.pos.y-this.text.height;
+    }
   }
 }
 

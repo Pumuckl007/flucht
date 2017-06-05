@@ -37,9 +37,9 @@ class Renderer{
     this.numRunners = 0;
 
     this.light = new LightingMask(this.stage, this.renderer);
-    this.barLayer = new PIXI.Graphics();
+    this.barLayer = new PIXI.Container();
     this.statusBars = new StatusBars(this.barLayer);
-    this.miniMap = new MiniMap(this.stage, this.renderer, this.hud);
+    this.miniMap = new MiniMap(this.renderer, this.hud);
   }
 
   /**
@@ -71,6 +71,7 @@ class Renderer{
     }
     if(type === "Terrain Updated"){
       this.terrain = object;
+      console.log(this.terrain.width, this.terrain.height, "rooms");
       this.miniMap.updateTerrain(this.terrain);
     }
     if(type === "Element Added"){
@@ -144,7 +145,6 @@ class Renderer{
   resize(event){
     this.renderer.resize(window.innerWidth, window.innerHeight);
     this.light.resize();
-    //this.miniMap.resize();
   }
 
   /**
@@ -163,9 +163,6 @@ class Renderer{
     if(this.runner){
       this.stage.y = this.scale*this.runner.pos.y+window.innerHeight/2;
       this.stage.x = -this.scale*this.runner.pos.x+window.innerWidth/2;
-      if(this.miniMap.center.x === 0){
-        this.miniMap.centerMap();
-      }
     }
     if(this.background){
       this.background.update(this.stage.x, this.stage.y);
@@ -177,7 +174,6 @@ class Renderer{
     for(let renderer of this.renderers){
       renderer.update(this.stage);
     }
-    this.barLayer.clear();
     this.statusBars.update();
     this.light.animate();
     this.graphics.clear();
