@@ -15,7 +15,7 @@ class MiniMap{
     // this.scaleY = this.scale+0.004;
     this.xOffSet = 426;
     this.yOffSet = 229;
-    this.width = 275;
+    this.width = 400;
     this.height = 150;
 
     this.graphics = new PIXI.Graphics();
@@ -29,10 +29,11 @@ class MiniMap{
     this.terrain = terrain;
     this.rooms = this.terrain.rooms;
     this.elements = this.terrain.elements;
-    console.log(terrain.width, terrain.height);
+    this.scale = (this.width-10)/(this.terrain.width*this.terrain.roomWidth);
+  //  console.log(this.scale);
     this.graphics.clear();
     this.graphics.beginFill(0xffffff);
-    this.graphics.drawRect(0, 0, 270, 146);
+    this.graphics.drawRect(0, 0, this.width, (this.terrain.height*this.terrain.roomHeight)*this.scale+10);
     this.graphics.endFill();
     this.graphics.beginFill(0x000000);
     for(let room of this.rooms){
@@ -47,9 +48,9 @@ class MiniMap{
       if(!element.ghost && !element.interactive){
         let width = element.box.width;
         let height = element.box.height;
-        let xPos = element.pos.x - width/2;
-        let yPos = element.pos.y - height/2
-        this.graphics.drawRect(xPos*this.scale+6, -yPos*this.scale+141, width*this.scale, -height*this.scale);
+        let xPos = (element.pos.x - width/2)*this.scale;
+        let yPos = (element.pos.y - height/2)*this.scale;
+        this.graphics.drawRect(xPos+7, -yPos+this.height+63, width*this.scale, -height*this.scale);
       }
     }
   }
@@ -67,7 +68,7 @@ class MiniMap{
     this.movingGraphics.clear();
     this.movingGraphics.beginFill(0xff0000);
     for(let entity of this.entities){
-      this.movingGraphics.drawCircle(entity.pos.x*this.scale+6, -entity.pos.y*this.scale+141, 3, 3);
+      this.movingGraphics.drawCircle(entity.pos.x*this.scale+7, (-entity.pos.y+(this.terrain.height*this.terrain.roomHeight))*this.scale+3, 2, 2);
     }
   }
 }

@@ -27,7 +27,6 @@ class StatusBars{
     });
     var text = new PIXI.Text(entity.name, style);
     this.barLayer.addChild(text);
-    console.log(text);
     let healthBar = new Tracker(entity, width, height, 70, text);
     this.healthBars.push(healthBar);
   }

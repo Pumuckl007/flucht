@@ -18,6 +18,8 @@ class Terrain{
     this.rooms = [];
     this.width = 0;
     this.height = 0;
+    this.roomWidth = 0;
+    this.roomHeight = 0;
     let self = this;
     let seedFunction = new Math.seedrandom(seed);
     LevelGenerator(url, function(elements, rooms, spawns, width, height){self.loadElements(elements, rooms, spawns, width, height)}, seedFunction);
@@ -35,6 +37,8 @@ class Terrain{
     this.handler.spawnRunner(this);
     this.width = width;
     this.height = height;
+    this.roomWidth = rooms[0].box.width;
+    this.roomHeight = rooms[0].box.height;
   }
 
   /**
