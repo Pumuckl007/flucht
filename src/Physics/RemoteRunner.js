@@ -26,6 +26,7 @@ class RemoteRunner extends Entity{
     this.name = name;
     this.frozen = false;
     this.murderer = murderer;
+    this.hidden = false;
   }
 
   /**
@@ -44,6 +45,9 @@ class RemoteRunner extends Entity{
   * @param {number} type the side of which the collision occured on
   */
   collision(terrainElement, type){
+    if(this.hidden){
+      return true;
+    }
     if(type == 2){
       this.onGround = true;
     }

@@ -40,6 +40,10 @@ class UI{
     * help screen
     */
     this.HELP = "Help";
+    /**
+    * the score screen
+    */
+    this.SCORE = "Score";
 
     this.flucht = flucht;
     this.mainMenuDOM = document.getElementById("GameMenuWrapper");

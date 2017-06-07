@@ -12,8 +12,6 @@ class LightingMask{
       this.lightSources = [];
       this.draw = renderer;
       this.baseStage = stage;
-      this.width = this.baseStage.width;
-      this.height = this.baseStage.height;
       this.daylight = new PIXI.Graphics();
 			//Set this.daylight color to shade from Black to White (dont use alpha coz it doesnt blend well)
 			this.daylight.beginFill(0x0B0B0B);
@@ -48,13 +46,22 @@ class LightingMask{
     * updates the size of the maskinging layer to fit the size of the window
     */
     resize(){
-      this.width = this.baseStage.width;
-      this.height = this.baseStage.height;
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
       this.daylight.clear();
+      // this.daylight.beginFill(0x0B0B0B);
       this.daylight.drawRect(0, 0, this.width, this.height);
-      this.texture = new PIXI.RenderTexture.create(this.width, this.height);
-			this.lightsTex = new PIXI.Sprite(this.texture);
-      this.baseStage.mask = this.lightsTex;
+      // let oldTexture = this.texture;
+      // this.texture = new PIXI.RenderTexture.create(this.width, this.height);
+      if(this.texture){
+        this.texture.resize(this.width, this.height);
+        this.lightsTex = new PIXI.Sprite(this.texture);
+        this.baseStage.mask = this.lightsTex;
+      } else {
+        this.texture = new PIXI.RenderTexture.create(this.width, this.height);
+        this.lightsTex = new PIXI.Sprite(this.texture);
+        this.baseStage.mask = this.lightsTex;
+      }
     }
 
     /**
@@ -96,6 +103,9 @@ class LightingMask{
     * updates the position of the lights according to all light sources
     */
     animate() {
+      if(this.first){
+        return;
+      }
       if(this.runner){
         this.lightEntities.y = this.runner.pos.y+window.innerHeight/2;
         this.lightEntities.x = -this.runner.pos.x+window.innerWidth/2;

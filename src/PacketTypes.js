@@ -8,5 +8,7 @@ export default {
   start: "Start",
   elementUpdate: "Element Update",
   trapPlacement: "Trap Placement",
-  murderDamage: "MurderDamage"
+  murderDamage: "MurderDamage",
+  runnerStateChange: "runnerStateChange",
+  roundEnd: "round End"
 }
