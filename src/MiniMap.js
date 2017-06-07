@@ -57,6 +57,7 @@ class MiniMap{
 
   addEntity(entity){
     this.entities.push(entity);
+    console.log(entity);
   }
 
   resize(){
@@ -66,9 +67,17 @@ class MiniMap{
 
   update(){
     this.movingGraphics.clear();
-    this.movingGraphics.beginFill(0xff0000);
+    this.movingGraphics.beginFill(0x0000ff);
     for(let entity of this.entities){
-      this.movingGraphics.drawCircle(entity.pos.x*this.scale+7, (-entity.pos.y+(this.terrain.height*this.terrain.roomHeight))*this.scale+3, 2, 2);
+      if(entity.murderer && entity.type != "Remote Runner"){
+        this.movingGraphics.endFill();
+        this.movingGraphics.beginFill(0xff0000);
+        this.movingGraphics.drawCircle(entity.pos.x*this.scale+7, (-entity.pos.y+(this.terrain.height*this.terrain.roomHeight))*this.scale+3, 2, 2);
+        this.movingGraphics.endFill();
+        this.movingGraphics.beginFill(0x0000ff);
+      }else if(!entity.murderer){
+        this.movingGraphics.drawCircle(entity.pos.x*this.scale+7, (-entity.pos.y+(this.terrain.height*this.terrain.roomHeight))*this.scale+3, 2, 2);
+      }
     }
   }
 }

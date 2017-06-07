@@ -11,11 +11,12 @@ class RemotePlayerController{
   * @constructor
   * @param {World} world the world to which to add the players
   */
-  constructor(world, packetManager, runner){
+  constructor(world, packetManager, runner, murderer){
     this.players = {};
     this.world = world;
     this.packetManager = packetManager;
     this.runner = runner;
+    this.isMurderer = murderer;
     this.listeners = [];
     this.added = true;
     let self = this;
@@ -40,7 +41,7 @@ class RemotePlayerController{
   addPlayer(playerCreationEvent){
     let x = playerCreationEvent.x;
     let y = playerCreationEvent.y;
-    let remoteRunner = new RemoteRunner(64, 108, x, y, playerCreationEvent.clientName);
+    let remoteRunner = new RemoteRunner(64, 108, x, y, playerCreationEvent.clientName, !this.isMurderer);
     this.players[playerCreationEvent.playerId] = remoteRunner;
     this.world.addEntity(remoteRunner);
   }
