@@ -252,7 +252,6 @@ class Flucht{
     }
     if(this.runner && this.runner.dead && this.runner.hasPhysics){
       this.ui.displayMessage("You Died. :(", 10000);
-      this.runner.hasPhysics = false;
     }
   }
 
@@ -353,8 +352,10 @@ class Flucht{
     let winners = [];
     let number = 0;
     let numberDead = 0;
+    let players = [];
     for(let runnerId in this.remotePlayerController.players){
       number ++;
+      players.push(runnerId);
       if(this.remotePlayerController.players[runnerId].won){
         winners.push(runnerId);
       }
@@ -375,11 +376,18 @@ class Flucht{
     }
     this.scores[this.networkConnection.id] += numberDead*100;
     let nextMurderer = false;
-    let players = this.remotePlayerController.players.slice(0);
-    while()
+    while(players.length > 0){
+      let index = ~~(Math.random()*players.length);
+      if(this.murderList.indexOf(players[index]) === -1){
+        nextMurderer = players[index];
+        break;
+      }
+      players.splice(index, 1);
+    }
     let data = {
       murderList : this.murderList,
-      scores : this.scores
+      scores : this.scores,
+      nextMurderer: nextMurderer
     }
     let packet = new Packet(false, false, PacketTypes.roundEnd, data);
     this.pm.broadcast(packet)

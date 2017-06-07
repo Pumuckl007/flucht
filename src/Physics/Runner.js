@@ -109,6 +109,7 @@ class Runner extends Entity{
     this.health -= damage;
     if(this.health < 0){
       this.dead = true;
+      this.ghost = true;
       this.health = 0;
     }
   }
