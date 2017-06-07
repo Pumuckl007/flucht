@@ -55,6 +55,7 @@ class Runner extends Entity{
       this.ghost = true;
     }
     if(this.ghost){
+      this.frozen = false;
       if(this.jumping){
         this.vel.y = 600;
       } else if(this.crouching){

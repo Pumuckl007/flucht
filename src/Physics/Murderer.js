@@ -20,6 +20,7 @@ class Murderer extends Runner{
     this.tryingToStab = false;
     this.world = world;
     this.stabCooldown = 0;
+    this.speed = 400;
   }
 
   /**

@@ -41,7 +41,7 @@ class BearTrap extends Element{
   * @param {number} entityY the y-coordinate of the entity that is collided with
   */
     collision(entity, side, entityX, entityY){
-      if(!this.isPlayerInTrap(entity) || this.remoteTrap){
+      if(!this.isPlayerInTrap(entity) || this.remoteTrap || entity.ghost){
         return true;
       }
       if(entity.type === "Runner" && (!entity.frozen || this.trappedEntity === entity) && !this.remoteTrap){

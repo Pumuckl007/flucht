@@ -29,6 +29,7 @@ class Flucht{
     }
     this.ui = new UI(this);
     this.murderList = [];
+    this.scores = false;
   }
 
   /**
@@ -78,7 +79,7 @@ class Flucht{
       onWSMessage: lock
     });
     let unlock = function(e, v){ self.ui.switchScreen(self.ui.PARTY);
-    self.ui.displayMessage("You get to start!", 1000) }
+    self.ui.displayMessage("You get to start!", 1000); }
     this.networkConnection.registerHandler("unlock",{
       onWSMessage: unlock
     });
@@ -350,14 +351,35 @@ class Flucht{
   allDone(){
     this.ui.switchScreen(this.ui.SCORES);
     let winners = [];
+    let number = 0;
+    let numberDead = 0;
     for(let runnerId in this.remotePlayerController.players){
+      number ++;
       if(this.remotePlayerController.players[runnerId].won){
-        winners.push(this.remotePlayerController.players[runnerId]);
+        winners.push(runnerId);
+      }
+      if(this.remotePlayerController.players[runnerId].dead){
+        numberDead ++;
       }
     }
+    let pot = 70*number;
+    if(!this.scores){
+      this.scores = {};
+      for(let runnerId in this.remotePlayerController.players){
+        this.scores[runnerId] = 0;
+      }
+      this.scores[this.networkConnection.id] = 0;
+    }
+    for(let player of winners){
+      this.scores[player] += pot/winners.length;
+    }
+    this.scores[this.networkConnection.id] += numberDead*100;
+    let nextMurderer = false;
+    let players = this.remotePlayerController.players.slice(0);
+    while()
     let data = {
       murderList : this.murderList,
-      scors : false
+      scores : this.scores
     }
     let packet = new Packet(false, false, PacketTypes.roundEnd, data);
     this.pm.broadcast(packet)
