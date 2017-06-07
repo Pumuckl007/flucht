@@ -359,8 +359,8 @@ class Flucht{
       murderList : this.murderList,
       scors : false
     }
-    let packet = new Packet();
-    this.packetManager.broadcast(packet)
+    let packet = new Packet(false, false, PacketTypes.roundEnd, data);
+    this.pm.broadcast(packet)
   }
 }
 
