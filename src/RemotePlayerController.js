@@ -30,7 +30,11 @@ class RemotePlayerController{
     this.packetManager.addListener(PacketTypes.murderDamage, {onPacket:function(e){
       self.hurt(e.data);
     }});
+    this.packetManager.addListener(PacketTypes.runnerStateChange, {onPacket:function(e){
+      self.handlePlayer(e.data);
+    }});
     this.update();
+    this.hasSentDeadOrGhost = false;
   }
 
   /**
@@ -93,6 +97,27 @@ class RemotePlayerController{
   }
 
   /**
+  * handles a change in the player, eithr death or winning
+  * @param {Object} data the data
+  */
+  handlePlayer(data){
+    if(data.death){
+      let player = this.players[data.id];
+      player.hidden = true;
+    } else {
+      let player = this.players[data.id];
+      player.hidden = true;
+      player.won = true;
+    }
+    for(let playerId in this.players){
+      if(!this.players[playerId].hidden){
+        return;
+      }
+    }
+    flucht.allDone();
+  }
+
+  /**
   * sends and update to all listeners
   */
   update(){
@@ -100,6 +125,17 @@ class RemotePlayerController{
     window.setTimeout(function(){self.update()}, 100);
     if(!window.flucht){
       return;
+    }
+    if(this.runner.ghost && !this.hasSentDeadOrGhost){
+      let data = {
+        death : this.runner.dead,
+        id : flucht.networkConnection.id
+      }
+      for(let listener of this.listeners) {
+        let packet = new Packet(false, listener, PacketTypes.runnerStateChange, data);
+        this.packetManager.send(packet);
+      }
+      this.hasSentDeadOrGhost = true;
     }
     let data = {pos: this.runner.pos,
       vel:this.runner.vel,

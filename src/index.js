@@ -5,7 +5,6 @@ import Flucht from "./Flucht.js";
 setTimeout(function(){
   var flucht = new Flucht();
   window.flucht = flucht;
-
   var animate = function animate(){
     requestAnimationFrame(animate);
     flucht.render();

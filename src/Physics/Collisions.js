@@ -137,7 +137,7 @@ function boxAndEntities(box, entities, x, y){
   for(let entity of entities){
     let dx = entity.pos.x - x;
     let dy = entity.pos.y - y;
-    if(box.intersects(entity.box, dx, dy)){
+    if(box.intersects(entity.box, dx, dy) && !entity.hidden && !entity.ghost){
       collided.push(entity);
     }
   }

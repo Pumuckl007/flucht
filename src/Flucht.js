@@ -28,6 +28,7 @@ class Flucht{
       this.name = "Saya";
     }
     this.ui = new UI(this);
+    this.murderList = [];
   }
 
   /**
@@ -245,8 +246,7 @@ class Flucht{
         this.elementNetworkSyncController.update();
       }
     }
-    if(this.runner && this.runner.won){
-      this.runner.won = false;
+    if(this.runner && this.runner.won && !this.runner.ghost){
       this.ui.displayMessage("You Won!!!!", 10000);
     }
     if(this.runner && this.runner.dead && this.runner.hasPhysics){
@@ -266,6 +266,7 @@ class Flucht{
     if(this.host === this.networkConnection.id){
       this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true, murderer:this.networkConnection.id}));
       this.start(this.networkConnection.id);
+      this.murderList.push(this.host);
     }
   }
 
@@ -341,6 +342,25 @@ class Flucht{
       this.ui.displayMessage("You are a Runner, run to the exit!", 1500);
       this.insertRunner(false);
     }
+  }
+
+  /**
+  * called when all other players are dead or have won
+  */
+  allDone(){
+    this.ui.switchScreen(this.ui.SCORES);
+    let winners = [];
+    for(let runnerId in this.remotePlayerController.players){
+      if(this.remotePlayerController.players[runnerId].won){
+        winners.push(this.remotePlayerController.players[runnerId]);
+      }
+    }
+    let data = {
+      murderList : this.murderList,
+      scors : false
+    }
+    let packet = new Packet();
+    this.packetManager.broadcast(packet)
   }
 }
 

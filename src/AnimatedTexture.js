@@ -38,7 +38,10 @@ class AnimatedTexture{
           this.animations[animation.name] = images;
           for(let i = animation.range[0]; i<= animation.range[1]; i++){
             let url = this.data.base + animation.path + i + animation.extention;
-            images.push(PIXI.Texture.fromImage(url, false, PIXI.SCALE_MODES.NEAREST));
+            if(!cache[url]){
+              cache[url] = PIXI.Texture.fromImage(url, false, PIXI.SCALE_MODES.NEAREST)
+            }
+            images.push(cache[url]);
           }
         }
         this.sprite = new PIXI.Sprite(this.animations[this.data.default][0]);
@@ -84,5 +87,7 @@ class AnimatedTexture{
     }
   }
 }
+
+let cache = {};
 
 export default AnimatedTexture;

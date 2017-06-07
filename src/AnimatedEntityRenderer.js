@@ -85,6 +85,7 @@ class AnimatedEntityRenderer{
       this.sprite.texture = this.animations[this.animation][this.index];
       this.delayLeft = this.delay;
     }
+    this.sprite.alpha = (this.entity.ghost) ? 0.6 : ((this.entity.hidden === true) ? 0 : 1);
   }
 }
 

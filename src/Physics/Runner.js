@@ -28,6 +28,8 @@ class Runner extends Entity{
     this.jumping = false;
     this.dead = false;
     this.name = name;
+    this.ghost = false;
+    this.speed = 300;
   }
 
   /**
@@ -38,7 +40,9 @@ class Runner extends Entity{
     if(!this.frozen){
       this.pos.x += this.vel.x*timestep;
       this.pos.y += this.vel.y*timestep;
-      this.vel.y -= 20;
+      if(!this.ghost){
+        this.vel.y -= 20;
+      }
     }
     //console.log(this.vel.x);
   }
@@ -47,16 +51,29 @@ class Runner extends Entity{
   * used to recive user input for the runner
   */
   tick(){
+    if(!this.ghost && this.won){
+      this.ghost = true;
+    }
+    if(this.ghost){
+      if(this.jumping){
+        this.vel.y = 600;
+      } else if(this.crouching){
+        this.vel.y = -600;
+      } else {
+        this.vel.y = 0;
+      }
+    } else {
+      if(this.jumping){
+        if(this.onGround){
+          this.onGround = false;
+          this.vel.y = 500;
+        }
+      }
+    }
     if(Math.abs(this.vel.x) > 0){
       this.state = "running";
     } else {
       this.state = "idle";
-    }
-    if(this.jumping){
-      if(this.onGround){
-        this.onGround = false;
-        this.vel.y = 500;
-      }
     }
   }
 
@@ -101,6 +118,9 @@ class Runner extends Entity{
   * @param {number} type the side of which the collision occured on
   */
   collision(terrainElement, type){
+    if(this.ghost){
+      return true;
+    }
     if(type == 2){
       this.onGround = true;
     }
@@ -116,7 +136,8 @@ class Runner extends Entity{
   * @param {InputMethod} inputMethod the input method
   */
   onInput(inputMethod){
-    this.vel.x = 300*inputMethod.getXMovement();
+    let speed = this.ghost ? 600 : this.speed;
+    this.vel.x = speed*inputMethod.getXMovement();
     this.jumping = inputMethod.jumpPushed();
     this.crouching = inputMethod.crouchHeld();
   }

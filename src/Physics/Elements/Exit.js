@@ -20,8 +20,7 @@ class Exit extends Element{
   * @param {number} side side where the collision occurs
   */
   collision(entity, side){
-    console.log("yes", entity.type);
-    if(entity.type === "Runner"){
+    if(entity.type === "Runner" && !entity.murderer && !entity.ghost){
       entity.won = true;
     }
   }

@@ -3,6 +3,7 @@ import AnimatedTexture from "./AnimatedTexture.js";
 import LightingMask from "./LightingMask.js";
 import StatusBars from "./StatusBars.js";
 import MiniMap from "./MiniMap.js";
+import Box from "./Physics/Box.js";
 
 /**
 * @module Renderer
@@ -40,6 +41,12 @@ class Renderer{
     this.barLayer = new PIXI.Container();
     this.statusBars = new StatusBars(this.barLayer);
     this.miniMap = new MiniMap(this.renderer, this.hud);
+    this.windowBox = new Box(window.innerWidth, window.innerHeight);
+
+    this.backgroundSprites = [];
+    this.backgroundBoxes = [];
+    this.needsResize = false;
+    this.cooldown = 0;
   }
 
   /**
@@ -103,15 +110,25 @@ class Renderer{
       this.light.clear();
       this.stage.removeChildren();
       this.renderers = [];
+      this.backgroundSprites = [];
+      this.backgroundBoxes = [];
     }
     if(type === "Level Loaded"){
+      let first = true;
       for(let room of this.terrain.rooms){
-        let sprite = new PIXI.Sprite(PIXI.Texture.fromImage(room.description.background, false, PIXI.SCALE_MODES.NEAREST));
+        if(!backgroundCache[room.description.background]){
+          backgroundCache[room.description.background] = PIXI.Texture.fromImage(room.description.background, false, PIXI.SCALE_MODES.NEAREST);
+        }
+        let sprite = new PIXI.Sprite(backgroundCache[room.description.background]);
         sprite.position.x = room.x-room.box.width/2;
         sprite.position.y = -room.y-room.box.height/2+10;
         sprite.scale.x = 2;
         sprite.scale.y = 2;
         this.stage.addChild(sprite);
+        sprite.visible = first;
+        first = false;
+        this.backgroundSprites.push(sprite);
+        this.backgroundBoxes.push(room.box);
       }
       this.stage.addChild(this.graphics);
       this.stage.addChild(this.barLayer);
@@ -119,7 +136,7 @@ class Renderer{
         if(element.type === "Textured Element" || element.type === "Lit Element"|| element.interactive){
           let self = this;
           let done = function(animatedTexture){
-            self.graphics.addChild(animatedTexture.sprite);
+            self.stage.addChild(animatedTexture.sprite);
             self.renderers.push(animatedTexture);
           }
           if(element.type === "Lit Element"){
@@ -143,8 +160,20 @@ class Renderer{
   @param {resizeEvent} event the resizeEvent
  */
   resize(event){
+    if(!this.needsResize){
+      this.needsResize = true;
+      this.cooldown = 1;
+    }
+  }
+
+  /**
+  * actually does the resize
+  */
+  doResize(){
+    console.log("resizeing");
     this.renderer.resize(window.innerWidth, window.innerHeight);
     this.light.resize();
+    this.windowBox = new Box(window.innerWidth, window.innerHeight);
   }
 
   /**
@@ -160,6 +189,13 @@ class Renderer{
   * positions the stage and updates it
   */
   render(){
+    if(this.needsResize){
+      this.cooldown --;
+      if(this.cooldown < 0){
+        this.needsResize = false;
+        this.doResize();
+      }
+    }
     if(this.runner){
       this.stage.y = this.scale*this.runner.pos.y+window.innerHeight/2;
       this.stage.x = -this.scale*this.runner.pos.x+window.innerWidth/2;
@@ -181,8 +217,11 @@ class Renderer{
     if(!this.terrain){
       return;
     }
+    this.cullBackgrounds();
+    let x = -(this.stage.x - window.innerWidth/2)/this.scale;
+    let y = (this.stage.y - window.innerHeight/2)/this.scale;
     for(let element of this.terrain.elements){
-      if(element.renderAsBox){
+      if(element.renderAsBox && element.box.intersects(this.windowBox, x-element.pos.x, y - element.pos.y)){
         this.graphics.beginFill(element.color);
         this.graphics.drawRect(element.pos.x-element.box.width/2,
           -element.pos.y-element.box.height/2,
@@ -191,10 +230,25 @@ class Renderer{
       }
     }
     this.miniMap.update();
-    //this.renderer.render(this.stage);
   //  console.log("hud", this.hud.x, this.hud.y);
     //console.log("stage", this.stage.x, this.stage.y);
     this.renderer.render(this.gameScene);
+  }
+
+
+  /**
+  * culls the backgroundSprites
+  */
+  cullBackgrounds(){
+    let x = -(this.stage.x - window.innerWidth/2)/this.scale;
+    let y = -(this.stage.y - window.innerHeight/2)/this.scale;
+    for(let i = 0; i<this.backgroundSprites.length; i++){
+      let sprite = this.backgroundSprites[i];
+      let box = this.backgroundBoxes[i];
+      let deltaX = sprite.x + box.width/2 - x;
+      let deltaY = sprite.y + box.height/2 - 10 - y;
+      sprite.visible = box.intersects(this.windowBox, deltaX, deltaY);
+    }
   }
 
   /**
@@ -230,5 +284,7 @@ function initMap(map){
   map["Runner"] = "assets/Runner/Runner.json";
   map["Remote Runner"] = "assets/Runner/Runner.json";
 }
+
+let backgroundCache = {};
 
 export default Renderer;

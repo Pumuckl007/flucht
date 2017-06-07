@@ -3,6 +3,7 @@
   "width": 832,
   "height": 438,
   "background": "/assets/background.png",
+  "max": 1,
   "elements":[
   ],
   "specialElements": [

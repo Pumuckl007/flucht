@@ -121,8 +121,15 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
     }
   }
 
-  for(let w = 0; w<levelDescription.width; w++){
-    for(let h = 0; h<levelDescription.height; h++){
+  for(let h = 0; h<levelDescription.width; h++){
+    for(let room of avaliableRooms){
+      room.left = room.max;
+      if(!room.max){
+        room.max = 100;
+        room.left = room.max;
+      }
+    }
+    for(let w = 0; w<levelDescription.height; w++){
       if(!canPlace(w, h, levelDescription, roomGrid)){
         continue;
       }
@@ -131,7 +138,11 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
         let index = Math.floor(random()*localAvaliableRooms.length);
         let roomToPlace = localAvaliableRooms[index];
         localAvaliableRooms.splice(index, 1);
-        if(tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms, spawns)){
+        if(roomToPlace.left > 0 && tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms, spawns)){
+          if(roomToPlace.left === 1){
+            console.log(w, h, roomToPlace.name);
+          }
+          roomToPlace.left --;
           break;
         }
       }
