@@ -184,7 +184,7 @@ class Flucht{
     }
     this.renderer.addRunner(this.runner);
     this.world.addEntity(this.runner);
-    this.remotePlayerController = new RemotePlayerController(this.world, this.pm, this.runner, murderer);
+    this.remotePlayerController = new RemotePlayerController(this.world, this.pm, this.runner);
     let self = this;
     for(let userId in this.networkConnection.webRTCConnections){
       remotePlayerController.addRemotePlayerListener(userId, this.name);

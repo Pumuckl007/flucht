@@ -30,17 +30,15 @@ class MiniMap{
     this.rooms = this.terrain.rooms;
     this.elements = this.terrain.elements;
     this.scale = (this.width-10)/(this.terrain.width*this.terrain.roomWidth);
-  //  console.log(this.scale);
     this.graphics.clear();
     this.graphics.beginFill(0xffffff);
-    this.graphics.drawRect(0, 0, this.width, (this.terrain.height*this.terrain.roomHeight)*this.scale+10);
+    this.graphics.drawRect(0, 0, this.width, this.height);
     this.graphics.endFill();
     this.graphics.beginFill(0x000000);
     for(let room of this.rooms){
       let roomX = room.x-this.xOffSet;
       let roomY = room.y-this.yOffSet;
       this.graphics.drawRect(roomX*this.scale+5, roomY*this.scale+5, room.box.width*this.scale, room.box.height*this.scale);
-    //  console.log(roomX*this.scale+5, roomY*this.scale+5, room.box.width*this.scale, room.box.height*this.scale);
     }
     this.graphics.endFill();
     this.graphics.beginFill(0xffffff);//0xff4500);
@@ -57,7 +55,6 @@ class MiniMap{
 
   addEntity(entity){
     this.entities.push(entity);
-    console.log(entity);
   }
 
   resize(){

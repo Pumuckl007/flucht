@@ -11,12 +11,11 @@ class RemotePlayerController{
   * @constructor
   * @param {World} world the world to which to add the players
   */
-  constructor(world, packetManager, runner, murderer){
+  constructor(world, packetManager, runner){
     this.players = {};
     this.world = world;
     this.packetManager = packetManager;
     this.runner = runner;
-    this.isMurderer = murderer;
     this.listeners = [];
     this.added = true;
     let self = this;
@@ -72,7 +71,7 @@ class RemotePlayerController{
   */
   updatePlayer(playerUpdateEvent){
     let runner = this.players[playerUpdateEvent.playerId];
-    runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching, playerUpdateEvent.state, playerUpdateEvent.health, playerUpdateEvent.frozen);
+    runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching, playerUpdateEvent.state, playerUpdateEvent.health, playerUpdateEvent.frozen, playerUpdateEvent.murderer);
   }
 
   /**
@@ -144,7 +143,9 @@ class RemotePlayerController{
       state:this.runner.state,
       playerId:flucht.networkConnection.id,
       health:flucht.runner.health,
-      frozen: flucht.runner.frozen};
+      frozen: flucht.runner.frozen,
+      murderer: !!flucht.runner.murderer
+    };
     if(this.runner.frozen){
       data.vel.x = 0;
       data.vel.y = 0;

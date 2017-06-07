@@ -78,7 +78,7 @@ class Renderer{
     }
     if(type === "Terrain Updated"){
       this.terrain = object;
-      console.log(this.terrain.width, this.terrain.height, "rooms");
+      //console.log(this.terrain.width, this.terrain.height, "rooms");
       this.miniMap.updateTerrain(this.terrain);
     }
     if(type === "Element Added"){
