@@ -35,6 +35,7 @@ class RemotePlayerController{
     }});
     this.update();
     this.hasSentDeadOrGhost = false;
+    this.disable = false;
   }
 
   /**
@@ -71,7 +72,9 @@ class RemotePlayerController{
   */
   updatePlayer(playerUpdateEvent){
     let runner = this.players[playerUpdateEvent.playerId];
-    runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching, playerUpdateEvent.state, playerUpdateEvent.health, playerUpdateEvent.frozen, playerUpdateEvent.murderer);
+    if(runner){
+      runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching, playerUpdateEvent.state, playerUpdateEvent.health, playerUpdateEvent.frozen, playerUpdateEvent.murderer);
+    }
   }
 
   /**
@@ -123,7 +126,7 @@ class RemotePlayerController{
   update(){
     let self = this;
     window.setTimeout(function(){self.update()}, 100);
-    if(!window.flucht){
+    if(!window.flucht || !this.runner){
       return;
     }
     if(this.runner.ghost && !this.hasSentDeadOrGhost){
@@ -165,6 +168,14 @@ class RemotePlayerController{
         runner.healthDelta = 0;
       }
     }
+  }
+
+  /**
+  * resets this
+  */
+  reset(){
+    this.runner = false;
+    this.players = {};
   }
 }
 

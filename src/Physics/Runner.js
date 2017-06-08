@@ -138,6 +138,9 @@ class Runner extends Entity{
   * @param {InputMethod} inputMethod the input method
   */
   onInput(inputMethod){
+    if(this.deleted){
+      return;
+    }
     let speed = this.ghost ? 600 : this.speed;
     this.vel.x = speed*inputMethod.getXMovement();
     this.jumping = inputMethod.jumpPushed();

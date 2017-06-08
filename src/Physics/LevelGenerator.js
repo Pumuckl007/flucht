@@ -139,9 +139,6 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
         let roomToPlace = localAvaliableRooms[index];
         localAvaliableRooms.splice(index, 1);
         if(roomToPlace.left > 0 && tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms, spawns)){
-          if(roomToPlace.left === 1){
-            console.log(w, h, roomToPlace.name);
-          }
           roomToPlace.left --;
           break;
         }

@@ -67,13 +67,15 @@ class Renderer{
       let renderer = new AnimatedEntityRenderer(object, this.typeMap[object.type], true);
       if(object.type === "Runner"){
         this.light.addLightSource(object);
+        this.statusBars.addHealthBar(object);
+        this.miniMap.addEntity(object);
       }
       if(!object.type === "Murderer"){
         this.miniMap.addEntity(object);
+        this.statusBars.addHealthBar(object);
+        this.miniMap.addEntity(object);
       }
-      this.statusBars.addHealthBar(object);
       this.renderers.push(renderer);
-      this.miniMap.addEntity(object);
       //console.log(object.id);
     }
     if(type === "Terrain Updated"){
@@ -107,6 +109,8 @@ class Renderer{
         if(renderer.sprite)
           this.graphics.removeChild(renderer.sprite);
       }
+      this.statusBars.deleteStatusBar();
+      this.statusBars = new StatusBars(this.barLayer);
       this.light.clear();
       this.stage.removeChildren();
       this.renderers = [];
@@ -170,7 +174,6 @@ class Renderer{
   * actually does the resize
   */
   doResize(){
-    console.log("resizeing");
     this.renderer.resize(window.innerWidth, window.innerHeight);
     this.light.resize();
     this.windowBox = new Box(window.innerWidth, window.innerHeight);
@@ -196,7 +199,7 @@ class Renderer{
         this.doResize();
       }
     }
-    if(this.runner){
+    if(this.runner && !this.runner.deleted){
       this.stage.y = this.scale*this.runner.pos.y+window.innerHeight/2;
       this.stage.x = -this.scale*this.runner.pos.x+window.innerWidth/2;
     }

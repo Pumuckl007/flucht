@@ -55,6 +55,9 @@ class Murderer extends Runner{
   */
   onInput(inputMethod){
     super.onInput(inputMethod);
+    if(this.deleted){
+      return;
+    }
     this.tryingToStab = inputMethod.isStabbing();
   }
 }

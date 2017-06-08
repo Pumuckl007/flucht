@@ -87,6 +87,7 @@ class Flucht{
     this.pm.addListener(PacketTypes.host, this);
     this.pm.addListener(PacketTypes.start, this);
     this.pm.addListener(PacketTypes.trapPlacement, this);
+    this.pm.addListener(PacketTypes.roundEnd, this);
 
     this.pm.addListener(PacketTypes.ready, this.partyWorld);
     this.ready = false;
@@ -214,6 +215,14 @@ class Flucht{
     } else if(packet.id === PacketTypes.trapPlacement){
       this.updateTraps(packet.data);
       this.startGame();
+    } else if(packet.id === PacketTypes.roundEnd){
+      this.murderList = packet.data.murderList;
+      this.scores = packet.data.scores;
+      this.ingame = false;
+      this.seed = packet.data.nextSeed;
+      if(packet.data.nextMurderer){
+        this.restart(packet.data.nextMurderer);
+      }
     }
   }
 
@@ -248,10 +257,10 @@ class Flucht{
       }
     }
     if(this.runner && this.runner.won && !this.runner.ghost){
-      this.ui.displayMessage("You Won!!!!", 10000);
+      this.ui.displayMessage("You Won!!!!", 2000);
     }
-    if(this.runner && this.runner.dead && this.runner.hasPhysics){
-      this.ui.displayMessage("You Died. :(", 10000);
+    if(this.runner && this.runner.dead && !this.runner.ghost){
+      this.ui.displayMessage("You Died. :(", 200);
     }
   }
 
@@ -277,7 +286,12 @@ class Flucht{
   start(murderID){
     this.networkConnection.lockMe();
     this.ingame = true;
-    this.createWorld();
+    if(!this.world){
+      this.createWorld();
+    } else {
+      this.world.reset(this.seed);
+      this.renderer.disableLighting();
+    }
     this.murderID = murderID;
     if(murderID === this.networkConnection.id){
       this.ui.switchScreen(this.ui.MURDER_EDITOR);
@@ -387,10 +401,32 @@ class Flucht{
     let data = {
       murderList : this.murderList,
       scores : this.scores,
-      nextMurderer: nextMurderer
+      nextMurderer: nextMurderer,
+      nextSeed : Math.random() + "-new"
     }
+    this.seed = data.nextSeed;
     let packet = new Packet(false, false, PacketTypes.roundEnd, data);
-    this.pm.broadcast(packet)
+    this.pm.broadcast(packet);
+    this.ingame = false;
+    this.restart(data.nextMurderer);
+  }
+
+  /**
+  * starts the next round of the game
+  */
+  restart(nextMurderer){
+    console.log("Murderer is", nextMurderer, "I am", this.networkConnection.id);
+    this.runner.deleted = true;
+    this.runner = false;
+    this.remotePlayerController.reset();
+    if(this.ingame){
+      return;
+    }
+    if(this.networkConnection.id === nextMurderer){
+      this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true, murderer:this.networkConnection.id}));
+      this.start(this.networkConnection.id);
+      this.murderList.push(this.host);
+    }
   }
 }
 

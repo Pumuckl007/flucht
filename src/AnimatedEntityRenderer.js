@@ -26,6 +26,9 @@ class AnimatedEntityRenderer{
   finish(){
     if (this.httpRequest.readyState === XMLHttpRequest.DONE) {
       if (this.httpRequest.status === 200) {
+        if(this.httpRequest.responseText.trim() === ""){
+          return;
+        }
         this.data = JSON.parse(this.httpRequest.responseText);
         for(let animation of this.data.animations){
           let images = [];
