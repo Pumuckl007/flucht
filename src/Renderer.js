@@ -183,6 +183,7 @@ class Renderer{
   addRunner(runner){
     this.runner = runner;
     this.light.addRunner(runner);
+    this.miniMap.addRunner(runner);
   }
 
   /**
