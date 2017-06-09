@@ -1,7 +1,7 @@
 {
   "name":"Level 1",
-  "width": 1,
-  "height": 1,
+  "width": 7,
+  "height": 7,
   "rooms":[
     {
       "name": "Living Room",
@@ -26,6 +26,10 @@
   "exitRoom":{
     "name": "Exit Room",
     "url": "/rooms/ExitRoom.json"
+  },
+  "keyRoom":{
+    "name": "Key Room",
+    "url": "/rooms/KeyRoom.json"
   },
   "roomTypes":[
     "/rooms/LivingRoom.json",

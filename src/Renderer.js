@@ -64,7 +64,11 @@ class Renderer{
  */
   onEvent(type, object){
     if(type === "Entity Added"){
-      let renderer = new AnimatedEntityRenderer(object, this.typeMap[object.type], true);
+      let entityType = object.type;
+      if(object.murderer){
+        entityType = "Murderer";
+      }
+      let renderer = new AnimatedEntityRenderer(object, this.typeMap[entityType], true);
       if(object.type === "Runner"){
         this.light.addLightSource(object);
         this.statusBars.addHealthBar(object);
@@ -286,6 +290,7 @@ class Renderer{
 function initMap(map){
   map["Runner"] = "assets/Runner/Runner.json";
   map["Remote Runner"] = "assets/Runner/Runner.json";
+  map["Murderer"] = "assets/Murderer/Murderer.json";
 }
 
 let backgroundCache = {};

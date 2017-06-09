@@ -1,6 +1,6 @@
-import Element from "./Element.js";
+import TexturedElement from "./TexturedElement.js";
 /** creates element of type "Side Jump" that can be moved through from the side*/
-class SideJump extends Element{
+class SideJump extends TexturedElement{
   /**
   * creates a Side Jump element using Element constructor and assigns type "SideJump"
   * @constructor
@@ -9,8 +9,12 @@ class SideJump extends Element{
   * @param {number} width width of the element
   * @param {number} height height of the element
   */
-  constructor(x, y, width, height){
-    super(x, y, width, height, "Side Jump");
+  constructor(x, y, width, height, noLongerVisible = false){
+    super(x, y, width, height, {
+      
+    });
+    this.noLongerVisible = noLongerVisible;
+    this.color = this.noLongerVisible ? 0xFFFFFF : 0;
   }
 /**
 * checks if there is a collision on side 3

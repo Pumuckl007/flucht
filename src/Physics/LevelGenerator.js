@@ -20,6 +20,9 @@ function generateLevel(urlToDescription, callback, random){
       if(levelDiscription.exitRoom){
         rooms.push(levelDiscription.exitRoom.url);
       }
+      if(levelDiscription.keyRoom){
+        rooms.push(levelDiscription.keyRoom.url);
+      }
       loadAllToCache(rooms);
     }
     if(this.allDone){
@@ -38,7 +41,7 @@ function generateLevel(urlToDescription, callback, random){
 * @param {function} callback the callback
 */
 function generate(levelDescription, callback, random){
-  let i = levelDescription.rooms.length + 1;
+  let i = levelDescription.rooms.length + 2;
   let avaliableRooms = [];
   let roomMinMax = {};
   let callbackLocal = function(data, room){
@@ -60,6 +63,8 @@ function generate(levelDescription, callback, random){
     httpRequest(room.url, callbackLocal, room);
   }
   httpRequest(levelDescription.exitRoom.url, callbackLocal, levelDescription.exitRoom);
+  httpRequest(levelDescription.keyRoom.url, callbackLocal, levelDescription.keyRoom);
+
 }
 
 /**
@@ -103,6 +108,19 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
     tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms, spawns);
     let index = avaliableRooms.indexOf(roomToPlace);
     avaliableRooms.splice(index, 1);
+  }
+  if(levelDescription.keyRoom){
+    while(true){
+      let w = Math.floor(random()*levelDescription.width);
+      let h = Math.floor(random()*levelDescription.height);
+      let roomToPlace = avaliableRoomMap[levelDescription.keyRoom.name];
+      if(!tryToPlace(roomToPlace, roomGrid, w, h, levelDescription, avaliableRoomMap, rooms, spawns)){
+        continue;
+      }
+      let index = avaliableRooms.indexOf(roomToPlace);
+      avaliableRooms.splice(index, 1);
+      break;
+    }
   }
   for(let h = 0; h<levelDescription.height; h++){
     let localAvaliableSpots = avaliableSpots.slice(0);

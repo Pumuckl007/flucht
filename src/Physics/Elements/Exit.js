@@ -20,9 +20,10 @@ class Exit extends Element{
   * @param {number} side side where the collision occurs
   */
   collision(entity, side){
-    if(entity.type === "Runner" && !entity.murderer && !entity.ghost){
+    if(entity.type === "Runner" && !entity.murderer && !entity.ghost && flucht.world.keyCollected){
       entity.won = true;
     }
+    return true;
   }
 
 }

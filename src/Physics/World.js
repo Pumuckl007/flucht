@@ -18,6 +18,7 @@ class World{
     this.terrain = new Terrain("/levels/Level1.json", spawnHandler, seed);
     this.spawnHandler = spawnHandler;
     this.listeners = [];
+    this.keyCollected = false;
   }
 
   /**
@@ -89,6 +90,7 @@ class World{
   * @param {String} seed the seed to use if blank uses prior seed
   */
   reset(seed){
+    this.keyCollected = false;
     this.seed = seed;
     for(let listener of this.listeners){
       listener.onEvent("Reset");

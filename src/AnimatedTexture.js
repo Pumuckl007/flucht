@@ -77,6 +77,10 @@ class AnimatedTexture{
     if(!this.element){
       return;
     }
+    if(this.element.noLongerVisible){
+      this.sprite.visible = false;
+      return;
+    }
     if(this.animation !== this.element.state){
       if(this.animations[this.element.state]){
         this.delayLeft = 0;

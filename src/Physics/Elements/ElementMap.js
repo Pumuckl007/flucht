@@ -6,6 +6,7 @@ import TexturedElement from "./TexturedElement.js";
 import LitElement from "./LitElement.js";
 import BearTrap from "./BearTrap.js";
 import Exit from "./Exit.js";
+import Key from "./Key.js";
 
 export default {
   "Element": Element,
@@ -16,5 +17,6 @@ export default {
   "Textured Element": TexturedElement,
   "Lit Element": LitElement,
   "Bear Trap": BearTrap,
-  "Exit" : Exit
+  "Exit" : Exit,
+  "Key" : Key
 }
