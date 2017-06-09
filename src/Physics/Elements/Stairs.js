@@ -17,7 +17,7 @@ function generator(args){
   for(let i = 0; i<height/size; i++){
     let x = top-((0.5 + i)*size);
     let y = height - (0.5+i)*size;
-    elements.push(new SideJump(x, y, size, size, i%2===1));
+    elements.push(new SideJump(x, y, size, size, i%4!==3));
   }
   return elements;
 }

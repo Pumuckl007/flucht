@@ -11,8 +11,17 @@ class SideJump extends TexturedElement{
   */
   constructor(x, y, width, height, noLongerVisible = false){
     super(x, y, width, height, {
-      
+      "x": x,
+      "y": y,
+      "width": width,
+      "height": height,
+      "type": "Textured Element",
+      "url": "/assets/Stairs/Stairs.json",
+      "offsetX": -32,
+      "offsetY": -34
     });
+    this.type = "Side Jump";
+    this.needsUpdate = true;
     this.noLongerVisible = noLongerVisible;
     this.color = this.noLongerVisible ? 0xFFFFFF : 0;
   }

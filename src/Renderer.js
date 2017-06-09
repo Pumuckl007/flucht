@@ -89,7 +89,7 @@ class Renderer{
     }
     if(type === "Element Added"){
       let element = object;
-      if(element.type === "Textured Element" || element.type === "Lit Element"|| element.interactive){
+      if(element.type === "Textured Element" || element.type === "Lit Element"|| element.interactive || element.type === "Side Jump"){
         let self = this;
         let done = function(animatedTexture){
           self.graphics.addChild(animatedTexture.sprite);
@@ -98,7 +98,7 @@ class Renderer{
         if(element.type === "Lit Element"){
           this.light.addLightSource(element);
         }
-        if(element.interactive){
+        if(element.interactive || element.needsUpdate){
           this.statusBars.addBearTrapBar(element);
         }
         if(element.interactive){
@@ -141,7 +141,7 @@ class Renderer{
       this.stage.addChild(this.graphics);
       this.stage.addChild(this.barLayer);
       for(let element of this.terrain.elements){
-        if(element.type === "Textured Element" || element.type === "Lit Element"|| element.interactive){
+        if(element.type === "Textured Element" || element.type === "Lit Element"|| element.interactive || element.type === "Side Jump"){
           let self = this;
           let done = function(animatedTexture){
             self.stage.addChild(animatedTexture.sprite);
@@ -153,7 +153,7 @@ class Renderer{
           if(element.interactive){
             this.statusBars.addBearTrapBar(element);
           }
-          if(element.interactive){
+          if(element.interactive || element.needsUpdate){
             new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done, element);
           } else {
             new AnimatedTexture(element.url, element.pos.x-element.box.width/2+element.offX, -element.pos.y-element.box.height/2+element.offY, done);
