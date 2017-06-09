@@ -26,6 +26,7 @@ class RemoteRunner extends Entity{
     this.name = name;
     this.frozen = false;
     this.murderer = false;
+    this.dead = false;
     this.hidden = false;
   }
 
@@ -64,7 +65,7 @@ class RemoteRunner extends Entity{
   * @param {Velocity} vel the velocity of the Runner
   * @param {boolean} crouching whether or not the runner is crouching
   */
-  remoteUpdate(pos, vel, crouching, state, health, frozen, murderer){
+  remoteUpdate(pos, vel, crouching, state, health, frozen, murderer, dead){
     this.pos.x = pos.x;
     this.pos.y = pos.y;
     this.vel.x = vel.x;
@@ -74,6 +75,7 @@ class RemoteRunner extends Entity{
     this.health = health;
     this.frozen = frozen;
     this.murderer = murderer;
+    this.dead = dead;
   }
 
   /**

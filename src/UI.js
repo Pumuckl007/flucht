@@ -54,6 +54,7 @@ class UI{
     this.won = document.getElementById("Won");
     this.help = document.getElementById("Help");
     this.messageOverlay = document.getElementById("MessageOverlay");
+    this.waiting = document.getElementById("Waiting");
     this.screen = this.MAINMENU;
 
     this.nameEntry.value = this.flucht.name;
@@ -139,7 +140,7 @@ class UI{
 
   switchScreen(screen){
     this.nextButton = false;
-    if(this.screen === screen){
+    if(this.screen === screen && (screen !== this.WAITING)){
       return;
     }
     if(this.screen === this.MAINMENU){
@@ -186,6 +187,23 @@ class UI{
     }
     if(screen === this.HELP){
       this.help.style.display = "block";
+    }
+    if(this.screen === this.WAITING){
+      this.waiting.style.display = "none";
+    }
+    if(screen === this.WAITING){
+      let string = "<div>Waiting for Murderer, Here are the scores so far</div><table class=\"scores\">";
+      for(let id in flucht.scores){
+        let name = "undef";
+        let nameEnd = id.lastIndexOf("-");
+        if(nameEnd){
+          name = id.substring(0, nameEnd);
+        }
+        string += '<tr><td>' + name + '</td><td>' + flucht.scores[id] + '</td></tr>';
+      }
+      string += "</table>";
+      this.waiting.innerHTML = string;
+      this.waiting.style.display = "block";
     }
     this.screen = screen;
   }

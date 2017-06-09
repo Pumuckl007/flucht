@@ -73,7 +73,10 @@ class RemotePlayerController{
   updatePlayer(playerUpdateEvent){
     let runner = this.players[playerUpdateEvent.playerId];
     if(runner){
-      runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel, playerUpdateEvent.crouching, playerUpdateEvent.state, playerUpdateEvent.health, playerUpdateEvent.frozen, playerUpdateEvent.murderer);
+      runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel,
+        playerUpdateEvent.crouching, playerUpdateEvent.state,
+        playerUpdateEvent.health, playerUpdateEvent.frozen,
+        playerUpdateEvent.murderer, playerUpdateEvent.dead);
     }
   }
 
@@ -94,7 +97,7 @@ class RemotePlayerController{
   * @param {Number} data.damage the damage dealt
   */
   hurt(data){
-    if(data.damage){
+    if(data.damage && this.runner){
       this.runner.hurt(data.damage);
     }
   }
@@ -104,13 +107,18 @@ class RemotePlayerController{
   * @param {Object} data the data
   */
   handlePlayer(data){
-    if(data.death){
-      let player = this.players[data.id];
-      player.hidden = true;
+    if(this.players[data.id]){
+      if(data.death){
+        let player = this.players[data.id];
+        player.dead = true;
+        player.hidden = true;
+      } else {
+        let player = this.players[data.id];
+        player.hidden = true;
+        player.won = true;
+      }
     } else {
-      let player = this.players[data.id];
-      player.hidden = true;
-      player.won = true;
+      return;
     }
     for(let playerId in this.players){
       if(!this.players[playerId].hidden){
@@ -147,7 +155,8 @@ class RemotePlayerController{
       playerId:flucht.networkConnection.id,
       health:flucht.runner.health,
       frozen: flucht.runner.frozen,
-      murderer: !!flucht.runner.murderer
+      murderer: !!flucht.runner.murderer,
+      dead: flucht.runner.dead
     };
     if(this.runner.frozen){
       data.vel.x = 0;

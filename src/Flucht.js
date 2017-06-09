@@ -222,6 +222,8 @@ class Flucht{
       this.seed = packet.data.nextSeed;
       if(packet.data.nextMurderer){
         this.restart(packet.data.nextMurderer);
+      } else {
+        this.ui.switchScreen(this.ui.WAITING);
       }
     }
   }
@@ -415,6 +417,10 @@ class Flucht{
   * starts the next round of the game
   */
   restart(nextMurderer){
+    if(nextMurderer === false){
+      this.ui.switchScreen(this.ui.WAITING);
+      return;
+    }
     console.log("Murderer is", nextMurderer, "I am", this.networkConnection.id);
     this.runner.deleted = true;
     this.runner = false;
