@@ -20,6 +20,7 @@ class Murderer extends Runner{
     this.tryingToStab = false;
     this.world = world;
     this.stabCooldown = 0;
+    this.speed = 400;
   }
 
   /**
@@ -54,6 +55,9 @@ class Murderer extends Runner{
   */
   onInput(inputMethod){
     super.onInput(inputMethod);
+    if(this.deleted){
+      return;
+    }
     this.tryingToStab = inputMethod.isStabbing();
   }
 }

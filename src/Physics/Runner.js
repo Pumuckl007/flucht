@@ -55,6 +55,7 @@ class Runner extends Entity{
       this.ghost = true;
     }
     if(this.ghost){
+      this.frozen = false;
       if(this.jumping){
         this.vel.y = 600;
       } else if(this.crouching){
@@ -108,6 +109,7 @@ class Runner extends Entity{
     this.health -= damage;
     if(this.health < 0){
       this.dead = true;
+      this.ghost = true;
       this.health = 0;
     }
   }
@@ -136,6 +138,9 @@ class Runner extends Entity{
   * @param {InputMethod} inputMethod the input method
   */
   onInput(inputMethod){
+    if(this.deleted){
+      return;
+    }
     let speed = this.ghost ? 600 : this.speed;
     this.vel.x = speed*inputMethod.getXMovement();
     this.jumping = inputMethod.jumpPushed();

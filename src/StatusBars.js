@@ -82,6 +82,13 @@ class StatusBars{
       }
     }
   }
+
+  /**
+  * delets this
+  */
+  deleteStatusBar(){
+    this.graphics.visible = false;
+  }
 }
 
 /** Class that creates a tracker that keeps track of an entity or element*/

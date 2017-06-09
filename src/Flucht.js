@@ -29,6 +29,7 @@ class Flucht{
     }
     this.ui = new UI(this);
     this.murderList = [];
+    this.scores = false;
   }
 
   /**
@@ -78,7 +79,7 @@ class Flucht{
       onWSMessage: lock
     });
     let unlock = function(e, v){ self.ui.switchScreen(self.ui.PARTY);
-    self.ui.displayMessage("You get to start!", 1000) }
+    self.ui.displayMessage("You get to start!", 1000); }
     this.networkConnection.registerHandler("unlock",{
       onWSMessage: unlock
     });
@@ -86,6 +87,7 @@ class Flucht{
     this.pm.addListener(PacketTypes.host, this);
     this.pm.addListener(PacketTypes.start, this);
     this.pm.addListener(PacketTypes.trapPlacement, this);
+    this.pm.addListener(PacketTypes.roundEnd, this);
 
     this.pm.addListener(PacketTypes.ready, this.partyWorld);
     this.ready = false;
@@ -213,6 +215,16 @@ class Flucht{
     } else if(packet.id === PacketTypes.trapPlacement){
       this.updateTraps(packet.data);
       this.startGame();
+    } else if(packet.id === PacketTypes.roundEnd){
+      this.murderList = packet.data.murderList;
+      this.scores = packet.data.scores;
+      this.ingame = false;
+      this.seed = packet.data.nextSeed;
+      if(packet.data.nextMurderer){
+        this.restart(packet.data.nextMurderer);
+      } else {
+        this.ui.switchScreen(this.ui.WAITING);
+      }
     }
   }
 
@@ -247,11 +259,10 @@ class Flucht{
       }
     }
     if(this.runner && this.runner.won && !this.runner.ghost){
-      this.ui.displayMessage("You Won!!!!", 10000);
+      this.ui.displayMessage("You Won!!!!", 2000);
     }
-    if(this.runner && this.runner.dead && this.runner.hasPhysics){
-      this.ui.displayMessage("You Died. :(", 10000);
-      this.runner.hasPhysics = false;
+    if(this.runner && this.runner.dead && !this.runner.ghost){
+      this.ui.displayMessage("You Died. :(", 200);
     }
   }
 
@@ -277,7 +288,12 @@ class Flucht{
   start(murderID){
     this.networkConnection.lockMe();
     this.ingame = true;
-    this.createWorld();
+    if(!this.world){
+      this.createWorld();
+    } else {
+      this.world.reset(this.seed);
+      this.renderer.disableLighting();
+    }
     this.murderID = murderID;
     if(murderID === this.networkConnection.id){
       this.ui.switchScreen(this.ui.MURDER_EDITOR);
@@ -350,17 +366,73 @@ class Flucht{
   allDone(){
     this.ui.switchScreen(this.ui.SCORES);
     let winners = [];
+    let number = 0;
+    let numberDead = 0;
+    let players = [];
     for(let runnerId in this.remotePlayerController.players){
+      number ++;
+      players.push(runnerId);
       if(this.remotePlayerController.players[runnerId].won){
-        winners.push(this.remotePlayerController.players[runnerId]);
+        winners.push(runnerId);
       }
+      if(this.remotePlayerController.players[runnerId].dead){
+        numberDead ++;
+      }
+    }
+    let pot = 70*number;
+    if(!this.scores){
+      this.scores = {};
+      for(let runnerId in this.remotePlayerController.players){
+        this.scores[runnerId] = 0;
+      }
+      this.scores[this.networkConnection.id] = 0;
+    }
+    for(let player of winners){
+      this.scores[player] += pot/winners.length;
+    }
+    this.scores[this.networkConnection.id] += numberDead*100;
+    let nextMurderer = false;
+    while(players.length > 0){
+      let index = ~~(Math.random()*players.length);
+      if(this.murderList.indexOf(players[index]) === -1){
+        nextMurderer = players[index];
+        break;
+      }
+      players.splice(index, 1);
     }
     let data = {
       murderList : this.murderList,
-      scors : false
+      scores : this.scores,
+      nextMurderer: nextMurderer,
+      nextSeed : Math.random() + "-new"
     }
+    this.seed = data.nextSeed;
     let packet = new Packet(false, false, PacketTypes.roundEnd, data);
-    this.pm.broadcast(packet)
+    this.pm.broadcast(packet);
+    this.ingame = false;
+    this.restart(data.nextMurderer);
+  }
+
+  /**
+  * starts the next round of the game
+  */
+  restart(nextMurderer){
+    if(nextMurderer === false){
+      this.ui.switchScreen(this.ui.WAITING);
+      return;
+    }
+    console.log("Murderer is", nextMurderer, "I am", this.networkConnection.id);
+    this.runner.deleted = true;
+    this.runner = false;
+    this.remotePlayerController.reset();
+    if(this.ingame){
+      return;
+    }
+    if(this.networkConnection.id === nextMurderer){
+      this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true, murderer:this.networkConnection.id}));
+      this.start(this.networkConnection.id);
+      this.murderList.push(this.host);
+    }
   }
 }
 

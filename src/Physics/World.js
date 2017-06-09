@@ -93,7 +93,10 @@ class World{
     for(let listener of this.listeners){
       listener.onEvent("Reset");
     }
-    this.entities = [window.flucht.runner];
+    this.entities = [];
+    if(window.flucht.runner){
+      this.entities.push(window.flucht.runner);
+    }
     let self = this;
     this.terrain = new Terrain("/levels/Level1.json", {spawnRunner:function(data){
       let first = true;
