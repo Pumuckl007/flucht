@@ -223,7 +223,8 @@ class Flucht{
       if(packet.data.nextMurderer){
         this.restart(packet.data.nextMurderer);
       } else {
-        this.ui.switchScreen(this.ui.WAITING);
+        window.done = true;
+        this.ui.switchScreen(this.ui.DONE);
       }
     }
   }
@@ -257,6 +258,9 @@ class Flucht{
       if(this.elementNetworkSyncController){
         this.elementNetworkSyncController.update();
       }
+    }
+    if(this.runner && this.runner.dead && this.runner.murderer){
+      this.allDone();
     }
     if(this.runner && this.runner.won && !this.runner.ghost){
       this.ui.displayMessage("You Won!!!!", 2000);
@@ -364,7 +368,9 @@ class Flucht{
   * called when all other players are dead or have won
   */
   allDone(){
-    this.ui.switchScreen(this.ui.SCORES);
+    if(!this.runner.murderer){
+      return;
+    }
     let winners = [];
     let number = 0;
     let numberDead = 0;
@@ -384,6 +390,9 @@ class Flucht{
       this.scores = {};
       for(let runnerId in this.remotePlayerController.players){
         this.scores[runnerId] = 0;
+        if(this.runner.dead){
+          this.scores[runnerId] = 100;
+        }
       }
       this.scores[this.networkConnection.id] = 0;
     }
@@ -418,7 +427,8 @@ class Flucht{
   */
   restart(nextMurderer){
     if(nextMurderer === false){
-      this.ui.switchScreen(this.ui.WAITING);
+      this.ui.switchScreen(this.ui.DONE);
+      window.done = true;
       return;
     }
     console.log("Murderer is", nextMurderer, "I am", this.networkConnection.id);

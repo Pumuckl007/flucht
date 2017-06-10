@@ -9,15 +9,31 @@ class AnimatedTexture{
   * @param {function} done adds child to the stage
   */
   constructor(url, x, y, done, element){
-    this.httpRequest = new XMLHttpRequest();
     this.x = x;
     this.y = y;
 
     let self = this;
-    this.httpRequest.onreadystatechange = function(){self.finish()};
-    this.httpRequest.open('GET', url);
-    this.httpRequest.setRequestHeader('Content-Type', 'text/json');
-    this.httpRequest.send();
+
+    if(!httpCache[url]){
+      httpCache[url] = [this];
+      this.httpRequest = new XMLHttpRequest();
+      this.httpRequest.onreadystatechange = function(){
+        if (self.httpRequest.readyState === XMLHttpRequest.DONE) {
+          if (self.httpRequest.status === 200) {
+            for(let obj of httpCache[url]){
+              obj.finish(self.httpRequest.responseText);
+            }
+            httpCache[url] = false;
+          }
+        }
+      };
+      this.httpRequest.open('GET', url);
+      this.httpRequest.setRequestHeader('Content-Type', 'text/json');
+      this.httpRequest.send();
+    } else {
+      httpCache[url].push(this);
+    }
+
     this.animations = {};
     this.done = done;
     if(element){
@@ -28,35 +44,31 @@ class AnimatedTexture{
   /**
   * adds images to array to be animated
   */
-  finish(){
-    if (this.httpRequest.readyState === XMLHttpRequest.DONE) {
-      if (this.httpRequest.status === 200) {
-        this.data = JSON.parse(this.httpRequest.responseText);
-        for(let animation of this.data.animations){
-          let images = [];
-          images.frameDuration = animation.frameDuration;
-          this.animations[animation.name] = images;
-          for(let i = animation.range[0]; i<= animation.range[1]; i++){
-            let url = this.data.base + animation.path + i + animation.extention;
-            if(!cache[url]){
-              cache[url] = PIXI.Texture.fromImage(url, false, PIXI.SCALE_MODES.NEAREST)
-            }
-            images.push(cache[url]);
-          }
+  finish(res){
+    this.data = JSON.parse(res);
+    for(let animation of this.data.animations){
+      let images = [];
+      images.frameDuration = animation.frameDuration;
+      this.animations[animation.name] = images;
+      for(let i = animation.range[0]; i<= animation.range[1]; i++){
+        let url = this.data.base + animation.path + i + animation.extention;
+        if(!cache[url]){
+          cache[url] = PIXI.Texture.fromImage(url, false, PIXI.SCALE_MODES.NEAREST)
         }
-        this.sprite = new PIXI.Sprite(this.animations[this.data.default][0]);
-        this.index = Math.floor(Math.random()*this.animations[this.data.default].length);
-        this.animation = this.data.default;
-        //UPDATE VALUE 60FPS right now
-        this.delay = this.animations[this.data.default].frameDuration/16;
-        this.delayLeft = this.delay;
-        this.sprite.scale.x = this.data.scaleX;
-        this.sprite.scale.y = this.data.scaleY;
-        this.sprite.position.x = this.x;
-        this.sprite.position.y = this.y;
-        this.done(this);
+        images.push(cache[url]);
       }
     }
+    this.sprite = new PIXI.Sprite(this.animations[this.data.default][0]);
+    this.index = Math.floor(Math.random()*this.animations[this.data.default].length);
+    this.animation = this.data.default;
+    //UPDATE VALUE 60FPS right now
+    this.delay = this.animations[this.data.default].frameDuration/16;
+    this.delayLeft = this.delay;
+    this.sprite.scale.x = this.data.scaleX;
+    this.sprite.scale.y = this.data.scaleY;
+    this.sprite.position.x = this.x;
+    this.sprite.position.y = this.y;
+    this.done(this);
   }
 /**
 * updates the animated image
@@ -93,5 +105,6 @@ class AnimatedTexture{
 }
 
 let cache = {};
+let httpCache = {};
 
 export default AnimatedTexture;

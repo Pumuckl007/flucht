@@ -87,6 +87,9 @@ class StatusBars{
   * delets this
   */
   deleteStatusBar(){
+    for(let bar of this.healthBars){
+      bar.delete();
+    }
     this.graphics.visible = false;
   }
 }
@@ -125,6 +128,11 @@ class Tracker{
       this.text.x = this.pos.x;
       this.text.y = this.pos.y-this.text.height;
     }
+  }
+
+  delete(){
+    this.visible = false;
+    this.text.visible = false;
   }
 }
 

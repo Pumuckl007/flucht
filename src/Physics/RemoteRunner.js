@@ -13,7 +13,7 @@ class RemoteRunner extends Entity{
   * @param {number} x the x pos of the runner
   * @param {number} y the y pos of the runner
   */
-  constructor(width, height, x=0, y=0, name = "saya"){
+  constructor(width, height, x=0, y=0, name = "saya", murderer = false){
     super(width, height);
     this.hasPhysics = true;
     this.worldCollisions = true;
@@ -25,7 +25,7 @@ class RemoteRunner extends Entity{
     this.healthDelta = 0;
     this.name = name;
     this.frozen = false;
-    this.murderer = false;
+    this.murderer = murderer;
     this.dead = false;
     this.hidden = false;
   }
@@ -65,7 +65,7 @@ class RemoteRunner extends Entity{
   * @param {Velocity} vel the velocity of the Runner
   * @param {boolean} crouching whether or not the runner is crouching
   */
-  remoteUpdate(pos, vel, crouching, state, health, frozen, murderer, dead){
+  remoteUpdate(pos, vel, crouching, state, health, frozen, dead){
     this.pos.x = pos.x;
     this.pos.y = pos.y;
     this.vel.x = vel.x;
@@ -74,7 +74,6 @@ class RemoteRunner extends Entity{
     this.crouching = crouching;
     this.health = health;
     this.frozen = frozen;
-    this.murderer = murderer;
     this.dead = dead;
   }
 

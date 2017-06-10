@@ -57,6 +57,7 @@ body{
   line-height:30px;
   cursor: pointer;
   transition: background-color 100ms;
+  color: #000000;
 }
 
 .MenuButton:hover{
@@ -281,9 +282,13 @@ body{
 }
 
 .Waiting{
-  background-color: #FFFFFF;
+  background-image: url("assets/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  image-rendering: pixelated;
+  background-color: #000000;
   position:absolute;
-  color:black;
   top:0;
   bottom:0;
   left:0;
@@ -291,6 +296,12 @@ body{
   text-align: center;
   font-size:2em;
   z-index:2;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.scores {
+  margin: auto;
 }
 
 body{

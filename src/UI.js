@@ -41,9 +41,9 @@ class UI{
     */
     this.HELP = "Help";
     /**
-    * the score screen
+    * the finial screen
     */
-    this.SCORE = "Score";
+    this.DONE = "done";
 
     this.flucht = flucht;
     this.mainMenuDOM = document.getElementById("GameMenuWrapper");
@@ -133,6 +133,9 @@ class UI{
       case "Back":
         this.switchScreen(this.MAINMENU);
         break;
+      case "Reload":
+        window.location.reload(false);
+        break;
       default:
         console.log("Unhandled Key", key);
     }
@@ -202,6 +205,23 @@ class UI{
         string += '<tr><td>' + name + '</td><td>' + flucht.scores[id] + '</td></tr>';
       }
       string += "</table>";
+      this.waiting.innerHTML = string;
+      this.waiting.style.display = "block";
+    }
+    if(this.screen === this.DONE){
+      this.waiting.style.display = "none";
+    }
+    if(screen === this.DONE){
+      let string = "<div>Waiting for Murderer, Here are the scores so far</div><table class=\"scores\">";
+      for(let id in flucht.scores){
+        let name = "undef";
+        let nameEnd = id.lastIndexOf("-");
+        if(nameEnd){
+          name = id.substring(0, nameEnd);
+        }
+        string += '<tr><td>' + name + '</td><td>' + flucht.scores[id] + '</td></tr>';
+      }
+      string += "</table><div onclick=\"flucht.onUserEvent('Reload')\" class=\"MenuButton\">Again!</div>";
       this.waiting.innerHTML = string;
       this.waiting.style.display = "block";
     }

@@ -69,13 +69,12 @@ class Renderer{
         entityType = "Murderer";
       }
       let renderer = new AnimatedEntityRenderer(object, this.typeMap[entityType], true);
-      if(object.type === "Runner"){
+      if(object.type === "Runner" || object.type === "Murderer"){
         this.light.addLightSource(object);
         this.statusBars.addHealthBar(object);
         this.miniMap.addEntity(object);
       }
-      if(!object.type === "Murderer"){
-        this.miniMap.addEntity(object);
+      if(object.type === "Remote Runner"){
         this.statusBars.addHealthBar(object);
         this.miniMap.addEntity(object);
       }
@@ -113,6 +112,7 @@ class Renderer{
         if(renderer.sprite)
           this.graphics.removeChild(renderer.sprite);
       }
+      this.miniMap.reset();
       this.statusBars.deleteStatusBar();
       this.statusBars = new StatusBars(this.barLayer);
       this.light.clear();

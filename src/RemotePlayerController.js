@@ -45,7 +45,7 @@ class RemotePlayerController{
   addPlayer(playerCreationEvent){
     let x = playerCreationEvent.x;
     let y = playerCreationEvent.y;
-    let remoteRunner = new RemoteRunner(64, 108, x, y, playerCreationEvent.clientName, !this.isMurderer);
+    let remoteRunner = new RemoteRunner(64, 108, x, y, playerCreationEvent.clientName, playerCreationEvent.murderer);
     this.players[playerCreationEvent.playerId] = remoteRunner;
     this.world.addEntity(remoteRunner);
   }
@@ -75,8 +75,7 @@ class RemotePlayerController{
     if(runner){
       runner.remoteUpdate(playerUpdateEvent.pos, playerUpdateEvent.vel,
         playerUpdateEvent.crouching, playerUpdateEvent.state,
-        playerUpdateEvent.health, playerUpdateEvent.frozen,
-        playerUpdateEvent.murderer, playerUpdateEvent.dead);
+        playerUpdateEvent.health, playerUpdateEvent.frozen, playerUpdateEvent.dead);
     }
   }
 
@@ -86,7 +85,7 @@ class RemotePlayerController{
   */
   addRemotePlayerListener(id, name){
     this.listeners.push(id);
-    let data = {x: this.runner.pos.x, y:this.runner.pos.y, playerId:flucht.networkConnection.id, clientName: name};
+    let data = {x: this.runner.pos.x, y:this.runner.pos.y, playerId:flucht.networkConnection.id, clientName: name, murderer:!!this.runner.murderer};
     let packet = new Packet(false, id, PacketTypes.runnerCreation, data);
     this.packetManager.send(packet);
   }
@@ -155,7 +154,6 @@ class RemotePlayerController{
       playerId:flucht.networkConnection.id,
       health:flucht.runner.health,
       frozen: flucht.runner.frozen,
-      murderer: !!flucht.runner.murderer,
       dead: flucht.runner.dead
     };
     if(this.runner.frozen){

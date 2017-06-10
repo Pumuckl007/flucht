@@ -4,14 +4,16 @@ import Element from "./Element.js";
 * a class which represents the exit for the runners. Getting
 * here leads to a win
 */
-class Exit extends Element{
+class Key extends Element{
 
   /**
   * creates a new exit at the given x and y positions
   */
   constructor(x, y){
-    super(x, y, 100, 200, "Exit");
-    this.color = 0x0000FF;
+    super(x, y, 32, 32, "Key");
+    this.color = 0xFFFF00;
+    this.noLongerVisible = false;
+    this.needsUpdate = true;
     this.hiddenOnMiniMap = true;
   }
 
@@ -21,12 +23,13 @@ class Exit extends Element{
   * @param {number} side side where the collision occurs
   */
   collision(entity, side){
-    if(entity.type === "Runner" && !entity.murderer && !entity.ghost && flucht.world.keyCollected){
-      entity.won = true;
+    if(!entity.murderer && !entity.ghost){
+      flucht.world.keyCollected = true;
+      this.noLongerVisible = true;
     }
     return true;
   }
 
 }
 
-export default Exit;
+export default Key;

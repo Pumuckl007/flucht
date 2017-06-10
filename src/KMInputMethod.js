@@ -87,7 +87,7 @@ class KMInputMethod{
   }
 
   jumpPushed(){
-    return this.keys[32];
+    return this.keys[32] || this.keys[87] || this.keys[38];
   }
 
   crouchHeld(){
