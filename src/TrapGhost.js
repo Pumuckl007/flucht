@@ -65,9 +65,9 @@ class TrapGhost{
 
   setValidity(valid){
     if(valid){
-      this.sprite.tint = 0x88FF88;
+      this.sprite.tint = 0x44FF44;
     } else {
-      this.sprite.tint = 0xFF8888;
+      this.sprite.tint = 0xFF4444;
     }
   }
 

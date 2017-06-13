@@ -21,6 +21,10 @@
     {
       "name": "Clock Room",
       "url": "/rooms/ClockRoom.json"
+    },
+    {
+      "name": "Grand Room",
+      "url": "/rooms/GrandRoom.json"
     }
   ],
   "exitRoom":{
@@ -35,6 +39,7 @@
     "/rooms/LivingRoom.json",
     "/rooms/StairwellTop.json",
     "/rooms/Stairwell.json",
-    "/rooms/ClockRoom.json"
+    "/rooms/ClockRoom.json",
+    "/rooms/GrandRoom.json"
   ]
 }

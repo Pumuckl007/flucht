@@ -47,6 +47,7 @@ class Renderer{
     this.backgroundBoxes = [];
     this.needsResize = false;
     this.cooldown = 0;
+    this.spritesAdded = false;
   }
 
   /**
@@ -64,6 +65,7 @@ class Renderer{
  */
   onEvent(type, object){
     if(type === "Entity Added"){
+      this.spritesAdded = true;
       let entityType = object.type;
       if(object.murderer){
         entityType = "Murderer";
@@ -91,8 +93,9 @@ class Renderer{
       if(element.type === "Textured Element" || element.type === "Lit Element"|| element.interactive || element.type === "Side Jump"){
         let self = this;
         let done = function(animatedTexture){
-          self.graphics.addChild(animatedTexture.sprite);
+          self.stage.addChild(animatedTexture.sprite);
           self.renderers.push(animatedTexture);
+          self.spritesAdded = true;
         }
         if(element.type === "Lit Element"){
           this.light.addLightSource(element);
@@ -123,6 +126,7 @@ class Renderer{
     }
     if(type === "Level Loaded"){
       let first = true;
+      this.spritesAdded = true;
       for(let room of this.terrain.rooms){
         if(!backgroundCache[room.description.background]){
           backgroundCache[room.description.background] = PIXI.Texture.fromImage(room.description.background, false, PIXI.SCALE_MODES.NEAREST);
@@ -146,6 +150,7 @@ class Renderer{
           let done = function(animatedTexture){
             self.stage.addChild(animatedTexture.sprite);
             self.renderers.push(animatedTexture);
+            self.spritesAdded = true;
           }
           if(element.type === "Lit Element"){
             this.light.addLightSource(element);
@@ -175,9 +180,21 @@ class Renderer{
   }
 
   /**
+  * called when elements added to update the bars
+  */
+  doBarPlacement(){
+    if(this.spritesAdded){
+      this.stage.removeChild(this.barLayer);
+      this.stage.addChild(this.barLayer);
+      this.spritesAdded = false;
+    }
+  }
+
+  /**
   * actually does the resize
   */
   doResize(){
+    document.body.style.height = window.innerHeight + "px";
     this.renderer.resize(window.innerWidth, window.innerHeight);
     this.light.resize();
     this.windowBox = new Box(window.innerWidth, window.innerHeight);
@@ -197,6 +214,7 @@ class Renderer{
   * positions the stage and updates it
   */
   render(){
+    this.doBarPlacement();
     if(this.needsResize){
       this.cooldown --;
       if(this.cooldown < 0){

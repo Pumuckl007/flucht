@@ -22,8 +22,9 @@ setTimeout(function(){
     flucht.update();
   }
   setTimeout(updateFlucht, 20);
-
+document.body.style.height = window.innerHeight + "px";
   document.addEventListener("DOMContentLoaded", function(event) {
+    document.body.style.height = window.innerHeight + "px";
     flucht.renderer.resize();
     animate();
   });

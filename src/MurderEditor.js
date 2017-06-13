@@ -18,6 +18,7 @@ class MurderEditor{
     this.id = 10;
     this.vx = 0;
     this.vy = 0;
+    this.trapsLeft = 30;
   }
 
   /**
@@ -76,6 +77,9 @@ class MurderEditor{
   * called when the mouse moves
   */
   onClick(cursor){
+    if(this.trapsLeft < 1){
+      return;
+    }
     if(cursor.target !== "MurderEditor"){
       return;
     }
@@ -94,6 +98,7 @@ class MurderEditor{
         pos = resultOfCanplace;
         let json = this.element.place(this.world, pos, this.id++);
         this.additions.push(json);
+        this.trapsLeft --;
       } else {
         console.log("Could not place!");
       }
@@ -153,6 +158,7 @@ class MurderEditor{
   * called to enabled the editor
   */
   enable(){
+    this.trapsLeft = 30;
     this.enabled = true;
     this.viewChanged({enableChanged: true});
     this.x = 0;

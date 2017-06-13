@@ -5,6 +5,28 @@
   "background": "/assets/background.png",
   "max": 1,
   "elements":[
+    {
+      "x": 516,
+      "y": 120,
+      "width": 64,
+      "height": 128,
+      "type": "Textured Element",
+      "url": "/assets/MonaLisa/MonaLisa.json",
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": true
+    },
+    {
+      "x": 516,
+      "y": 31,
+      "width": 64,
+      "height": 128,
+      "type": "Lit Element",
+      "url": "/assets/Candle/Candle.json",
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": true
+    }
   ],
   "specialElements": [
     {

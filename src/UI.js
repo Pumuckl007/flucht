@@ -44,6 +44,10 @@ class UI{
     * the finial screen
     */
     this.DONE = "done";
+    /**
+    * the about screen
+    */
+    this.ABOUT = "about";
 
     this.flucht = flucht;
     this.mainMenuDOM = document.getElementById("GameMenuWrapper");
@@ -55,6 +59,8 @@ class UI{
     this.help = document.getElementById("Help");
     this.messageOverlay = document.getElementById("MessageOverlay");
     this.waiting = document.getElementById("Waiting");
+    this.canvas = document.getElementsByTagName("canvas")[0];
+    this.about = document.getElementById("About");
     this.screen = this.MAINMENU;
 
     this.nameEntry.value = this.flucht.name;
@@ -136,6 +142,9 @@ class UI{
       case "Reload":
         window.location.reload(false);
         break;
+      case "About":
+        this.switchScreen(this.ABOUT);
+        break;
       default:
         console.log("Unhandled Key", key);
     }
@@ -172,11 +181,13 @@ class UI{
     if(screen === this.MURDER_EDITOR){
       this.editor.style.display = "block";
       this.nextButton = document.getElementById("MurdererDone");
+      this.tryCanvas("block");
     }
     if(screen === this.GAME){
       this.partyDOM.style.display = "none";
       this.partySelectionDOM.style.display = "none";
       this.mainMenuDOM.style.display = "none";
+      this.tryCanvas("block");
     }
     if(this.screen === this.WON){
       this.won.style.display = "none";
@@ -184,6 +195,7 @@ class UI{
     if(screen === this.WON){
       this.won.style.display = "block";
       this.won.style["line-height"] = window.innerHeight + "px";
+      this.tryCanvas("none");
     }
     if(this.screen === this.HELP){
       this.help.style.display = "none";
@@ -207,12 +219,13 @@ class UI{
       string += "</table>";
       this.waiting.innerHTML = string;
       this.waiting.style.display = "block";
+      this.tryCanvas("none");
     }
     if(this.screen === this.DONE){
       this.waiting.style.display = "none";
     }
     if(screen === this.DONE){
-      let string = "<div>Waiting for Murderer, Here are the scores so far</div><table class=\"scores\">";
+      let string = "<div>You finished! Here are the scores!</div><table class=\"scores\">";
       for(let id in flucht.scores){
         let name = "undef";
         let nameEnd = id.lastIndexOf("-");
@@ -225,7 +238,23 @@ class UI{
       this.waiting.innerHTML = string;
       this.waiting.style.display = "block";
     }
+    if(this.screen === this.ABOUT){
+      this.about.style.display = "none";
+    }
+    if(screen === this.ABOUT){
+      this.about.style.display = "flex";
+    }
     this.screen = screen;
+  }
+
+  tryCanvas(tag){
+    console.log("trying canvas", tag)
+    if(!this.canvas){
+      this.canvas = document.getElementsByTagName("canvas")[0];
+    }
+    if(this.canvas){
+      this.canvas.style.display = tag;
+    }
   }
 
   update(){

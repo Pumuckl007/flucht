@@ -1,0 +1,61 @@
+{
+  "name":"Grand Room",
+  "width": 832,
+  "height": 438,
+  "spawn": {
+    "x": 100,
+    "y": -100
+  },
+  "background": "/assets/background.png",
+  "elements":[
+    {
+      "x": 216,
+      "y": 34,
+      "width": 64,
+      "height": 68,
+      "type": "Textured Element",
+      "url": "/assets/Armchair/Armchair.json",
+      "offsetX": 0,
+      "offsetY": -48
+    },
+    {
+      "x": 616,
+      "y": 34,
+      "width": 64,
+      "height": 68,
+      "type": "Textured Element",
+      "url": "/assets/Armchair/Armchair.json",
+      "offsetX": 0,
+      "offsetY": -48
+    },
+    {
+      "x": 416,
+      "y": 140,
+      "width": 64,
+      "height": 128,
+      "type": "Textured Element",
+      "url": "/assets/MonaLisa/MonaLisa.json",
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": true
+    },
+    {
+      "x": 416,
+      "y": 252,
+      "width": 1,
+      "height": 1,
+      "type": "Lit Element",
+      "url": "/assets/Chandelier/Chandelier.json",
+      "offsetX": -92,
+      "offsetY": -185,
+      "ghost": true
+    }
+  ],
+  "roomRequirements": {
+  },
+  "mirrorable": true,
+  "leftEntrance": true,
+  "rightEntrance": true,
+  "topEntrance": false,
+  "bottomEntrance": false
+}
