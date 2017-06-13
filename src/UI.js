@@ -248,7 +248,6 @@ class UI{
   }
 
   tryCanvas(tag){
-    console.log("trying canvas", tag)
     if(!this.canvas){
       this.canvas = document.getElementsByTagName("canvas")[0];
     }

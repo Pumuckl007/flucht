@@ -98,7 +98,6 @@ class MiniMap{
         this.graphics.drawRect(graphic.pos.x, graphic.pos.y, graphic.width, graphic.height);
       }
     }
-    console.log("done");
   }
 
   addEntity(entity){
@@ -111,6 +110,9 @@ class MiniMap{
     this.movingGraphics.clear();
     this.movingGraphics.beginFill(0x0000ff);
     for(let entity of this.entities){
+      if(entity.hidden){
+        continue;
+      }
       let box = entity.box;
       let deltaX = (this.runner.pos.x*this.scale) - entity.pos.x*this.scale;
       let deltaY = (this.runner.pos.y*this.scale) - entity.pos.y*this.scale;

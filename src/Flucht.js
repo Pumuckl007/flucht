@@ -186,7 +186,11 @@ class Flucht{
     }
     this.renderer.addRunner(this.runner);
     this.world.addEntity(this.runner);
-    this.remotePlayerController = new RemotePlayerController(this.world, this.pm, this.runner);
+    if(!this.remotePlayerController){
+      this.remotePlayerController = new RemotePlayerController(this.world, this.pm, this.runner);
+    } else {
+      this.remotePlayerController.runner = this.runner;
+    }
     let self = this;
     for(let userId in this.networkConnection.webRTCConnections){
       remotePlayerController.addRemotePlayerListener(userId, this.name);
@@ -225,6 +229,7 @@ class Flucht{
       } else {
         window.done = true;
         this.ui.switchScreen(this.ui.DONE);
+        this.networkConnection.unlockMe();
       }
     }
   }
@@ -281,7 +286,7 @@ class Flucht{
     if(this.host === this.networkConnection.id){
       this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true, murderer:this.networkConnection.id}));
       this.start(this.networkConnection.id);
-      this.murderList.push(this.host);
+      this.murderList.push(this.networkConnection.id);
     }
   }
 
@@ -390,14 +395,16 @@ class Flucht{
       this.scores = {};
       for(let runnerId in this.remotePlayerController.players){
         this.scores[runnerId] = 0;
-        if(this.runner.dead){
-          this.scores[runnerId] = 100;
-        }
       }
       this.scores[this.networkConnection.id] = 0;
     }
     for(let player of winners){
       this.scores[player] += pot/winners.length;
+    }
+    if(this.runner.dead){
+      for(let player of players){
+        this.scores[player] += 100;
+      }
     }
     this.scores[this.networkConnection.id] += numberDead*100;
     let nextMurderer = false;
@@ -428,6 +435,7 @@ class Flucht{
   restart(nextMurderer){
     if(nextMurderer === false){
       this.ui.switchScreen(this.ui.DONE);
+      this.networkConnection.unlockMe();
       window.done = true;
       return;
     }
@@ -441,7 +449,7 @@ class Flucht{
     if(this.networkConnection.id === nextMurderer){
       this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true, murderer:this.networkConnection.id}));
       this.start(this.networkConnection.id);
-      this.murderList.push(this.host);
+      this.murderList.push(this.networkConnection.id);
     }
   }
 }

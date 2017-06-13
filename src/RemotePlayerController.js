@@ -106,6 +106,7 @@ class RemotePlayerController{
   * @param {Object} data the data
   */
   handlePlayer(data){
+    console.log("Data", data);
     if(this.players[data.id]){
       if(data.death){
         let player = this.players[data.id];
@@ -124,7 +125,9 @@ class RemotePlayerController{
         return;
       }
     }
-    flucht.allDone();
+    if(!window.done){
+      flucht.allDone();
+    }
   }
 
   /**
@@ -136,7 +139,7 @@ class RemotePlayerController{
     if(!window.flucht || !this.runner){
       return;
     }
-    if(this.runner.ghost && !this.hasSentDeadOrGhost){
+    if(this.runner.ghost && !this.hasSentDeadOrGhost && (this.runner.won || this.runner.dead)){
       let data = {
         death : this.runner.dead,
         id : flucht.networkConnection.id
@@ -182,7 +185,9 @@ class RemotePlayerController{
   */
   reset(){
     this.runner = false;
+    this.listeners = [];
     this.players = {};
+    this.hasSentDeadOrGhost = false;
   }
 }
 

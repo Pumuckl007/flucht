@@ -91,7 +91,7 @@ class KMInputMethod{
   }
 
   crouchHeld(){
-    return this.keys[83];
+    return this.keys[83] || this.keys[40];
   }
 
   getHotbarPosSet(){

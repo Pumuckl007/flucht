@@ -64,6 +64,9 @@ class StatusBars{
   update(){
     this.graphics.clear();
     for(let bar of this.healthBars){
+      if(!bar.visible){
+        continue;
+      }
       bar.updatePos();
       bar.outerWidth = bar.barWidth * (bar.track.health/100);
       this.draw(bar);
@@ -122,6 +125,9 @@ class Tracker{
   * updates the position of the status bar
   */
   updatePos(){
+    if(this.track.hidden){
+      this.delete();
+    }
     this.pos.x = this.track.pos.x-this.barWidth/2;
     this.pos.y = -this.track.pos.y-this.yOffSet;
     if(this.text){
