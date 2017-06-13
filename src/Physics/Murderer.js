@@ -20,7 +20,7 @@ class Murderer extends Runner{
     this.tryingToStab = false;
     this.world = world;
     this.stabCooldown = 0;
-    this.speed = 400;
+    this.speed = (flucht.numerOfPlayers-1)*25 + 400;
   }
 
   /**
@@ -35,8 +35,8 @@ class Murderer extends Runner{
       if(this.vel < 0){
         x -= 10;
       }
-      this.world.dealDamage(box, 10, this, x, this.pos.y);
-      this.stabCooldown = 10;
+      this.world.dealDamage(box, 5, this, x, this.pos.y);
+      this.stabCooldown = 15;
     }
     this.stabCooldown --;
   }

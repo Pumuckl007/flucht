@@ -29,7 +29,7 @@ class Runner extends Entity{
     this.dead = false;
     this.name = name;
     this.ghost = false;
-    this.speed = 300;
+    this.speed = 400;
   }
 
   /**

@@ -19,6 +19,8 @@ class MiniMap{
     // this.scaleY = this.scale+0.004;
     this.width = 300;
     this.height = 300;
+    this.exitPos = {x: 0, y:0};
+    this.oneXOneBox = new Box(1,1);
     this.stageBox = new Box(this.width, this.height);
     this.graphicObjects = [];
 
@@ -70,6 +72,9 @@ class MiniMap{
         let roomGraphic = new GraphicObject(roomX*this.scale, -roomY*this.scale, room.box.width*this.scale, room.box.height*this.scale, 0x000000);
         this.graphicObjects.push(roomGraphic);
         //this.graphics.drawRect(roomGraphic.pos.x, roomGraphic.pos.y, roomGraphic.width, roomGraphic.height);
+        if(room.description.name === "Exit Room"){
+          this.exitPos = {x: room.x, y:room.y};
+        }
       }
       this.graphics.endFill();
 
@@ -109,6 +114,15 @@ class MiniMap{
     this.cullBackgrounds();
     this.movingGraphics.clear();
     this.movingGraphics.beginFill(0x0000ff);
+    if(this.runner){
+      let deltaX = (this.runner.pos.x*this.scale) - this.exitPos.x*this.scale;
+      let deltaY = (this.runner.pos.y*this.scale) - this.exitPos.y*this.scale;
+      if(this.playerBox.intersects(this.stageBox, deltaX, deltaY)){
+          this.drawCircle(true, {pos:this.exitPos}, 0x00FF00);
+      } else {
+          this.drawArrow(deltaX, deltaY, 0x00FF00);
+      }
+    }
     for(let entity of this.entities){
       if(entity.hidden){
         continue;
@@ -118,23 +132,22 @@ class MiniMap{
       let deltaY = (this.runner.pos.y*this.scale) - entity.pos.y*this.scale;
       if(this.playerBox.intersects(this.stageBox, deltaX, deltaY)){
         if(entity.murderer && entity.type !== "Remote Runner"){
-          this.drawCircle(true, entity);
+          this.drawCircle(true, entity, 0xff0000);
         }else if(!entity.murderer){
           this.drawCircle(false, entity);
         }
       } else {
         if(!entity.murderer){
-          this.drawArrow(deltaX, deltaY);
+          this.drawArrow(deltaX, deltaY, 0x00FF00);
         }
       }
     }
-
   }
 
-  drawCircle(blue, entity){
+  drawCircle(blue, entity, color){
     if(blue){
       this.movingGraphics.endFill();
-      this.movingGraphics.beginFill(0xff0000);
+      this.movingGraphics.beginFill(color);
       this.movingGraphics.drawCircle(entity.pos.x*this.scale, -entity.pos.y*this.scale, 2);
       this.movingGraphics.endFill();
       this.movingGraphics.beginFill(0x0000ff);
@@ -143,7 +156,7 @@ class MiniMap{
     }
   }
 
-  drawArrow(x, y){
+  drawArrow(x, y, color){
     let centerX = this.runner.pos.x*this.scale;
     let centerY = -this.runner.pos.y*this.scale;
     let xPos = centerX;
@@ -168,7 +181,15 @@ class MiniMap{
         xPos = centerX;
       }
     }
-    this.movingGraphics.drawCircle(xPos, yPos, 3);
+    if(color){
+      this.movingGraphics.endFill();
+      this.movingGraphics.beginFill(color);
+      this.movingGraphics.drawCircle(xPos, yPos, 3);
+      this.movingGraphics.endFill();
+      this.movingGraphics.beginFill(0x0000ff);
+    } else {
+      this.movingGraphics.drawCircle(xPos, yPos, 3);
+    }
   }
 
   reset(){

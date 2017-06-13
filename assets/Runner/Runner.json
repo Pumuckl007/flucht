@@ -16,7 +16,7 @@
       "path": "running_",
       "extention": ".png",
       "range": [0,7],
-      "frameDuration": 100
+      "frameDuration": 80
     }
   ]
 }

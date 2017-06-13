@@ -30,6 +30,7 @@ class Flucht{
     this.ui = new UI(this);
     this.murderList = [];
     this.scores = false;
+    this.numerOfPlayers = 1;
   }
 
   /**
@@ -296,6 +297,7 @@ class Flucht{
   */
   start(murderID){
     this.networkConnection.lockMe();
+    this.numerOfPlayers = this.partyWorld.users.length;
     this.ingame = true;
     if(!this.world){
       this.createWorld();
