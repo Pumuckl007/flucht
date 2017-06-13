@@ -138,7 +138,7 @@ class MiniMap{
         }
       } else {
         if(!entity.murderer){
-          this.drawArrow(deltaX, deltaY, 0x00FF00);
+          this.drawArrow(deltaX, deltaY, 0x0000FF);
         }
       }
     }
