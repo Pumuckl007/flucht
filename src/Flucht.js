@@ -23,7 +23,7 @@ class Flucht{
     this.ui = new UI(this);
     this.murderList = [];
     this.scores = false;
-    this.numerOfPlayers = 1;
+    this.numerOfPlayers = 2;
   }
 
   /**
@@ -117,23 +117,31 @@ class Flucht{
     if(this.runner){
       return;
     }
-    if(murderer){
       if(this.spawn){
         this.runner = new Murderer(this.world, 64, 108, this.spawn.x, this.spawn.y, this.name);
       } else {
         this.runner = new Murderer(this.world, 64, 108, 0, 76, this.name);
       }
-    } else {
-      if(this.spawn){
-        this.runner = new Runner(64, 108, this.spawn.x, this.spawn.y, this.name);
-      } else {
-        this.runner = new Runner(64, 108, 0, 76, this.name);
+      if(this.numerOfPlayers === 2){
+        if(this.spawn){
+          this.runner2 = new Runner(64, 108, this.spawn.x, this.spawn.y, this.name, true);
+        } else {
+          this.runner2 = new Runner(64, 108, 0, 76, this.name, true);
+        }
       }
-    }
-    this.renderer.addRunner(this.runner);
+      if(this.numerOfPlayers === 1){
+        this.renderer.addRunner(this.runner);
+      }
+    this.renderer.setNoMovement(this.numerOfPlayers === 2);
     this.world.addEntity(this.runner);
+    if(this.numerOfPlayers === 2){
+      this.world.addEntity(this.runner2);
+    }
     let self = this;
     this.ui.inputMethod.addInputListener(this.runner);
+    if(this.numerOfPlayers === 2){
+      this.ui.inputMethod.addInputListener(this.runner2);
+    }
   }
 
   /**
@@ -227,7 +235,6 @@ class Flucht{
   * starts the game, the murerder id is for the UI and to get the right state
   */
   start(){
-    this.numerOfPlayers = 1;
     this.ingame = true;
     if(!this.world){
       this.createWorld();

@@ -14,7 +14,8 @@ class Runner extends Entity{
   * @param {number} x the x pos of the runner
   * @param {number} y the y pos of the runner
   */
-  constructor(width, height, x=0, y=0, name = "saya"){
+  constructor(width, height, x=0, y=0, name = "saya", arrow = false){
+    console.log(arrow);
     super(width, height);
     this.hasPhysics = true;
     this.needsTick = true;
@@ -30,6 +31,7 @@ class Runner extends Entity{
     this.name = name;
     this.ghost = false;
     this.speed = 400;
+    this.arrow = arrow;
   }
 
   /**
@@ -142,9 +144,15 @@ class Runner extends Entity{
       return;
     }
     let speed = this.ghost ? 600 : this.speed;
-    this.vel.x = speed*inputMethod.getXMovement();
-    this.jumping = inputMethod.jumpPushed();
-    this.crouching = inputMethod.crouchHeld();
+    if(this.arrow){
+      this.vel.x = speed*inputMethod.getXArrowMovement();
+      this.jumping = inputMethod.jumpArrowPushed();
+      this.crouching = inputMethod.crouchArrowHeld();
+    } else {
+      this.vel.x = speed*inputMethod.getXMovement();
+      this.jumping = inputMethod.jumpPushed();
+      this.crouching = inputMethod.crouchHeld();
+    }
   }
 }
 

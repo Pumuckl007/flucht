@@ -28,6 +28,39 @@
       "offsetX": -92,
       "offsetY": -185,
       "ghost": true
+    },
+    {
+      "x": 416,
+      "y": 140,
+      "width": 64,
+      "height": 128,
+      "type": "Textured Element",
+      "url": "/assets/MonaLisa/MonaLisa.json",
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": true
+    },
+    {
+      "x": 730,
+      "y": 43,
+      "width": 34,
+      "height": 106,
+      "type": "Lit Element",
+      "url": "/assets/Candle/Candle.json",
+      "offsetX": 0,
+      "offsetY": 0,
+      "ghost": true
+    },
+    {
+      "x": 100,
+      "y": 53,
+      "width": 34,
+      "height": 106,
+      "type": "Textured Element",
+      "url": "/assets/GrandfatherClock/GrandfatherClock.json",
+      "offsetX": -16,
+      "offsetY": -8,
+      "ghost": true
     }
   ],
   "roomRequirements": {

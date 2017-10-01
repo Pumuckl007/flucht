@@ -15,7 +15,8 @@ class Renderer{
   * @constructor
   * @param {Runner} runner the player
   */
-  constructor(){
+  constructor(noMovement = false){
+    this.noMovement = noMovement;
     this.runner = false;
     this.typeMap = {};
     this.stage = new PIXI.Container();
@@ -37,7 +38,7 @@ class Renderer{
     window.onresize = function(event){ self.resize(event)};
     this.numRunners = 0;
 
-    this.light = new LightingMask(this.stage, this.renderer);
+    this.light = new LightingMask(this.stage, this.renderer, this.noMovement);
     this.barLayer = new PIXI.Container();
     this.statusBars = new StatusBars(this.barLayer);
     this.miniMap = new MiniMap(this.renderer, this.hud);
@@ -48,6 +49,11 @@ class Renderer{
     this.needsResize = false;
     this.cooldown = 0;
     this.spritesAdded = false;
+  }
+
+  setNoMovement(noMovement){
+    this.noMovement = noMovement;
+    this.light.noMovement = noMovement;
   }
 
   /**
@@ -235,6 +241,9 @@ class Renderer{
     if(this.runner && !this.runner.deleted){
       this.stage.y = this.scale*this.runner.pos.y+window.innerHeight/2;
       this.stage.x = -this.scale*this.runner.pos.x+window.innerWidth/2;
+    } else if(this.noMovement) {
+      this.stage.y = 438/2 + window.innerHeight/2;
+      this.stage.x = 832/2;
     }
     if(this.background){
       this.background.update(this.stage.x, this.stage.y);

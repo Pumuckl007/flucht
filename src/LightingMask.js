@@ -7,7 +7,8 @@ class LightingMask{
     * @param {PIXI.Container} stage the stage that the game is played on
     * @param {PIXI.Renderer} renderer the renderer of the game
     */
-    constructor(stage, renderer){
+    constructor(stage, renderer, noMovement = false){
+      this.noMovement = noMovement;
       this.runner = false;
       this.lightSources = [];
       this.draw = renderer;
@@ -106,9 +107,12 @@ class LightingMask{
       if(this.first){
         return;
       }
-      if(this.runner){
+      if(this.runner && !this.noMovement){
         this.lightEntities.y = this.runner.pos.y+window.innerHeight/2;
         this.lightEntities.x = -this.runner.pos.x+window.innerWidth/2;
+      } else if(this.noMovement){
+        this.lightEntities.y = 438/2 + window.innerHeight/2;
+        this.lightEntities.x = 832/2;
       }
       for(let light of this.lightSources){
         light.update();

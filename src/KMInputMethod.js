@@ -67,9 +67,19 @@ class KMInputMethod{
   }
 
   getXMovement(){
-    if(this.keys[65] || this.keys[37]){
+    if(this.keys[65]){
       return -1;
-    } else if(this.keys[68] || this.keys[39]){
+    } else if(this.keys[68]){
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  getXArrowMovement(){
+    if(this.keys[37]){
+      return -1;
+    } else if(this.keys[39]){
       return 1;
     } else {
       return 0;
@@ -77,9 +87,9 @@ class KMInputMethod{
   }
 
   getYMovement(){
-    if(this.keys[83] || this.keys[40]){
+    if(this.keys[83]){
       return -1;
-    } else if(this.keys[87] || this.keys[38]){
+    } else if(this.keys[87]){
       return 1;
     } else {
       return 0;
@@ -87,11 +97,19 @@ class KMInputMethod{
   }
 
   jumpPushed(){
-    return this.keys[32] || this.keys[87] || this.keys[38];
+    return this.keys[32] || this.keys[87];
+  }
+
+  jumpArrowPushed(){
+    return this.keys[38];
   }
 
   crouchHeld(){
-    return this.keys[83] || this.keys[40];
+    return this.keys[83];
+  }
+
+  crouchArrowHeld(){
+    return this.keys[40];
   }
 
   getHotbarPosSet(){

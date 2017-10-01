@@ -128,17 +128,19 @@ class MiniMap{
         continue;
       }
       let box = entity.box;
-      let deltaX = (this.runner.pos.x*this.scale) - entity.pos.x*this.scale;
-      let deltaY = (this.runner.pos.y*this.scale) - entity.pos.y*this.scale;
-      if(this.playerBox.intersects(this.stageBox, deltaX, deltaY)){
-        if(entity.murderer && entity.type !== "Remote Runner"){
-          this.drawCircle(true, entity, 0xff0000);
-        }else if(!entity.murderer){
-          this.drawCircle(false, entity);
-        }
-      } else {
-        if(!entity.murderer){
-          this.drawArrow(deltaX, deltaY, 0x0000FF);
+      if(this.runner){
+        let deltaX = (this.runner.pos.x*this.scale) - entity.pos.x*this.scale;
+        let deltaY = (this.runner.pos.y*this.scale) - entity.pos.y*this.scale;
+        if(this.playerBox.intersects(this.stageBox, deltaX, deltaY)){
+          if(entity.murderer && entity.type !== "Remote Runner"){
+            this.drawCircle(true, entity, 0xff0000);
+          }else if(!entity.murderer){
+            this.drawCircle(false, entity);
+          }
+        } else {
+          if(!entity.murderer){
+            this.drawArrow(deltaX, deltaY, 0x0000FF);
+          }
         }
       }
     }
