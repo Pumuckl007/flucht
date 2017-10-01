@@ -30,7 +30,6 @@ class Party{
   * @param {User} user the user to be added
   */
   addUser(user){
-    console.log("Added", user)
     this.users.push(user);
   }
 

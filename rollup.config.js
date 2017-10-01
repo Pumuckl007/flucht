@@ -1,3 +1,7 @@
 export default {
-  entry: 'src/index.js'
+  input: 'src/index.js'
+  output: {
+    file: 'bin/rolledup.js',
+    format: 'cjs'
+  }
 };

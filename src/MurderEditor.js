@@ -99,8 +99,6 @@ class MurderEditor{
         let json = this.element.place(this.world, pos, this.id++);
         this.additions.push(json);
         this.trapsLeft --;
-      } else {
-        console.log("Could not place!");
       }
     } else {
       this.trapGhost.hide();

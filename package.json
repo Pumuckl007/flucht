@@ -4,8 +4,8 @@
   "scripts": {
     "test": "mocha --compilers js:babel-core/register test/*",
     "make": "rollup -c -o ./bin/rolledup.js",
-    "watch": "rollup -i ./src/index.js  -w -o ./bin/rolledup.js",
-    "server": "rollup -i ./server/server.js -o ./bin/server.js && node --use_strict ./bin/server.js",
+    "watch": "rollup -f cjs -i ./src/index.js  -w -o ./bin/rolledup.js",
+    "server": "rollup -f cjs -i ./server/server.js -o ./bin/server.js && node --use_strict ./bin/server.js",
     "serverWatch": "nodemon --exec \"npm run server\" --watch ./server/"
   },
   "devDependencies": {

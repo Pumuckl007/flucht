@@ -109,7 +109,6 @@ class BearTrap extends Element{
     this.tapCount = data.tapCount;
     this.ghost = data.ghost;
     if(!this.trappedEntity){
-      console.log("I set remote trap", data.remoteTrap)
       this.remoteTrap = data.remoteTrap;
     }
   }

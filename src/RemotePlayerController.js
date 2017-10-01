@@ -106,7 +106,6 @@ class RemotePlayerController{
   * @param {Object} data the data
   */
   handlePlayer(data){
-    console.log("Data", data);
     if(this.players[data.id]){
       if(data.death){
         let player = this.players[data.id];

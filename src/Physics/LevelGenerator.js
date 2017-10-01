@@ -25,7 +25,7 @@ function generateLevel(urlToDescription, callback, random){
       }
       loadAllToCache(rooms);
     }
-    if(this.allDone){
+    if(allDoneLoadingLevels){
       generate(discription, callback, random);
     } else {
       setTimeout(waitUntilDone, 10);
@@ -174,7 +174,7 @@ function build(avaliableRooms, levelDescription, callback, roomMinMaxMap, random
   //maxx maxy
   let bounds = [-Infinity, -Infinity];
 
-  for(element of elements){
+  for(let element of elements){
     if(element.pos.x > bounds[0]){
       bounds[0] = element.pos.x;
     }
@@ -320,22 +320,22 @@ function findLocation(gateway, room){
   return [x, y];
 }
 
-var cached = {};
-var allDone = false;
+var cachedLevel = {};
+var allDoneLoadingLevels = false;
 
 /**
  * Caches all of the rooms that would be used in the level
  * @param {String[]} urls the urls to cache
  */
 var loadAllToCache = function(urls){
-  allDone = false;
+  allDoneLoadingLevels = false;
   let numberLeft = urls.length;
   for(let url of urls){
     httpRequest(url, function(data){
-      cached[url] = data;
+      cachedLevel[url] = data;
       numberLeft --;
       if(numberLeft <= 0){
-        allDone = true;
+        allDoneLoadingLevels = true;
       }
     });
   }
@@ -348,8 +348,8 @@ var loadAllToCache = function(urls){
 * @param {Object} passArg the arguments to directly pass into the callback
 */
 var httpRequest = function httpRequest(url, callback, passArg, random){
-  if(cached[url]){
-    callback(cached[url], passArg, random);
+  if(cachedLevel[url]){
+    callback(cachedLevel[url], passArg, random);
     return;
   } else {
   }
