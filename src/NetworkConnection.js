@@ -10,7 +10,11 @@ class NetworkConnection{
   *  @param {String} [name] the name of the client
   */
   constructor(name = "Saya"){
-    this.websocket = new WebSocket("ws://" + document.URL.replace("http://", ""), "webrtcmitigation");
+    if(document.URL.indexOf("http://") !== -1){
+      this.websocket = new WebSocket("ws://" + document.URL.replace("http://", ""), "webrtcmitigation");
+    } else if(document.URL.indexOf("https://") !== -1){
+      this.websocket = new WebSocket("wss://" + document.URL.replace("https://", ""), "webrtcmitigation");
+    }
     let self = this;
     this.websocket.onmessage = function(e){
       self.onWSMessage(e);
