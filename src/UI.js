@@ -122,6 +122,7 @@ class UI{
         this.switchScreen(this.PARTY);
         this.flucht.setName(this.nameEntry.value);
         this.flucht.initalize();
+        this.flucht.toggleReady();
         break;
       case "NewParty":
         this.switchScreen(this.PARTY);
@@ -130,7 +131,6 @@ class UI{
         this.flucht.toggleReady();
         break;
       case "MurdererDone":
-        this.flucht.sendOutChanges();
         this.flucht.startGame();
         break;
       case "Help":

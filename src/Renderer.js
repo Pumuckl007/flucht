@@ -74,11 +74,15 @@ class Renderer{
       if(object.type === "Runner" || object.type === "Murderer"){
         this.light.addLightSource(object);
         this.statusBars.addHealthBar(object);
-        this.miniMap.addEntity(object);
+        if(this.miniMap){
+          this.miniMap.addEntity(object);
+        }
       }
       if(object.type === "Remote Runner"){
         this.statusBars.addHealthBar(object);
-        this.miniMap.addEntity(object);
+        if(this.miniMap){
+          this.miniMap.addEntity(object);
+        }
       }
       this.renderers.push(renderer);
       //console.log(object.id);
@@ -86,7 +90,9 @@ class Renderer{
     if(type === "Terrain Updated"){
       this.terrain = object;
       //console.log(this.terrain.width, this.terrain.height, "rooms");
-      this.miniMap.updateTerrain(this.terrain);
+      if(this.miniMap){
+        this.miniMap.updateTerrain(this.terrain);
+      }
     }
     if(type === "Element Added"){
       let element = object;
@@ -115,7 +121,9 @@ class Renderer{
         if(renderer.sprite)
           this.graphics.removeChild(renderer.sprite);
       }
-      this.miniMap.reset();
+      if(this.miniMap){
+        this.miniMap.reset();
+      }
       this.statusBars.deleteStatusBar();
       this.statusBars = new StatusBars(this.barLayer);
       this.light.clear();
@@ -207,7 +215,9 @@ class Renderer{
   addRunner(runner){
     this.runner = runner;
     this.light.addRunner(runner);
-    this.miniMap.addRunner(runner);
+    if(this.miniMap){
+      this.miniMap.addRunner(runner);
+    }
   }
 
   /**
@@ -255,7 +265,9 @@ class Renderer{
           element.box.height);
       }
     }
-    this.miniMap.update();
+    if(this.miniMap){
+      this.miniMap.update();
+    }
   //  console.log("hud", this.hud.x, this.hud.y);
     //console.log("stage", this.stage.x, this.stage.y);
     this.renderer.render(this.gameScene);

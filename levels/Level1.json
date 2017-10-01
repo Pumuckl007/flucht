@@ -1,45 +1,14 @@
 {
-  "name":"Level 1",
-  "width": 10,
-  "height": 10,
+  "name":"Demo Level",
+  "width": 1,
+  "height": 1,
   "rooms":[
     {
       "name": "Living Room",
       "url": "/rooms/LivingRoom.json"
-    },
-    {
-      "name": "Stairwell Top",
-      "url": "/rooms/StairwellTop.json",
-      "max": 0
-    },
-    {
-      "name": "Stairwell",
-      "url": "/rooms/Stairwell.json",
-      "min": 1,
-      "max": 2
-    },
-    {
-      "name": "Clock Room",
-      "url": "/rooms/ClockRoom.json"
-    },
-    {
-      "name": "Grand Room",
-      "url": "/rooms/GrandRoom.json"
     }
   ],
-  "exitRoom":{
-    "name": "Exit Room",
-    "url": "/rooms/ExitRoom.json"
-  },
-  "keyRoom":{
-    "name": "Key Room",
-    "url": "/rooms/KeyRoom.json"
-  },
   "roomTypes":[
-    "/rooms/LivingRoom.json",
-    "/rooms/StairwellTop.json",
-    "/rooms/Stairwell.json",
-    "/rooms/ClockRoom.json",
-    "/rooms/GrandRoom.json"
+    "/rooms/LivingRoom.json"
   ]
 }

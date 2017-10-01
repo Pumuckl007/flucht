@@ -41,7 +41,10 @@ function generateLevel(urlToDescription, callback, random){
 * @param {function} callback the callback
 */
 function generate(levelDescription, callback, random){
-  let i = levelDescription.rooms.length + 2;
+  let i = levelDescription.rooms.length;
+  if(levelDescription.exitRoom){
+    i+=2;
+  }
   let avaliableRooms = [];
   let roomMinMax = {};
   let callbackLocal = function(data, room){
@@ -62,9 +65,10 @@ function generate(levelDescription, callback, random){
   for(let room of levelDescription.rooms){
     httpRequest(room.url, callbackLocal, room);
   }
-  httpRequest(levelDescription.exitRoom.url, callbackLocal, levelDescription.exitRoom);
-  httpRequest(levelDescription.keyRoom.url, callbackLocal, levelDescription.keyRoom);
-
+  if(levelDescription.exitRoom){
+    httpRequest(levelDescription.exitRoom.url, callbackLocal, levelDescription.exitRoom);
+    httpRequest(levelDescription.keyRoom.url, callbackLocal, levelDescription.keyRoom);
+  }
 }
 
 /**

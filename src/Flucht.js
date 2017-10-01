@@ -1,14 +1,7 @@
 import Runner from "./Physics/Runner.js";
 import World from "./Physics/World.js";
 import Renderer from "./Renderer.js";
-import PacketManager from "./PacketManager.js";
-import PacketTypes from "./PacketTypes.js";
-import RemotePlayerController from "./RemotePlayerController.js";
-import Packet from "./Packet.js";
-import NetworkConnection from "./NetworkConnection.js";
-import PartyWorld from "./PartyWorld.js";
 import UI from "./UI.js";
-import ElementNetworkSyncController from "./Physics/ElementNetworkSyncController.js";
 import HotBar from "./HotBar.js";
 import HotBarUI from "./HotBarUI.js";
 import MurderEditor from "./MurderEditor.js";
@@ -55,51 +48,9 @@ class Flucht{
     */
     this.WORLDCREATED = "world created";
 
-    this.networkConnection = new NetworkConnection(this.name);
-    this.partyWorld = new PartyWorld(document.getElementById("Party Display"), this.networkConnection);
-    this.networkConnection.registerHandler("leave", this.partyWorld);
-    this.networkConnection.registerHandler("peers", this.partyWorld);
-    this.networkConnection.registerHandler("join", this.partyWorld);
-    this.networkConnection.registerHandler("offer", this.partyWorld);
-    this.networkConnection.registerHandler("answer", this.partyWorld);
-    this.networkConnection.registerHandler("ice", this.partyWorld);
-    this.networkConnection.registerHandler("connectionEstablished", this.partyWorld);
-
-    this.pm = new PacketManager(this.networkConnection);
-    let pm = this.pm;
-    let test = function(e, v){ pm.onWSMessage(e, v)}
-    this.networkConnection.registerHandler("webRTCMessage", {
-      onWSMessage: test
-    });
-
     let self = this;
 
-    let lock = function(e, v){ self.ui.switchScreen(self.ui.WAITING);
-    self.ui.displayMessage("Players are in game, wait here while they finish", 10000) }
-    this.networkConnection.registerHandler("lock",{
-      onWSMessage: lock
-    });
-    let unlock = function(e, v){ self.ui.switchScreen(self.ui.PARTY);
-    self.ui.displayMessage("You get to start!", 1000); }
-    this.networkConnection.registerHandler("unlock",{
-      onWSMessage: unlock
-    });
-    this.pm.addListener(PacketTypes.seed, this);
-    this.pm.addListener(PacketTypes.host, this);
-    this.pm.addListener(PacketTypes.start, this);
-    this.pm.addListener(PacketTypes.trapPlacement, this);
-    this.pm.addListener(PacketTypes.roundEnd, this);
-
-    this.pm.addListener(PacketTypes.ready, this.partyWorld);
     this.ready = false;
-
-    this.host = this.networkConnection.id;
-    this.networkConnection.registerHandler("connectionEstablished", {onWSMessage:function(e, v){
-      if(v.offerer){
-        self.pm.send(new Packet(false, v.id, PacketTypes.seed, {seed:self.seed}));
-        self.pm.send(new Packet(false, v.id, PacketTypes.host, {host:self.host}));
-      }
-    }});
 
     this.hotBar = new HotBar();
     this.hotBarUI = new HotBarUI(this.hotBar);
@@ -108,10 +59,6 @@ class Flucht{
 
     this.ingame = false;
 
-    //start game (delete this)
-    // this.start(this.networkConnection.id);
-    // this.startGame();
-    // this.renderer.disableLighting();
   }
 
   /**
@@ -126,8 +73,7 @@ class Flucht{
   */
   toggleReady(){
     this.ready = !this.ready;
-    this.pm.broadcast(new Packet(false, false, PacketTypes.ready, {ready:this.ready}));
-    this.partyWorld.update();
+    this.allReady();
   }
 
   /**
@@ -139,7 +85,6 @@ class Flucht{
     }
     let self = this;
     this.world = new World({spawnRunner:function(data){
-      self.elementNetworkSyncController = new ElementNetworkSyncController(self.pm, self.world);
       let spawn = data.spawns[~~(Math.random()*data.spawns.length)];
       if(self.runner){
         self.runner.pos = spawn;
@@ -187,15 +132,7 @@ class Flucht{
     }
     this.renderer.addRunner(this.runner);
     this.world.addEntity(this.runner);
-    if(!this.remotePlayerController){
-      this.remotePlayerController = new RemotePlayerController(this.world, this.pm, this.runner);
-    } else {
-      this.remotePlayerController.runner = this.runner;
-    }
     let self = this;
-    for(let userId in this.networkConnection.webRTCConnections){
-      remotePlayerController.addRemotePlayerListener(userId, this.name);
-    }
     this.ui.inputMethod.addInputListener(this.runner);
   }
 
@@ -280,24 +217,17 @@ class Flucht{
   * called when all of the users are ready by PartyWorld
   */
   allReady(){
-    console.log("Host is", this.host, "I am", this.networkConnection.id);
     if(this.ingame){
       return;
     }
-    if(this.host === this.networkConnection.id){
-      this.pm.broadcast(new Packet(false, false, PacketTypes.start, {start:true, murderer:this.networkConnection.id}));
-      this.start(this.networkConnection.id);
-      this.murderList.push(this.networkConnection.id);
-    }
+    this.start();
   }
 
   /**
   * starts the game, the murerder id is for the UI and to get the right state
-  * @param {String} murderID the id of the player who is the murderer
   */
-  start(murderID){
-    this.networkConnection.lockMe();
-    this.numerOfPlayers = this.partyWorld.users.length;
+  start(){
+    this.numerOfPlayers = 1;
     this.ingame = true;
     if(!this.world){
       this.createWorld();
@@ -305,15 +235,9 @@ class Flucht{
       this.world.reset(this.seed);
       this.renderer.disableLighting();
     }
-    this.murderID = murderID;
-    if(murderID === this.networkConnection.id){
       this.ui.switchScreen(this.ui.MURDER_EDITOR);
       this.murderEditor.enable();
-      this.ui.displayMessage("You are the Murderer, place your traps now.", 2000);
-    } else {
-      this.ui.displayMessage("Waiting for the Murderer to place the traps.", 2000);
-      this.ui.switchScreen(this.ui.WAITING);
-    }
+      this.ui.displayMessage("Starting Demo. Place your traps.", 2000);
   }
 
   /**
@@ -335,15 +259,6 @@ class Flucht{
   }
 
   /**
-  * sends out the changes as in placement of trapGhost
-  */
-  sendOutChanges(){
-    let additions = this.murderEditor.getAdditions();
-    let packet = new Packet(false, false, PacketTypes.trapPlacement, additions);
-    this.pm.broadcast(packet);
-  }
-
-  /**
   * called as a response to sendOutChanges and updates the world with the new traps
   */
   updateTraps(traps){
@@ -362,13 +277,8 @@ class Flucht{
   startGame(){
     this.ui.switchScreen(this.ui.GAME);
     this.murderEditor.disable();
-    if(this.murderID === this.networkConnection.id){
-      this.ui.displayMessage("Find and kill the runners!", 1500);
-      this.insertRunner(true);
-    } else {
-      this.ui.displayMessage("You are a Runner, run to the exit!", 1500);
-      this.insertRunner(false);
-    }
+    this.ui.displayMessage("Have fun in the Demo!", 1500);
+    this.insertRunner(true);
   }
 
   /**
@@ -382,24 +292,6 @@ class Flucht{
     let number = 0;
     let numberDead = 0;
     let players = [];
-    for(let runnerId in this.remotePlayerController.players){
-      number ++;
-      players.push(runnerId);
-      if(this.remotePlayerController.players[runnerId].won){
-        winners.push(runnerId);
-      }
-      if(this.remotePlayerController.players[runnerId].dead){
-        numberDead ++;
-      }
-    }
-    let pot = 70*number;
-    if(!this.scores){
-      this.scores = {};
-      for(let runnerId in this.remotePlayerController.players){
-        this.scores[runnerId] = 0;
-      }
-      this.scores[this.networkConnection.id] = 0;
-    }
     for(let player of winners){
       this.scores[player] += pot/winners.length;
     }
@@ -444,7 +336,6 @@ class Flucht{
     console.log("Murderer is", nextMurderer, "I am", this.networkConnection.id);
     this.runner.deleted = true;
     this.runner = false;
-    this.remotePlayerController.reset();
     if(this.ingame){
       return;
     }
