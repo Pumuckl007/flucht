@@ -2,7 +2,7 @@ import FileServer from "./FileServer.js";
 import WebsocketServer from "./WebsocketServer.js";
 import UserWorld from "./UserWorld.js";
 
-var server = new FileServer(8125);
+var server = new FileServer(process.env.PORT || 8125);
 var wsServer = new WebsocketServer(server);
 var userWorld = new UserWorld();
 wsServer.registerHandler("id", userWorld);
