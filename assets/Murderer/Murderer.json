@@ -1,5 +1,5 @@
 {
-  "base": "/assets/Murderer/",
+  "base": "assets/Murderer/",
   "width": 32,
   "height": 64,
   "default": "idle",

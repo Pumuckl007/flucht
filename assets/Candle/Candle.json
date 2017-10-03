@@ -1,5 +1,5 @@
 {
-  "base": "/assets/Candle/candle_Animation1_",
+  "base": "assets/Candle/candle_Animation1_",
   "width": 32,
   "scaleX": 2,
   "height": 64,

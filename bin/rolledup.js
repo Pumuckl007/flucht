@@ -490,7 +490,7 @@ class SideJump extends TexturedElement{
       "width": width,
       "height": height,
       "type": "Textured Element",
-      "url": "/assets/Stairs/Stairs.json",
+      "url": "assets/Stairs/Stairs.json",
       "offsetX": -32,
       "offsetY": -34
     });
@@ -1311,6 +1311,9 @@ class Terrain{
   }
 }
 
+/**
+* The class representing the entier world for physics purposes
+*/
 class World{
 
   /**
@@ -1322,7 +1325,7 @@ class World{
     this.entities = [];
     this.seed = seed;
     this.tickingEntities = [];
-    this.terrain = new Terrain("/levels/Level1.json", spawnHandler, seed);
+    this.terrain = new Terrain("levels/Level1.json", spawnHandler, seed);
     this.spawnHandler = spawnHandler;
     this.listeners = [];
     this.keyCollected = false;
@@ -1407,7 +1410,7 @@ class World{
       this.entities.push(window.flucht.runner);
     }
     let self = this;
-    this.terrain = new Terrain("/levels/Level1.json", {spawnRunner:function(data){
+    this.terrain = new Terrain("levels/Level1.json", {spawnRunner:function(data){
       let first = true;
       for(let listener of self.listeners){
         listener.onEvent("Terrain Updated", self.terrain);
@@ -1770,7 +1773,7 @@ class LightingMask{
     */
     addLightSource(follow){
       //console.log("test, Lightmask.js:52");
-      let newLight = new PIXI.Sprite(PIXI.Texture.fromImage("/assets/Vignette/VignetteLight.png", false, PIXI.SCALE_MODES.NEAREST));
+      let newLight = new PIXI.Sprite(PIXI.Texture.fromImage("assets/Vignette/VignetteLight.png", false, PIXI.SCALE_MODES.NEAREST));
       newLight.position.x = follow.pos.x - newLight.width/2;
       newLight.position.y = follow.pos.y - newLight.height/2;
       newLight.blendMode = PIXI.BLEND_MODES.ADD;
@@ -3225,11 +3228,11 @@ class HotBar{
     this.ITEM_CHANGED = "Item Changed";
 
     this.items = [new PlaceableItem(new BearTrap(0,0,64,64, {
-      "url":"/assets/Traps/BearTrap/BearTrap.json",
+      "url":"assets/Traps/BearTrap/BearTrap.json",
       "offsetX": 0,
       "offsetY": -32,
       "ghost": false
-    }), "/assets/Traps/BearTrap/trap_Animation1_1.png")];
+    }), "assets/Traps/BearTrap/trap_Animation1_1.png")];
     this.currentSelected = 0;
     this.listeners = [];
   }
@@ -3748,7 +3751,6 @@ class Murderer extends Runner{
   }
 }
 
-/** class creates world, runner and renderer to begin the game*/
 class Flucht{
   /**
   * creates the world, renderer and player  assigns event listeners to world class

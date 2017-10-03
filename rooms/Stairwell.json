@@ -2,7 +2,7 @@
   "name":"Stairwell",
   "width": 832,
   "height": 438,
-  "background": "/assets/background.png",
+  "background": "assets/background.png",
   "max": 1,
   "elements":[
     {
@@ -11,7 +11,7 @@
       "width": 64,
       "height": 128,
       "type": "Textured Element",
-      "url": "/assets/MonaLisa/MonaLisa.json",
+      "url": "assets/MonaLisa/MonaLisa.json",
       "offsetX": 0,
       "offsetY": 0,
       "ghost": true
@@ -22,7 +22,7 @@
       "width": 64,
       "height": 128,
       "type": "Lit Element",
-      "url": "/assets/Candle/Candle.json",
+      "url": "assets/Candle/Candle.json",
       "offsetX": 0,
       "offsetY": 0,
       "ghost": true

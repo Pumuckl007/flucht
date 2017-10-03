@@ -6,7 +6,7 @@
     "x": 0,
     "y": -100
   },
-  "background": "/assets/background.png",
+  "background": "assets/background.png",
   "elements":[
     {
       "x": 432,
@@ -14,7 +14,7 @@
       "width": 34,
       "height": 106,
       "type": "Textured Element",
-      "url": "/assets/GrandfatherClock/GrandfatherClock.json",
+      "url": "assets/GrandfatherClock/GrandfatherClock.json",
       "offsetX": -16,
       "offsetY": -8,
       "ghost": true

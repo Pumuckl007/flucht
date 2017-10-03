@@ -2,7 +2,7 @@
   "name":"Exit Room",
   "width": 832,
   "height": 438,
-  "background": "/assets/background.png",
+  "background": "assets/background.png",
   "elements":[
     {
       "x": 478,
@@ -17,7 +17,7 @@
       "width": 34,
       "height": 106,
       "type": "Lit Element",
-      "url": "/assets/Candle/Candle.json",
+      "url": "assets/Candle/Candle.json",
       "offsetX": 0,
       "offsetY": 0,
       "ghost": true
@@ -28,7 +28,7 @@
       "width": 34,
       "height": 106,
       "type": "Lit Element",
-      "url": "/assets/Candle/Candle.json",
+      "url": "assets/Candle/Candle.json",
       "offsetX": 0,
       "offsetY": 0,
       "ghost": true

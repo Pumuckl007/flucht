@@ -5,10 +5,10 @@
   "rooms":[
     {
       "name": "Living Room",
-      "url": "/rooms/LivingRoom.json"
+      "url": "rooms/LivingRoom.json"
     }
   ],
   "roomTypes":[
-    "/rooms/LivingRoom.json"
+    "rooms/LivingRoom.json"
   ]
 }

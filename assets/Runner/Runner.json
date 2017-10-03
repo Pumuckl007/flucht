@@ -1,5 +1,5 @@
 {
-  "base": "/assets/Runner/running_",
+  "base": "assets/Runner/running_",
   "width": 32,
   "height": 64,
   "default": "idle",

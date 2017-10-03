@@ -2,7 +2,7 @@
   "name":"Stairwell Top",
   "width": 832,
   "height": 438,
-  "background": "/assets/background.png",
+  "background": "assets/background.png",
   "max": 1,
   "elements":[
     {
@@ -18,7 +18,7 @@
       "width": 34,
       "height": 106,
       "type": "Lit Element",
-      "url": "/assets/Candle/Candle.json",
+      "url": "assets/Candle/Candle.json",
       "offsetX": 0,
       "offsetY": 0,
       "ghost": true

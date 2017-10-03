@@ -1,5 +1,5 @@
 {
-  "base": "/assets/Stairs/stair_Animation_",
+  "base": "assets/Stairs/stair_Animation_",
   "width": 32,
   "scaleX": 2,
   "height": 32,

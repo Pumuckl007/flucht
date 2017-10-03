@@ -1,6 +1,6 @@
 {
-  "base": "/assets/Traps/BearTrap/trap_Animation1_",
-  "display": "/assets/Traps/BearTrap/trap_Animation1_0.png",
+  "base": "assets/Traps/BearTrap/trap_Animation1_",
+  "display": "assets/Traps/BearTrap/trap_Animation1_0.png",
   "width": 32,
   "scaleX": 2,
   "height": 32,

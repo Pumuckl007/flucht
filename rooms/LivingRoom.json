@@ -6,7 +6,7 @@
     "x": 100,
     "y": -100
   },
-  "background": "/assets/background.png",
+  "background": "assets/background.png",
   "elements":[
     {
       "x": 432,
@@ -14,7 +14,7 @@
       "width": 64,
       "height": 68,
       "type": "Textured Element",
-      "url": "/assets/Armchair/Armchair.json",
+      "url": "assets/Armchair/Armchair.json",
       "offsetX": 0,
       "offsetY": -48
     },
@@ -24,7 +24,7 @@
       "width": 1,
       "height": 1,
       "type": "Lit Element",
-      "url": "/assets/Chandelier/Chandelier.json",
+      "url": "assets/Chandelier/Chandelier.json",
       "offsetX": -92,
       "offsetY": -185,
       "ghost": true
@@ -35,7 +35,7 @@
       "width": 64,
       "height": 128,
       "type": "Textured Element",
-      "url": "/assets/MonaLisa/MonaLisa.json",
+      "url": "assets/MonaLisa/MonaLisa.json",
       "offsetX": 0,
       "offsetY": 0,
       "ghost": true
@@ -46,7 +46,7 @@
       "width": 34,
       "height": 106,
       "type": "Lit Element",
-      "url": "/assets/Candle/Candle.json",
+      "url": "assets/Candle/Candle.json",
       "offsetX": 0,
       "offsetY": 0,
       "ghost": true
@@ -57,7 +57,7 @@
       "width": 34,
       "height": 106,
       "type": "Textured Element",
-      "url": "/assets/GrandfatherClock/GrandfatherClock.json",
+      "url": "assets/GrandfatherClock/GrandfatherClock.json",
       "offsetX": -16,
       "offsetY": -8,
       "ghost": true
