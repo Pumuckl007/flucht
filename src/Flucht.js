@@ -284,7 +284,7 @@ class Flucht{
   startGame(){
     this.ui.switchScreen(this.ui.GAME);
     this.murderEditor.disable();
-    this.ui.displayMessage("Have fun in the Demo!", 1500);
+    this.ui.displayMessage("Have fun in the Demo! Use WASD & Arrow Keys to Move", 4000);
     this.insertRunner(true);
   }
 
