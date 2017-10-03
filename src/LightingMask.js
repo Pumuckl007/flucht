@@ -87,7 +87,7 @@ class LightingMask{
     */
     addLightSource(follow){
       //console.log("test, Lightmask.js:52");
-      let newLight = new PIXI.Sprite(PIXI.Texture.fromImage("/assets/Vignette/VignetteLight.png", false, PIXI.SCALE_MODES.NEAREST));
+      let newLight = new PIXI.Sprite(PIXI.Texture.fromImage("assets/Vignette/VignetteLight.png", false, PIXI.SCALE_MODES.NEAREST));
       newLight.position.x = follow.pos.x - newLight.width/2;
       newLight.position.y = follow.pos.y - newLight.height/2;
       newLight.blendMode = PIXI.BLEND_MODES.ADD;

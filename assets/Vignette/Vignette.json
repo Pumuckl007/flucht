@@ -1,5 +1,5 @@
 {
-  "base": "/assets/Vignette/VignetteLight",
+  "base": "assets/Vignette/VignetteLight",
   "width": 500,
   "height": 500,
   "default": "light",

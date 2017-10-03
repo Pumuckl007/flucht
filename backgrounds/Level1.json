@@ -1,5 +1,5 @@
 {
-  "background": "/assets/background.png",
+  "background": "assets/background.png",
   "width": 832,
   "scaleX": 2,
   "height": 448,
@@ -7,7 +7,7 @@
   "offsetY": -10,
   "elements": [
     {
-      "url": "/assets/GrandfatherClock/GrandfatherClock.json",
+      "url": "assets/GrandfatherClock/GrandfatherClock.json",
       "number": 4,
       "xStep": 1,
       "yStep": 1,
@@ -15,7 +15,7 @@
       "yGenerator": [-140]
     },
     {
-      "url": "/assets/MonaLisa/MonaLisa.json",
+      "url": "assets/MonaLisa/MonaLisa.json",
       "number": 3,
       "xStep": 1,
       "yStep": 1,
@@ -23,7 +23,7 @@
       "yGenerator": [100, -200, -190]
     },
     {
-      "url": "/assets/Candle/Candle.json",
+      "url": "assets/Candle/Candle.json",
       "number": 2,
       "xStep": 1,
       "yStep": 1,
@@ -31,7 +31,7 @@
       "yGenerator": [-100]
     },
     {
-      "url": "/assets/Armchair/Armchair.json",
+      "url": "assets/Armchair/Armchair.json",
       "number": 1,
       "xStep": 1,
       "yStep": 1,

@@ -15,7 +15,7 @@ class World{
     this.entities = [];
     this.seed = seed;
     this.tickingEntities = [];
-    this.terrain = new Terrain("/levels/Level1.json", spawnHandler, seed);
+    this.terrain = new Terrain("levels/Level1.json", spawnHandler, seed);
     this.spawnHandler = spawnHandler;
     this.listeners = [];
     this.keyCollected = false;
@@ -100,7 +100,7 @@ class World{
       this.entities.push(window.flucht.runner);
     }
     let self = this;
-    this.terrain = new Terrain("/levels/Level1.json", {spawnRunner:function(data){
+    this.terrain = new Terrain("levels/Level1.json", {spawnRunner:function(data){
       let first = true;
       for(let listener of self.listeners){
         listener.onEvent("Terrain Updated", self.terrain);

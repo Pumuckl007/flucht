@@ -16,7 +16,7 @@ class SideJump extends TexturedElement{
       "width": width,
       "height": height,
       "type": "Textured Element",
-      "url": "/assets/Stairs/Stairs.json",
+      "url": "assets/Stairs/Stairs.json",
       "offsetX": -32,
       "offsetY": -34
     });

@@ -23,11 +23,11 @@ class HotBar{
     this.ITEM_CHANGED = "Item Changed";
 
     this.items = [new PlaceableItem(new BearTrap(0,0,64,64, {
-      "url":"/assets/Traps/BearTrap/BearTrap.json",
+      "url":"assets/Traps/BearTrap/BearTrap.json",
       "offsetX": 0,
       "offsetY": -32,
       "ghost": false
-    }), "/assets/Traps/BearTrap/trap_Animation1_1.png")];
+    }), "assets/Traps/BearTrap/trap_Animation1_1.png")];
     this.currentSelected = 0;
     this.listeners = [];
   }

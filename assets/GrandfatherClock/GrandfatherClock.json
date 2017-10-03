@@ -1,5 +1,5 @@
 {
-  "base": "/assets/GrandfatherClock/GrandfatherClock",
+  "base": "assets/GrandfatherClock/GrandfatherClock",
   "width": 32,
   "scaleX": 2,
   "height": 64,
