@@ -1,4 +1,4 @@
-# flucht
+# Flucht
 A game where you must run from the murderer and escape through the exit.
 
 A full version can be found at [flucht-game.herokuapp.com](https://flucht-game.herokuapp.com)
